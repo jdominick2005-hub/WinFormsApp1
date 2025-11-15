@@ -1,4 +1,5 @@
-﻿namespace WinFormsApp1
+﻿
+namespace WinFormsApp1
 {
     partial class ProfessorsForm
     {
@@ -49,6 +50,22 @@
             pictureBox1 = new PictureBox();
             panel3 = new Panel();
             label1 = new Label();
+            lblFullName = new Label();
+            lblEmailAddress = new Label();
+            lblPassword = new Label();
+            lblUsername = new Label();
+            lblDepartment = new Label();
+            txtEmail = new TextBox();
+            txtFullName = new TextBox();
+            txtPassword = new TextBox();
+            txtUsername = new TextBox();
+            btnAdd = new Button();
+            btnSendEmail = new Button();
+            btnClear = new Button();
+            btnShow = new Button();
+            txtDepartment = new TextBox();
+            groupBox1 = new GroupBox();
+            dgvRegisteredProf = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -57,6 +74,8 @@
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
+            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvRegisteredProf).BeginInit();
             SuspendLayout();
             // 
             // pictureBox2
@@ -293,6 +312,158 @@
             label1.TabIndex = 80;
             label1.Text = "ADMIN";
             // 
+            // lblFullName
+            // 
+            lblFullName.AutoSize = true;
+            lblFullName.Location = new Point(44, 64);
+            lblFullName.Name = "lblFullName";
+            lblFullName.Size = new Size(61, 15);
+            lblFullName.TabIndex = 84;
+            lblFullName.Text = "FullName:";
+            // 
+            // lblEmailAddress
+            // 
+            lblEmailAddress.AutoSize = true;
+            lblEmailAddress.Location = new Point(43, 89);
+            lblEmailAddress.Name = "lblEmailAddress";
+            lblEmailAddress.Size = new Size(84, 15);
+            lblEmailAddress.TabIndex = 85;
+            lblEmailAddress.Text = "Email Address:";
+            // 
+            // lblPassword
+            // 
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new Point(45, 146);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(60, 15);
+            lblPassword.TabIndex = 86;
+            lblPassword.Text = "Password:";
+            // 
+            // lblUsername
+            // 
+            lblUsername.AutoSize = true;
+            lblUsername.Location = new Point(45, 116);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(63, 15);
+            lblUsername.TabIndex = 87;
+            lblUsername.Text = "Username:";
+            // 
+            // lblDepartment
+            // 
+            lblDepartment.AutoSize = true;
+            lblDepartment.Location = new Point(43, 179);
+            lblDepartment.Name = "lblDepartment";
+            lblDepartment.Size = new Size(73, 15);
+            lblDepartment.TabIndex = 88;
+            lblDepartment.Text = "Department:\r\n";
+            // 
+            // txtEmail
+            // 
+            txtEmail.Location = new Point(189, 85);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(191, 23);
+            txtEmail.TabIndex = 89;
+            // 
+            // txtFullName
+            // 
+            txtFullName.Location = new Point(189, 56);
+            txtFullName.Name = "txtFullName";
+            txtFullName.Size = new Size(191, 23);
+            txtFullName.TabIndex = 90;
+            // 
+            // txtPassword
+            // 
+            txtPassword.Location = new Point(189, 142);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new Size(191, 23);
+            txtPassword.TabIndex = 91;
+            // 
+            // txtUsername
+            // 
+            txtUsername.Location = new Point(189, 114);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(191, 23);
+            txtUsername.TabIndex = 92;
+            // 
+            // btnAdd
+            // 
+            btnAdd.Location = new Point(485, 114);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(75, 23);
+            btnAdd.TabIndex = 94;
+            btnAdd.Text = "  Add";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // btnSendEmail
+            // 
+            btnSendEmail.Location = new Point(485, 60);
+            btnSendEmail.Name = "btnSendEmail";
+            btnSendEmail.Size = new Size(75, 23);
+            btnSendEmail.TabIndex = 95;
+            btnSendEmail.Text = "Send Email";
+            btnSendEmail.UseVisualStyleBackColor = true;
+            btnSendEmail.Click += btnSendEmail_Click;
+            // 
+            // btnClear
+            // 
+            btnClear.Location = new Point(485, 141);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(75, 23);
+            btnClear.TabIndex = 96;
+            btnClear.Text = "Clear";
+            btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
+            // 
+            // btnShow
+            // 
+            btnShow.Location = new Point(485, 170);
+            btnShow.Name = "btnShow";
+            btnShow.Size = new Size(75, 23);
+            btnShow.TabIndex = 97;
+            btnShow.Text = "Show\r\n";
+            btnShow.UseVisualStyleBackColor = true;
+            btnShow.Click += btnExit_Click;
+            // 
+            // txtDepartment
+            // 
+            txtDepartment.Location = new Point(189, 171);
+            txtDepartment.Name = "txtDepartment";
+            txtDepartment.Size = new Size(191, 23);
+            txtDepartment.TabIndex = 98;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(dgvRegisteredProf);
+            groupBox1.Controls.Add(btnAdd);
+            groupBox1.Controls.Add(btnSendEmail);
+            groupBox1.Controls.Add(btnClear);
+            groupBox1.Controls.Add(btnShow);
+            groupBox1.Controls.Add(txtDepartment);
+            groupBox1.Controls.Add(lblDepartment);
+            groupBox1.Controls.Add(lblPassword);
+            groupBox1.Controls.Add(lblUsername);
+            groupBox1.Controls.Add(txtFullName);
+            groupBox1.Controls.Add(txtUsername);
+            groupBox1.Controls.Add(txtEmail);
+            groupBox1.Controls.Add(lblEmailAddress);
+            groupBox1.Controls.Add(txtPassword);
+            groupBox1.Controls.Add(lblFullName);
+            groupBox1.Location = new Point(319, 173);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(604, 444);
+            groupBox1.TabIndex = 99;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Registering Proffesors Section";
+            // 
+            // dgvRegisteredProf
+            // 
+            dgvRegisteredProf.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRegisteredProf.Location = new Point(53, 232);
+            dgvRegisteredProf.Name = "dgvRegisteredProf";
+            dgvRegisteredProf.Size = new Size(507, 179);
+            dgvRegisteredProf.TabIndex = 99;
+            // 
             // ProfessorsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -304,11 +475,12 @@
             Controls.Add(button1);
             Controls.Add(panel1);
             Controls.Add(label1);
+            Controls.Add(groupBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "ProfessorsForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ProfessorsForm";
+            Text = "Proffesors";
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
@@ -318,8 +490,16 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvRegisteredProf).EndInit();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -344,5 +524,21 @@
         private PictureBox pictureBox1;
         private Panel panel3;
         private Label label1;
+        private Label lblFullName;
+        private Label lblEmailAddress;
+        private Label lblPassword;
+        private Label lblUsername;
+        private Label lblDepartment;
+        private TextBox txtEmail;
+        private TextBox txtFullName;
+        private TextBox txtPassword;
+        private TextBox txtUsername;
+        private Button btnAdd;
+        private Button btnSendEmail;
+        private Button btnClear;
+        private Button btnShow;
+        private TextBox txtDepartment;
+        private GroupBox groupBox1;
+        private DataGridView dgvRegisteredProf;
     }
 }

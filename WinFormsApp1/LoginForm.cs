@@ -51,15 +51,14 @@ namespace WinFormsApp1
                             if (role == "Admin")
                             {
                                 AdminForm adminForm = new AdminForm();
-                                adminForm.ShowDialog();
+                                adminForm.Show();
+                                this.Hide();
                             }//need to be changed to teacher
                             else if (role == "Teacher")
                             {
                                 ProfessorsForm profForm = new ProfessorsForm();
                                 profForm.ShowDialog();
                             }
-
-                            this.Show(); // Show login form again after closing other forms
                         }
                         else
                         {

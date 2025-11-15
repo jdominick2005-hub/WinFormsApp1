@@ -38,12 +38,12 @@
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
             panel3 = new Panel();
-            label8 = new Label();
+            lblProfessors = new Label();
             pictureBox6 = new PictureBox();
             pictureBox5 = new PictureBox();
             pictureBox4 = new PictureBox();
-            label6 = new Label();
-            label4 = new Label();
+            lblUsers = new Label();
+            lblManage = new Label();
             label3 = new Label();
             pictureBox3 = new PictureBox();
             button1 = new Button();
@@ -158,12 +158,12 @@
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
-            panel3.Controls.Add(label8);
+            panel3.Controls.Add(lblProfessors);
             panel3.Controls.Add(pictureBox6);
             panel3.Controls.Add(pictureBox5);
             panel3.Controls.Add(pictureBox4);
-            panel3.Controls.Add(label6);
-            panel3.Controls.Add(label4);
+            panel3.Controls.Add(lblUsers);
+            panel3.Controls.Add(lblManage);
             panel3.Controls.Add(label3);
             panel3.Controls.Add(pictureBox3);
             panel3.Controls.Add(btnManage);
@@ -175,16 +175,17 @@
             panel3.Size = new Size(235, 460);
             panel3.TabIndex = 1;
             // 
-            // label8
+            // lblProfessors
             // 
-            label8.AutoSize = true;
-            label8.BackColor = Color.Transparent;
-            label8.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            label8.Location = new Point(95, 255);
-            label8.Name = "label8";
-            label8.Size = new Size(87, 17);
-            label8.TabIndex = 72;
-            label8.Text = "PROFESSORS";
+            lblProfessors.AutoSize = true;
+            lblProfessors.BackColor = Color.Transparent;
+            lblProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            lblProfessors.Location = new Point(95, 255);
+            lblProfessors.Name = "lblProfessors";
+            lblProfessors.Size = new Size(87, 17);
+            lblProfessors.TabIndex = 72;
+            lblProfessors.Text = "PROFESSORS";
+            lblProfessors.Click += lblProfessors_Click;
             // 
             // pictureBox6
             // 
@@ -219,28 +220,30 @@
             pictureBox4.TabIndex = 69;
             pictureBox4.TabStop = false;
             // 
-            // label6
+            // lblUsers
             // 
-            label6.AutoSize = true;
-            label6.BackColor = Color.Transparent;
-            label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            label6.Location = new Point(95, 182);
-            label6.Name = "label6";
-            label6.Size = new Size(46, 17);
-            label6.TabIndex = 67;
-            label6.Text = "USERS";
+            lblUsers.AutoSize = true;
+            lblUsers.BackColor = Color.Transparent;
+            lblUsers.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            lblUsers.Location = new Point(95, 182);
+            lblUsers.Name = "lblUsers";
+            lblUsers.Size = new Size(46, 17);
+            lblUsers.TabIndex = 67;
+            lblUsers.Text = "USERS";
+            lblUsers.Click += lblUsers_Click;
             // 
-            // label4
+            // lblManage
             // 
-            label4.AutoSize = true;
-            label4.BackColor = Color.Transparent;
-            label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.ForeColor = Color.Black;
-            label4.Location = new Point(95, 109);
-            label4.Name = "label4";
-            label4.Size = new Size(64, 17);
-            label4.TabIndex = 66;
-            label4.Text = "MANAGE";
+            lblManage.AutoSize = true;
+            lblManage.BackColor = Color.Transparent;
+            lblManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblManage.ForeColor = Color.Black;
+            lblManage.Location = new Point(95, 109);
+            lblManage.Name = "lblManage";
+            lblManage.Size = new Size(64, 17);
+            lblManage.TabIndex = 66;
+            lblManage.Text = "MANAGE";
+            lblManage.Click += lblManage_Click;
             // 
             // label3
             // 
@@ -341,11 +344,11 @@
         private Label label5;
         private PictureBox pictureBox3;
         private Label label3;
-        private Label label6;
-        private Label label4;
+        private Label lblUsers;
+        private Label lblManage;
         private PictureBox pictureBox6;
         private PictureBox pictureBox5;
         private PictureBox pictureBox4;
-        private Label label8;
+        private Label lblProfessors;
     }
 }

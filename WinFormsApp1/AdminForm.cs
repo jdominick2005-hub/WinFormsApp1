@@ -26,5 +26,27 @@ namespace WinFormsApp1
         {
 
         }
+
+        private void lblProfessors_Click(object sender, EventArgs e)
+        {
+            ProfessorsForm ProfessorsForm = new ProfessorsForm();
+            ProfessorsForm.Show();
+            this.Hide();
+
+        }
+
+        private void lblManage_Click(object sender, EventArgs e)
+        {
+            ManageForm ManageForm = new ManageForm();
+            ManageForm.Show();
+            this.Hide();
+        }
+
+        private void lblUsers_Click(object sender, EventArgs e)
+        {
+            UsersForm UsersForm = new UsersForm();
+            UsersForm.Show();
+            this.Hide();
+        }
     }
 }

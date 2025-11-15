@@ -1,4 +1,10 @@
-﻿namespace WinFormsApp1
+﻿
+
+
+using System.Data;
+using System.Data.SqlClient;
+
+namespace WinFormsApp1
 {
     partial class ManageForm
     {
@@ -49,6 +55,20 @@
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             label1 = new Label();
+            label7 = new Label();
+            label9 = new Label();
+            label10 = new Label();
+            txtSubjectName = new TextBox();
+            txtSchedule = new TextBox();
+            txtSection = new TextBox();
+            label12 = new Label();
+            btnAdd = new Button();
+            btnDelete = new Button();
+            btnUpdate = new Button();
+            dgvProffesors = new DataGridView();
+            groupBox1 = new GroupBox();
+            txtProffesors = new TextBox();
+            btnView = new Button();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -57,6 +77,8 @@
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProffesors).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -293,6 +315,148 @@
             label1.TabIndex = 68;
             label1.Text = "ADMIN";
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(99, 69);
+            label7.Name = "label7";
+            label7.Size = new Size(81, 15);
+            label7.TabIndex = 71;
+            label7.Text = "SubjectName:";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(99, 106);
+            label9.Name = "label9";
+            label9.Size = new Size(57, 15);
+            label9.TabIndex = 72;
+            label9.Text = "schedule:";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(90, 145);
+            label10.Name = "label10";
+            label10.Size = new Size(97, 15);
+            label10.TabIndex = 73;
+            label10.Text = "Year and Section:\r\n";
+            // 
+            // txtSubjectName
+            // 
+            txtSubjectName.Location = new Point(190, 61);
+            txtSubjectName.Name = "txtSubjectName";
+            txtSubjectName.Size = new Size(177, 23);
+            txtSubjectName.TabIndex = 74;
+            // 
+            // txtSchedule
+            // 
+            txtSchedule.Location = new Point(190, 102);
+            txtSchedule.Name = "txtSchedule";
+            txtSchedule.Size = new Size(177, 23);
+            txtSchedule.TabIndex = 75;
+            // 
+            // txtSection
+            // 
+            txtSection.Location = new Point(190, 137);
+            txtSection.Name = "txtSection";
+            txtSection.Size = new Size(177, 23);
+            txtSection.TabIndex = 77;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(99, 183);
+            label12.Name = "label12";
+            label12.Size = new Size(63, 15);
+            label12.TabIndex = 79;
+            label12.Text = "Proffesors:";
+            // 
+            // btnAdd
+            // 
+            btnAdd.Location = new Point(340, 417);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(75, 27);
+            btnAdd.TabIndex = 81;
+            btnAdd.Text = "Add\r\n";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // btnDelete
+            // 
+            btnDelete.Location = new Point(589, 419);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(74, 27);
+            btnDelete.TabIndex = 90;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click_1;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.Location = new Point(497, 419);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(76, 25);
+            btnUpdate.TabIndex = 91;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
+            // 
+            // dgvProffesors
+            // 
+            dgvProffesors.BackgroundColor = Color.Gainsboro;
+            dgvProffesors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProffesors.Location = new Point(34, 229);
+            dgvProffesors.MultiSelect = false;
+            dgvProffesors.Name = "dgvProffesors";
+            dgvProffesors.ReadOnly = true;
+            dgvProffesors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProffesors.Size = new Size(643, 156);
+            dgvProffesors.TabIndex = 94;
+            dgvProffesors.CellContentClick += dgvProffesors_CellContentClick;
+            // 
+            // groupBox1
+            // 
+            groupBox1.BackColor = SystemColors.Control;
+            groupBox1.Controls.Add(txtProffesors);
+            groupBox1.Controls.Add(btnView);
+            groupBox1.Controls.Add(dgvProffesors);
+            groupBox1.Controls.Add(label12);
+            groupBox1.Controls.Add(btnDelete);
+            groupBox1.Controls.Add(btnUpdate);
+            groupBox1.Controls.Add(txtSchedule);
+            groupBox1.Controls.Add(txtSubjectName);
+            groupBox1.Controls.Add(label9);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Controls.Add(btnAdd);
+            groupBox1.Controls.Add(txtSection);
+            groupBox1.Controls.Add(label10);
+            groupBox1.FlatStyle = FlatStyle.Flat;
+            groupBox1.ForeColor = Color.Black;
+            groupBox1.Location = new Point(271, 138);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(709, 457);
+            groupBox1.TabIndex = 96;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Proffesors Assigning Section";
+            // 
+            // txtProffesors
+            // 
+            txtProffesors.Location = new Point(190, 175);
+            txtProffesors.Name = "txtProffesors";
+            txtProffesors.Size = new Size(177, 23);
+            txtProffesors.TabIndex = 96;
+            // 
+            // btnView
+            // 
+            btnView.Location = new Point(424, 420);
+            btnView.Name = "btnView";
+            btnView.Size = new Size(67, 23);
+            btnView.TabIndex = 95;
+            btnView.Text = "View";
+            btnView.UseVisualStyleBackColor = true;
+            btnView.Click += btnView_Click;
+            // 
             // ManageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -304,6 +468,7 @@
             Controls.Add(panel1);
             Controls.Add(pictureBox2);
             Controls.Add(label1);
+            Controls.Add(groupBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "ManageForm";
@@ -318,9 +483,31 @@
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProffesors).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
+
+        private void btnShow_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void cmbyrLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.cmbAssignProf);
+        }
+
+       
 
         #endregion
 
@@ -344,5 +531,24 @@
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private Label label1;
+        private Label label7;
+        private Label label9;
+        private Label label10;
+        private TextBox txtSubjectName;
+        private TextBox txtSchedule;
+        private TextBox txtSection;
+        private Label label12;
+        private Button btnAdd;
+        private Button btnDelete;
+        private Button btnUpdate;
+        private DataGridView dgvProffesors;
+        private GroupBox groupBox1;
+        private Button btnView;
+       
+
+        public ManageForm(ComboBox cmbYearLevels) => this.cmbYearLevel = cmbYearLevels;
+        private ComboBox cmbYearLevel;
+        private object cmbAssignProf;
+        private TextBox txtProffesors;
     }
 }
