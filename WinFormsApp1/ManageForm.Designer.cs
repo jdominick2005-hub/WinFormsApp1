@@ -474,6 +474,7 @@ namespace WinFormsApp1
             Name = "ManageForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Manage";
+            Load += ManageForm_Load;
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();

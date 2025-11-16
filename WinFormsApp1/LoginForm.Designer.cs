@@ -35,6 +35,8 @@
             btnlogin = new Button();
             txtpassword = new TextBox();
             txtusername = new TextBox();
+            btnShow = new Button();
+            btnHide = new Button();
             SuspendLayout();
             // 
             // chkbxremember
@@ -60,8 +62,6 @@
             lblpassword.Size = new Size(66, 17);
             lblpassword.TabIndex = 11;
             lblpassword.Text = "Password";
-            txtpassword.PasswordChar = '*';
-
             // 
             // lblusername
             // 
@@ -97,6 +97,7 @@
             txtpassword.Location = new Point(369, 306);
             txtpassword.Multiline = true;
             txtpassword.Name = "txtpassword";
+            txtpassword.PasswordChar = '*';
             txtpassword.Size = new Size(229, 35);
             txtpassword.TabIndex = 8;
             // 
@@ -110,6 +111,29 @@
             txtusername.Size = new Size(229, 35);
             txtusername.TabIndex = 7;
             // 
+            // btnShow
+            // 
+            btnShow.BackColor = Color.White;
+            btnShow.FlatStyle = FlatStyle.Flat;
+            btnShow.Image = (Image)resources.GetObject("btnShow.Image");
+            btnShow.Location = new Point(569, 316);
+            btnShow.Name = "btnShow";
+            btnShow.Size = new Size(25, 22);
+            btnShow.TabIndex = 13;
+            btnShow.UseVisualStyleBackColor = false;
+            btnShow.Click += btnShow_Click;
+            // 
+            // btnHide
+            // 
+            btnHide.FlatStyle = FlatStyle.Flat;
+            btnHide.Image = (Image)resources.GetObject("btnHide.Image");
+            btnHide.Location = new Point(569, 315);
+            btnHide.Name = "btnHide";
+            btnHide.Size = new Size(25, 23);
+            btnHide.TabIndex = 14;
+            btnHide.UseVisualStyleBackColor = true;
+            btnHide.Click += btnHide_Click;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -117,12 +141,14 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(964, 611);
+            Controls.Add(btnShow);
             Controls.Add(chkbxremember);
             Controls.Add(lblpassword);
             Controls.Add(lblusername);
             Controls.Add(btnlogin);
             Controls.Add(txtpassword);
             Controls.Add(txtusername);
+            Controls.Add(btnHide);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "LoginForm";
@@ -141,5 +167,7 @@
         private Button btnlogin;
         private TextBox txtpassword;
         private TextBox txtusername;
+        private Button btnShow;
+        private Button btnHide;
     }
 }

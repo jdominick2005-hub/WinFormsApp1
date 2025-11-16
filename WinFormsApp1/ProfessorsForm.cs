@@ -1,9 +1,7 @@
-﻿using System;
+﻿using System.Configuration;
 using System.Data.SqlClient;
 using System.Net;
 using System.Net.Mail;
-using System.Windows.Forms;
-using System.Configuration;
 
 namespace WinFormsApp1
 {

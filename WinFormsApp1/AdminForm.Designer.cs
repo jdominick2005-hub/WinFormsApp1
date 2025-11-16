@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
-            label1 = new Label();
+            lblUserName = new Label();
             pictureBox2 = new PictureBox();
             btnManage = new Button();
             btnProfessors = new Button();
@@ -46,7 +46,7 @@
             lblManage = new Label();
             label3 = new Label();
             pictureBox3 = new PictureBox();
-            button1 = new Button();
+            btnLogout = new Button();
             label2 = new Label();
             label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -59,15 +59,15 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             SuspendLayout();
             // 
-            // label1
+            // lblUserName
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(845, 56);
-            label1.Name = "label1";
-            label1.Size = new Size(78, 25);
-            label1.TabIndex = 62;
-            label1.Text = "ADMIN";
+            lblUserName.AutoSize = true;
+            lblUserName.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUserName.Location = new Point(845, 56);
+            lblUserName.Name = "lblUserName";
+            lblUserName.Size = new Size(78, 25);
+            lblUserName.TabIndex = 62;
+            lblUserName.Text = "ADMIN";
             // 
             // pictureBox2
             // 
@@ -268,14 +268,15 @@
             pictureBox3.TabStop = false;
             pictureBox3.Click += pictureBox3_Click;
             // 
-            // button1
+            // btnLogout
             // 
-            button1.Location = new Point(913, 85);
-            button1.Name = "button1";
-            button1.Size = new Size(66, 29);
-            button1.TabIndex = 64;
-            button1.Text = "Log out";
-            button1.UseVisualStyleBackColor = true;
+            btnLogout.Location = new Point(913, 85);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(66, 29);
+            btnLogout.TabIndex = 64;
+            btnLogout.Text = "Log out";
+            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
             // 
             // label2
             // 
@@ -302,10 +303,10 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1008, 644);
-            Controls.Add(label1);
+            Controls.Add(lblUserName);
             Controls.Add(pictureBox2);
             Controls.Add(panel1);
-            Controls.Add(button1);
+            Controls.Add(btnLogout);
             Controls.Add(label2);
             Controls.Add(label5);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -329,7 +330,7 @@
 
         #endregion
 
-        private Label label1;
+        private Label lblUserName;
         private PictureBox pictureBox2;
         private Button btnAttendanceReport;
         private Button btnManage;
@@ -339,7 +340,7 @@
         private PictureBox pictureBox1;
         private Panel panel1;
         private Panel panel3;
-        private Button button1;
+        private Button btnLogout;
         private Label label2;
         private Label label5;
         private PictureBox pictureBox3;

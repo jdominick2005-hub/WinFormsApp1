@@ -38,7 +38,7 @@
 *.log
 
 # Auto-generated files by designer or build system
-*.Designer.cs
+
 *.exe
 *.dll
 
