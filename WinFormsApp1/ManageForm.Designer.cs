@@ -438,7 +438,7 @@ namespace WinFormsApp1
             groupBox1.Size = new Size(709, 457);
             groupBox1.TabIndex = 96;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Proffesors Assigning Section";
+            groupBox1.Text = "Proffesor Section Assignment";
             // 
             // txtProffesors
             // 
@@ -489,6 +489,11 @@ namespace WinFormsApp1
             groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void ManageForm_Load(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void btnShow_Click(object sender, EventArgs e)

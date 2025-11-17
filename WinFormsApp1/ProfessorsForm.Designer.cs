@@ -454,7 +454,7 @@ namespace WinFormsApp1
             groupBox1.Size = new Size(604, 444);
             groupBox1.TabIndex = 99;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Registering Proffesors Section";
+            groupBox1.Text = "Proffesor Section Registration";
             // 
             // dgvRegisteredProf
             // 
@@ -495,6 +495,11 @@ namespace WinFormsApp1
             ((System.ComponentModel.ISupportInitialize)dgvRegisteredProf).EndInit();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)

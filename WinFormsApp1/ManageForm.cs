@@ -171,10 +171,6 @@ namespace WinFormsApp1
         {
             LoadSubjects();
         }
-
-        private void ManageForm_Load(object sender, EventArgs e)
-        {
-
-        }
     }
+
 }
