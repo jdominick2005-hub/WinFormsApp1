@@ -215,6 +215,7 @@
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
             btnManage.UseVisualStyleBackColor = false;
+            btnManage.Click += btnManage_Click;
             // 
             // btnProfessors
             // 
@@ -227,6 +228,7 @@
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.UseVisualStyleBackColor = false;
+            btnProfessors.Click += btnProfessors_Click;
             // 
             // btnUsers
             // 
@@ -240,6 +242,7 @@
             btnUsers.Size = new Size(223, 56);
             btnUsers.TabIndex = 2;
             btnUsers.UseVisualStyleBackColor = false;
+            btnUsers.Click += btnUsers_Click;
             // 
             // btnHome
             // 

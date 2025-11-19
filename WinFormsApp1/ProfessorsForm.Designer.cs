@@ -217,6 +217,7 @@ namespace WinFormsApp1
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
             btnManage.UseVisualStyleBackColor = false;
+            btnManage.Click += btnManage_Click;
             // 
             // btnProfessors
             // 
@@ -229,6 +230,7 @@ namespace WinFormsApp1
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.UseVisualStyleBackColor = false;
+            btnProfessors.Click += btnProfessors_Click;
             // 
             // btnUsers
             // 
@@ -242,6 +244,7 @@ namespace WinFormsApp1
             btnUsers.Size = new Size(223, 56);
             btnUsers.TabIndex = 2;
             btnUsers.UseVisualStyleBackColor = false;
+            btnUsers.Click += btnUsers_Click;
             // 
             // btnHome
             // 
@@ -255,6 +258,7 @@ namespace WinFormsApp1
             btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
             btnHome.UseVisualStyleBackColor = false;
+            btnHome.Click += btnHome_Click;
             // 
             // panel1
             // 
@@ -315,7 +319,7 @@ namespace WinFormsApp1
             // lblFullName
             // 
             lblFullName.AutoSize = true;
-            lblFullName.Location = new Point(44, 64);
+            lblFullName.Location = new Point(43, 64);
             lblFullName.Name = "lblFullName";
             lblFullName.Size = new Size(61, 15);
             lblFullName.TabIndex = 84;
@@ -333,7 +337,7 @@ namespace WinFormsApp1
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(45, 146);
+            lblPassword.Location = new Point(45, 150);
             lblPassword.Name = "lblPassword";
             lblPassword.Size = new Size(60, 15);
             lblPassword.TabIndex = 86;
@@ -342,7 +346,7 @@ namespace WinFormsApp1
             // lblUsername
             // 
             lblUsername.AutoSize = true;
-            lblUsername.Location = new Point(45, 116);
+            lblUsername.Location = new Point(45, 122);
             lblUsername.Name = "lblUsername";
             lblUsername.Size = new Size(63, 15);
             lblUsername.TabIndex = 87;
@@ -351,7 +355,7 @@ namespace WinFormsApp1
             // lblDepartment
             // 
             lblDepartment.AutoSize = true;
-            lblDepartment.Location = new Point(43, 179);
+            lblDepartment.Location = new Point(45, 187);
             lblDepartment.Name = "lblDepartment";
             lblDepartment.Size = new Size(73, 15);
             lblDepartment.TabIndex = 88;
@@ -366,7 +370,7 @@ namespace WinFormsApp1
             // 
             // txtFullName
             // 
-            txtFullName.Location = new Point(189, 56);
+            txtFullName.Location = new Point(189, 47);
             txtFullName.Name = "txtFullName";
             txtFullName.Size = new Size(191, 23);
             txtFullName.TabIndex = 90;
@@ -427,7 +431,7 @@ namespace WinFormsApp1
             // 
             // txtDepartment
             // 
-            txtDepartment.Location = new Point(189, 171);
+            txtDepartment.Location = new Point(189, 179);
             txtDepartment.Name = "txtDepartment";
             txtDepartment.Size = new Size(191, 23);
             txtDepartment.TabIndex = 98;
@@ -458,10 +462,11 @@ namespace WinFormsApp1
             // 
             // dgvRegisteredProf
             // 
+            dgvRegisteredProf.BackgroundColor = Color.Gainsboro;
             dgvRegisteredProf.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRegisteredProf.Location = new Point(53, 232);
+            dgvRegisteredProf.Location = new Point(26, 232);
             dgvRegisteredProf.Name = "dgvRegisteredProf";
-            dgvRegisteredProf.Size = new Size(507, 179);
+            dgvRegisteredProf.Size = new Size(551, 179);
             dgvRegisteredProf.TabIndex = 99;
             // 
             // ProfessorsForm

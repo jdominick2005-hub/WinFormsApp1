@@ -63,7 +63,7 @@
             // 
             lblUserName.AutoSize = true;
             lblUserName.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUserName.Location = new Point(845, 56);
+            lblUserName.Location = new Point(841, 64);
             lblUserName.Name = "lblUserName";
             lblUserName.Size = new Size(78, 25);
             lblUserName.TabIndex = 62;
@@ -90,6 +90,7 @@
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
             btnManage.UseVisualStyleBackColor = false;
+            btnManage.Click += btnManage_Click;
             // 
             // btnProfessors
             // 
@@ -102,6 +103,7 @@
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.UseVisualStyleBackColor = false;
+            btnProfessors.Click += btnProfessors_Click;
             // 
             // btnUsers
             // 
@@ -115,6 +117,7 @@
             btnUsers.Size = new Size(223, 56);
             btnUsers.TabIndex = 2;
             btnUsers.UseVisualStyleBackColor = false;
+            btnUsers.Click += btnUsers_Click;
             // 
             // btnHome
             // 
@@ -128,6 +131,8 @@
             btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
             btnHome.UseVisualStyleBackColor = false;
+          
+
             // 
             // pictureBox1
             // 
@@ -255,6 +260,7 @@
             label3.Size = new Size(47, 17);
             label3.TabIndex = 65;
             label3.Text = "HOME";
+          
             // 
             // pictureBox3
             // 
@@ -329,8 +335,6 @@
         }
 
         #endregion
-
-        private Label lblUserName;
         private PictureBox pictureBox2;
         private Button btnAttendanceReport;
         private Button btnManage;
@@ -351,5 +355,6 @@
         private PictureBox pictureBox5;
         private PictureBox pictureBox4;
         private Label lblProfessors;
+        public Label lblUserName;
     }
 }

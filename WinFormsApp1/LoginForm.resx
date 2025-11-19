@@ -121,7 +121,7 @@
   <data name="btnShow.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAB8AAAAXCAYAAADz/ZRUAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAArxJREFUSEvVljtLa1EQhf0BYq+gAUkiJkXEgGDrP1DBSmwsUolJLBTSpEx+Qawt
+        vgAADr4B6kKxwAAAArxJREFUSEvVljtLa1EQhf0BYq+gAUkiJkXEgGDrP1DBSmwsUolJLBTSpEx+Qawt
         fRQRLEIaBe0UX00CCRYxCuJbq8uFdfkGNoTDiVFzvXCLgWHPzFp771n7zOn59Vt6f3//JwZXq/X8V+Sv
         r696fn42w/fGP7IvkTuiu7s7NRoN1Wo1HR8fq1QqmeGzRoycThv6EvnDw4MuLy+1sbGhhYUFjYyMqK+v
         T729vWb44XDYYuRcXFxYjRfn0+Rvb296fHxUpVJRoVDQzMyMQqGQxsfHNTc3p+XlZWUyGbOlpSVbIxYM
@@ -139,7 +139,7 @@
   <data name="btnHide.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABwAAAAWCAYAAADTlvzyAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAA5JJREFUSEu9lrdLpGEQxtcsmBOoGDsLsbRRMDQ2aqeV2KkgCobG0GkniK0Bxc7C
+        vgAADr4B6kKxwAAAA5JJREFUSEu9lrdLpGEQxtcsmBOoGDsLsbRRMDQ2aqeV2KkgCobG0GkniK0Bxc7C
         P8BC0M7UCIoBcw6YQ3UcPMdv4F3W3dXzuOOKYT++fWeemWeemffz/Pgpvb+//xcDy+ML+Pb2poeHBzOe
         /R3+1j4AAvD8/KzJyUmNjY3p6upKT09P9v7x8VHX19c6Pj7WwcGB9vb2zHjm3cXFhW5vb+386+trAFBQ
         QA4SoKKiQmlpaerv79fu7q5eXl60vr6uzs5OlZaWKi8vT8nJyWY8l5SUqLm52RJdXl62RP2BggK6SkZH
@@ -163,7 +163,7 @@
   <data name="$this.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAA9QAAAKKCAIAAABTRYTgAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vQAADr0BR/uQrQAA/7JJREFUeF7c/WVwXAmarQv3v/tF3HNmuru6qmxBMjMzo5iZmZltMYPFzJYsMDPI
+        vAAADrwBlbxySQAA/7JJREFUeF7c/WVwXAmarQv3v/tF3HNmuru6qmxBMjMzo5iZmZltMYPFzJYsMDPI
         lmwx2TILzMxMhYaqL3ZuOZ2WXFVNM2fOjViRsbVzJ/rPk8vrXe+f4GSiKR7zLRKGplNkVmZctYivFYnN
         FRy5xBSP+gYBMcGhjLEIJJVI5DKkNmZpJRlxufEyOymcgUYySAQ+hyTk0GUKHIeDpFOwbAZZKKRJeWwN
         R2zDl9rzWFqMtb+wpCMhsy7II17snSTxTJBa+AjZWjpVRiKLKRg2BU4l47hMay83sohvQsShmDQohfgt

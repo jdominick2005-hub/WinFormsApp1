@@ -113,12 +113,13 @@
             // 
             // btnShow
             // 
-            btnShow.BackColor = Color.White;
+            btnShow.BackColor = Color.Transparent;
             btnShow.FlatStyle = FlatStyle.Flat;
+            btnShow.ForeColor = Color.Transparent;
             btnShow.Image = (Image)resources.GetObject("btnShow.Image");
-            btnShow.Location = new Point(569, 316);
+            btnShow.Location = new Point(561, 315);
             btnShow.Name = "btnShow";
-            btnShow.Size = new Size(25, 22);
+            btnShow.Size = new Size(33, 22);
             btnShow.TabIndex = 13;
             btnShow.UseVisualStyleBackColor = false;
             btnShow.Click += btnShow_Click;
@@ -154,7 +155,6 @@
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
-            Load += LoginForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

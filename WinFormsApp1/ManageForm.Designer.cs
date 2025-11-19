@@ -231,6 +231,7 @@ namespace WinFormsApp1
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
             btnManage.UseVisualStyleBackColor = false;
+            btnManage.Click += btnManage_Click;
             // 
             // btnProfessors
             // 
@@ -243,6 +244,7 @@ namespace WinFormsApp1
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.UseVisualStyleBackColor = false;
+            btnProfessors.Click += btnProfessors_Click;
             // 
             // btnUsers
             // 
@@ -256,6 +258,7 @@ namespace WinFormsApp1
             btnUsers.Size = new Size(223, 56);
             btnUsers.TabIndex = 2;
             btnUsers.UseVisualStyleBackColor = false;
+            btnUsers.Click += btnUsers_Click;
             // 
             // btnHome
             // 
@@ -269,6 +272,7 @@ namespace WinFormsApp1
             btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
             btnHome.UseVisualStyleBackColor = false;
+            btnHome.Click += btnHome_Click;
             // 
             // panel1
             // 
@@ -493,20 +497,18 @@ namespace WinFormsApp1
 
         private void ManageForm_Load(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+           
         }
 
         private void btnShow_Click(object sender, EventArgs e)
         {
-           
+          
         }
 
-        private void cmbyrLevel_SelectedIndexChanged(object sender, EventArgs e)
+        private void Initialization()
         {
-            throw new NotImplementedException();
+            
         }
-
-        
 
         public override int GetHashCode()
         {

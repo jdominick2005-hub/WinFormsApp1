@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Net;
 using System.Net.Mail;
+using System.Windows.Forms.VisualStyles;
 
 namespace WinFormsApp1
 {
@@ -30,15 +31,26 @@ namespace WinFormsApp1
                     conn.Open();
 
                     string query = @"SELECT T.TeacherID, T.FullName, T.Department, T.Email, L.Username 
-                                     FROM Teachers T
-                                     INNER JOIN Logins L ON T.UserID = L.UserID";
+                             FROM Teachers T
+                             INNER JOIN Logins L ON T.UserID = L.UserID";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    dgvRegisteredProf.DataSource = dt;   // Display data
+                    dgvRegisteredProf.DataSource = dt;
+
+                    // Hide TeacherID
+                    if (dgvRegisteredProf.Columns.Contains("TeacherID"))
+                        dgvRegisteredProf.Columns["TeacherID"].Visible = false;
+
+                    // Auto-fill grid
+                    dgvRegisteredProf.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                    // Optional: make read-only
+                    dgvRegisteredProf.ReadOnly = true;
+                    dgvRegisteredProf.AllowUserToAddRows = false;
                 }
             }
             catch (Exception ex)
@@ -206,6 +218,34 @@ namespace WinFormsApp1
                 MessageBox.Show("Failed to send email:\n" + ex.Message,
                     "Email Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            AdminForm admin = new AdminForm();
+            admin.Show();
+            this.Hide();
+        }
+
+        private void btnManage_Click(object sender, EventArgs e)
+        {
+            ManageForm manage = new ManageForm();
+            manage.Show();
+            this.Hide();
+        }
+
+        private void btnProfessors_Click(object sender, EventArgs e)
+        {
+            ProfessorsForm proffesors = new ProfessorsForm();
+            proffesors.Show();
+            this.Hide();
+        }
+
+        private void btnUsers_Click(object sender, EventArgs e)
+        {
+            UsersForm users = new UsersForm();
+            users.Show();
+            this.Hide();
         }
     }
 }

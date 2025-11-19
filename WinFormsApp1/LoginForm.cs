@@ -61,7 +61,7 @@ namespace WinFormsApp1
 
                         if (role == "Admin")
                         {
-                            AdminForm adminForm = new AdminForm(name);
+                            AdminForm adminForm = new AdminForm(name);  // Pass name
                             adminForm.Show();
                         }
                         else if (role == "Teacher")
@@ -78,7 +78,7 @@ namespace WinFormsApp1
                             }
 
                             TeacherPanelForm teacherForm = new TeacherPanelForm(name, teacherID);
-                            teacherForm.Show(); // CHANGED FROM ShowDialog()
+                            teacherForm.Show();
                         }
                     }
                 }
@@ -91,11 +91,6 @@ namespace WinFormsApp1
         }
 
 
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnShow_Click(object sender, EventArgs e)
         {
             if (txtpassword.PasswordChar == '*')
@@ -103,7 +98,6 @@ namespace WinFormsApp1
                 btnHide.BringToFront();
                 txtpassword.PasswordChar = '\0';
             }
-
         }
 
         private void btnHide_Click(object sender, EventArgs e)
@@ -113,8 +107,6 @@ namespace WinFormsApp1
                 btnShow.BringToFront();
                 txtpassword.PasswordChar = '*';
             }
-
-
         }
     }
 }

@@ -120,6 +120,18 @@ namespace WinFormsApp1
             {
                 int subjectId = Convert.ToInt32(dgvProffesors.SelectedRows[0].Cells["SubjectID"].Value);
 
+                // Confirmation dialog
+                DialogResult result = MessageBox.Show(
+                    "Are you sure you want to delete this subject?",
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                // Stop if user clicks NO
+                if (result != DialogResult.Yes)
+                    return;
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string query = "DELETE FROM Subjects WHERE SubjectID=@SubjectID";
@@ -134,6 +146,11 @@ namespace WinFormsApp1
                     LoadSubjects();
                 }
             }
+            else
+            {
+                MessageBox.Show("Please select a subject to delete.", "No Selection",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         // Load subjects into DataGridView
@@ -142,15 +159,30 @@ namespace WinFormsApp1
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"SELECT s.SubjectID, s.SubjectName, s.Section, s.Schedule,
-                             l.Name AS ProfessorName
-                             FROM Subjects s
-                             LEFT JOIN Teachers t ON s.TeacherID = t.TeacherID
-                             LEFT JOIN Logins l ON t.UserID = l.UserID";
+                         l.Name AS ProfessorName
+                         FROM Subjects s
+                         LEFT JOIN Teachers t ON s.TeacherID = t.TeacherID
+                         LEFT JOIN Logins l ON t.UserID = l.UserID";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 dgvProffesors.DataSource = dt;
+
+                // Hide SubjectID column
+                if (dgvProffesors.Columns.Contains("SubjectID"))
+                {
+                    dgvProffesors.Columns["SubjectID"].Visible = false;
+                }
+
+                // Make columns fill the DataGridView
+                dgvProffesors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                // Optional UI Improvements:
+                dgvProffesors.ReadOnly = true;
+                dgvProffesors.AllowUserToAddRows = false;
+                dgvProffesors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgvProffesors.MultiSelect = false;
             }
         }
 
@@ -170,6 +202,34 @@ namespace WinFormsApp1
         private void btnView_Click(object sender, EventArgs e)
         {
             LoadSubjects();
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            AdminForm AdminForm = new AdminForm();
+            AdminForm.Show();
+            this.Hide();
+        }
+
+        private void btnUsers_Click(object sender, EventArgs e)
+        {
+            UsersForm Users = new UsersForm();
+            Users.Show();
+            this.Hide();
+        }
+
+        private void btnProfessors_Click(object sender, EventArgs e)
+        {
+            ProfessorsForm profForm = new ProfessorsForm();
+    profForm.Show();
+    this.Hide();
+        }
+
+        private void btnManage_Click(object sender, EventArgs e)
+        {
+            ManageForm manage = new ManageForm();
+            manage.Show();
+            this.Hide();
         }
     }
 

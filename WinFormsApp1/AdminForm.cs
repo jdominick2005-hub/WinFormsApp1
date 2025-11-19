@@ -3,15 +3,26 @@
     public partial class AdminForm : Form
     {
         private string loggedInName;
-        public AdminForm(String name)
+
+        public AdminForm(string name)
         {
             InitializeComponent();
             loggedInName = name;
         }
 
+        // This empty constructor is NOT needed anymore,
+        // but if you want to keep it, make sure it also initializes the UI.
+        public AdminForm()
+        {
+            InitializeComponent();
+        }
+
         private void AdminForm_Load(object sender, EventArgs e)
         {
-            lblUserName.Text = loggedInName.ToUpper();
+            if (!string.IsNullOrEmpty(loggedInName))
+            {
+                lblUserName.Text = loggedInName.ToUpper();
+            }
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
@@ -24,7 +35,6 @@
             ProfessorsForm ProfessorsForm = new ProfessorsForm();
             ProfessorsForm.Show();
             this.Hide();
-
         }
 
         private void lblManage_Click(object sender, EventArgs e)
@@ -43,15 +53,45 @@
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            // Hide the current panel/form
-            this.Hide();
+            DialogResult result = MessageBox.Show(
+                    "Are you sure you want to logout?",
+                    "Confirm Logout",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
 
-            // Show the login form again
-            LoginForm login = new LoginForm();
-            login.Show();
+            if (result == DialogResult.Yes)
+            {
+                this.Hide();
 
-            // Optional: If you want to fully close this form when Login closes:
-            login.FormClosed += (s, args) => Close();
+                LoginForm login = new LoginForm();
+                login.Show();
+
+                login.FormClosed += (s, args) => this.Close();
+            }
+
         }
+
+        private void btnManage_Click(object sender, EventArgs e)
+        {
+            ManageForm ManageForm = new ManageForm();
+            ManageForm.Show();
+            this.Hide();
+        }
+
+        private void btnProfessors_Click(object sender, EventArgs e)
+        {
+            ProfessorsForm ProfessorsForm = new ProfessorsForm();
+            ProfessorsForm.Show();
+            this.Hide();
+        }
+
+        private void btnUsers_Click(object sender, EventArgs e)
+        {
+            UsersForm UsersForm = new UsersForm();
+            UsersForm.Show();
+            this.Hide();
+        }
+
     }
 }
