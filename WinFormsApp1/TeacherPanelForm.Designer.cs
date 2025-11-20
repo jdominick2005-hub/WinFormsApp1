@@ -49,6 +49,8 @@
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             lblUserName = new Label();
+            button1 = new Button();
+            button2 = new Button();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -93,6 +95,8 @@
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
+            panel3.Controls.Add(button2);
+            panel3.Controls.Add(button1);
             panel3.Controls.Add(lblSubject);
             panel3.Controls.Add(pictureBox6);
             panel3.Controls.Add(pictureBox5);
@@ -205,7 +209,7 @@
             btnAttendance.FlatAppearance.BorderSize = 0;
             btnAttendance.FlatStyle = FlatStyle.Flat;
             btnAttendance.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnAttendance.Location = new Point(12, 89);
+            btnAttendance.Location = new Point(12, 87);
             btnAttendance.Name = "btnAttendance";
             btnAttendance.Size = new Size(223, 56);
             btnAttendance.TabIndex = 5;
@@ -218,7 +222,7 @@
             btnSubject.FlatAppearance.BorderSize = 0;
             btnSubject.FlatStyle = FlatStyle.Flat;
             btnSubject.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnSubject.Location = new Point(12, 237);
+            btnSubject.Location = new Point(12, 231);
             btnSubject.Name = "btnSubject";
             btnSubject.Size = new Size(223, 56);
             btnSubject.TabIndex = 4;
@@ -231,7 +235,7 @@
             btnClass.FlatAppearance.BorderSize = 0;
             btnClass.FlatStyle = FlatStyle.Flat;
             btnClass.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnClass.Location = new Point(12, 163);
+            btnClass.Location = new Point(12, 159);
             btnClass.Name = "btnClass";
             btnClass.Size = new Size(223, 56);
             btnClass.TabIndex = 2;
@@ -294,7 +298,32 @@
             lblUserName.Size = new Size(95, 25);
             lblUserName.TabIndex = 68;
             lblUserName.Text = "TEACHER";
-        
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.SteelBlue;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            button1.Location = new Point(13, 375);
+            button1.Name = "button1";
+            button1.Size = new Size(223, 56);
+            button1.TabIndex = 73;
+            button1.Text = "REPORTS";
+            button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.SteelBlue;
+            button2.FlatAppearance.BorderSize = 0;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            button2.Location = new Point(8, 303);
+            button2.Name = "button2";
+            button2.Size = new Size(223, 56);
+            button2.TabIndex = 74;
+            button2.Text = "STUDENTS";
+            button2.UseVisualStyleBackColor = false;
             // 
             // TeacherPanelForm
             // 
@@ -344,5 +373,7 @@
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private Label lblUserName;
+        private Button button2;
+        private Button button1;
     }
 }

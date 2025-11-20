@@ -113,26 +113,28 @@
             // 
             // btnShow
             // 
-            btnShow.BackColor = Color.Transparent;
+            btnShow.BackColor = Color.White;
             btnShow.FlatStyle = FlatStyle.Flat;
-            btnShow.ForeColor = Color.Transparent;
+            btnShow.ForeColor = Color.White;
             btnShow.Image = (Image)resources.GetObject("btnShow.Image");
-            btnShow.Location = new Point(561, 315);
+            btnShow.Location = new Point(558, 306);
             btnShow.Name = "btnShow";
-            btnShow.Size = new Size(33, 22);
+            btnShow.Size = new Size(40, 35);
             btnShow.TabIndex = 13;
             btnShow.UseVisualStyleBackColor = false;
             btnShow.Click += btnShow_Click;
             // 
             // btnHide
             // 
+            btnHide.BackColor = Color.White;
             btnHide.FlatStyle = FlatStyle.Flat;
+            btnHide.ForeColor = Color.White;
             btnHide.Image = (Image)resources.GetObject("btnHide.Image");
-            btnHide.Location = new Point(569, 315);
+            btnHide.Location = new Point(557, 306);
             btnHide.Name = "btnHide";
-            btnHide.Size = new Size(25, 23);
+            btnHide.Size = new Size(40, 35);
             btnHide.TabIndex = 14;
-            btnHide.UseVisualStyleBackColor = true;
+            btnHide.UseVisualStyleBackColor = false;
             btnHide.Click += btnHide_Click;
             // 
             // LoginForm
