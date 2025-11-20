@@ -33,6 +33,8 @@
             label2 = new Label();
             label5 = new Label();
             panel3 = new Panel();
+            btnStudent = new Button();
+            btnReports = new Button();
             lblSubject = new Label();
             pictureBox6 = new PictureBox();
             pictureBox5 = new PictureBox();
@@ -49,8 +51,8 @@
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             lblUserName = new Label();
-            button1 = new Button();
-            button2 = new Button();
+            panelMain = new Panel();
+            panelTopDashboard = new Panel();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -95,8 +97,8 @@
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
-            panel3.Controls.Add(button2);
-            panel3.Controls.Add(button1);
+            panel3.Controls.Add(btnStudent);
+            panel3.Controls.Add(btnReports);
             panel3.Controls.Add(lblSubject);
             panel3.Controls.Add(pictureBox6);
             panel3.Controls.Add(pictureBox5);
@@ -113,6 +115,34 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(235, 460);
             panel3.TabIndex = 1;
+            // 
+            // btnStudent
+            // 
+            btnStudent.BackColor = Color.SteelBlue;
+            btnStudent.FlatAppearance.BorderSize = 0;
+            btnStudent.FlatStyle = FlatStyle.Flat;
+            btnStudent.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            btnStudent.Location = new Point(8, 303);
+            btnStudent.Name = "btnStudent";
+            btnStudent.Size = new Size(223, 56);
+            btnStudent.TabIndex = 74;
+            btnStudent.Text = "STUDENTS";
+            btnStudent.UseVisualStyleBackColor = false;
+            btnStudent.Click += btnStudent_Click;
+            // 
+            // btnReports
+            // 
+            btnReports.BackColor = Color.SteelBlue;
+            btnReports.FlatAppearance.BorderSize = 0;
+            btnReports.FlatStyle = FlatStyle.Flat;
+            btnReports.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            btnReports.Location = new Point(13, 375);
+            btnReports.Name = "btnReports";
+            btnReports.Size = new Size(223, 56);
+            btnReports.TabIndex = 73;
+            btnReports.Text = "REPORTS";
+            btnReports.UseVisualStyleBackColor = false;
+            btnReports.Click += btnReports_Click;
             // 
             // lblSubject
             // 
@@ -227,6 +257,7 @@
             btnSubject.Size = new Size(223, 56);
             btnSubject.TabIndex = 4;
             btnSubject.UseVisualStyleBackColor = false;
+            btnSubject.Click += btnSubject_Click;
             // 
             // btnClass
             // 
@@ -240,6 +271,7 @@
             btnClass.Size = new Size(223, 56);
             btnClass.TabIndex = 2;
             btnClass.UseVisualStyleBackColor = false;
+            btnClass.Click += btnClass_Click;
             // 
             // btnHome
             // 
@@ -253,6 +285,7 @@
             btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
             btnHome.UseVisualStyleBackColor = false;
+            btnHome.Click += btnHome_Click;
             // 
             // panel1
             // 
@@ -299,31 +332,19 @@
             lblUserName.TabIndex = 68;
             lblUserName.Text = "TEACHER";
             // 
-            // button1
+            // panelMain
             // 
-            button1.BackColor = Color.SteelBlue;
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            button1.Location = new Point(13, 375);
-            button1.Name = "button1";
-            button1.Size = new Size(223, 56);
-            button1.TabIndex = 73;
-            button1.Text = "REPORTS";
-            button1.UseVisualStyleBackColor = false;
+            panelMain.Location = new Point(235, 136);
+            panelMain.Name = "panelMain";
+            panelMain.Size = new Size(775, 508);
+            panelMain.TabIndex = 71;
             // 
-            // button2
+            // panelTopDashboard
             // 
-            button2.BackColor = Color.SteelBlue;
-            button2.FlatAppearance.BorderSize = 0;
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            button2.Location = new Point(8, 303);
-            button2.Name = "button2";
-            button2.Size = new Size(223, 56);
-            button2.TabIndex = 74;
-            button2.Text = "STUDENTS";
-            button2.UseVisualStyleBackColor = false;
+            panelTopDashboard.Location = new Point(235, 0);
+            panelTopDashboard.Name = "panelTopDashboard";
+            panelTopDashboard.Size = new Size(775, 140);
+            panelTopDashboard.TabIndex = 72;
             // 
             // TeacherPanelForm
             // 
@@ -332,10 +353,12 @@
             ClientSize = new Size(1008, 644);
             Controls.Add(btnLogout);
             Controls.Add(label2);
-            Controls.Add(label5);
-            Controls.Add(panel1);
             Controls.Add(pictureBox2);
             Controls.Add(lblUserName);
+            Controls.Add(panelMain);
+            Controls.Add(label5);
+            Controls.Add(panel1);
+            Controls.Add(panelTopDashboard);
             Name = "TeacherPanelForm";
             Text = "TeacherPanelForm";
             panel3.ResumeLayout(false);
@@ -373,7 +396,9 @@
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private Label lblUserName;
-        private Button button2;
-        private Button button1;
+        private Button btnStudent;
+        private Button btnReports;
+        private Panel panelMain;
+        private Panel panelTopDashboard;
     }
 }

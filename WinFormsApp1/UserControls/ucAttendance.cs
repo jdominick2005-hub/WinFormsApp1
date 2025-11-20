@@ -6,21 +6,17 @@ using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
-    public partial class Attendance : Form
+    public partial class ucAttendance : UserControl
     {
-        private TeacherPanelForm teacherPanel;
-        private string teacherName;
         private int teacherID;
         string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB"].ConnectionString;
 
-        public Attendance(TeacherPanelForm panel, string name, int id)
+        public ucAttendance(int teacherId)
         {
             InitializeComponent();
-            teacherPanel = panel;
-            teacherName = name;
-            teacherID = id;
+            teacherID = teacherId;
 
-            
+            LoadSubjects(); // load subjects on UC load
         }
 
         // =========================
@@ -33,6 +29,7 @@ namespace WinFormsApp1
                 string query = @"SELECT SubjectID, SubjectName + ' (' + Section + ')' AS SubjectDisplay
                                  FROM Subjects
                                  WHERE TeacherID = @TeacherID";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@TeacherID", teacherID);
 
@@ -56,8 +53,11 @@ namespace WinFormsApp1
                 string query = @"SELECT s.StudentID, s.Name, ISNULL(a.Status, 'Not Recorded') AS Status
                                  FROM Students s
                                  INNER JOIN Enrollments e ON s.StudentID = e.StudentID
-                                 LEFT JOIN Attendance a ON s.StudentID = a.StudentID AND a.SubjectID = @SubjectID
+                                 LEFT JOIN Attendance a 
+                                     ON s.StudentID = a.StudentID 
+                                     AND a.SubjectID = @SubjectID
                                  WHERE e.SubjectID = @SubjectID";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@SubjectID", subjectID);
 
@@ -69,9 +69,6 @@ namespace WinFormsApp1
             }
         }
 
-        // =========================
-        // Subject selection changed
-        // =========================
         private void cmbSubjects_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbSubjects.SelectedValue != null)
@@ -99,11 +96,11 @@ namespace WinFormsApp1
                 int studentID = Convert.ToInt32(row.Cells["StudentID"].Value);
                 string status = row.Cells["Status"].Value.ToString();
 
-                // Only insert if attendance is not recorded yet
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string checkQuery = @"SELECT COUNT(*) FROM Attendance 
                                           WHERE StudentID=@StudentID AND SubjectID=@SubjectID";
+
                     SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
                     checkCmd.Parameters.AddWithValue("@StudentID", studentID);
                     checkCmd.Parameters.AddWithValue("@SubjectID", subjectID);
@@ -116,6 +113,7 @@ namespace WinFormsApp1
                     {
                         string insertQuery = @"INSERT INTO Attendance (StudentID, SubjectID, Status)
                                                VALUES (@StudentID, @SubjectID, @Status)";
+
                         SqlCommand insertCmd = new SqlCommand(insertQuery, conn);
                         insertCmd.Parameters.AddWithValue("@StudentID", studentID);
                         insertCmd.Parameters.AddWithValue("@SubjectID", subjectID);
@@ -129,28 +127,12 @@ namespace WinFormsApp1
             }
 
             MessageBox.Show("Attendance recorded successfully!");
-            LoadStudents(subjectID); // Refresh
+            LoadStudents(subjectID);
         }
 
-        // =========================
-        // Navigation buttons
-        // =========================
-        private void btnHome_Click(object sender, EventArgs e)
+        private void dtpDate_ValueChanged(object sender, EventArgs e)
         {
-            this.Hide();
-            teacherPanel.Show();
-            teacherPanel.StartPosition = FormStartPosition.Manual;
-            teacherPanel.Location = this.Location;
-            teacherPanel.Size = this.Size;
-        }
 
-        private void btnLogout_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            LoginForm login = new LoginForm();
-            login.Show();
-            teacherPanel.Close();
-            login.FormClosed += (s, args) => this.Close();
         }
     }
 }

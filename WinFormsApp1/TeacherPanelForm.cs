@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using WinFormsApp1.UserControls;
 
 namespace WinFormsApp1
 {
@@ -7,7 +8,7 @@ namespace WinFormsApp1
     {
         private string teacherName;
         private int teacherID;
-        private Attendance attendanceForm; // Single instance
+
 
         public TeacherPanelForm(string name, int id)
         {
@@ -15,25 +16,20 @@ namespace WinFormsApp1
             teacherName = name;
             teacherID = id;
 
-         
+            LoadControl(new UserControls.ucHome());
+
+
+        }
+        private void LoadControl(UserControl uc)
+        {
+            panelMain.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            panelMain.Controls.Add(uc);
         }
 
         private void btnAttendance_Click(object sender, EventArgs e)
         {
-            this.Hide(); // hide TeacherPanelForm
-
-            // Only create Attendance form if it doesn't exist or was disposed
-            if (attendanceForm == null || attendanceForm.IsDisposed)
-            {
-                attendanceForm = new Attendance(this, teacherName, teacherID);
-            }
-
-            attendanceForm.Show();
-            // Make Attendance form appear in the same place as TeacherPanelForm
-            attendanceForm.StartPosition = FormStartPosition.Manual; // required to set Location manually
-            attendanceForm.Location = this.Location;                // same top-left corner
-            attendanceForm.Size = this.Size;                        // same size
-            attendanceForm.Show();
+            LoadControl(new ucAttendance(teacherID));
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -59,6 +55,31 @@ namespace WinFormsApp1
 
             // Close TeacherPanelForm when login closes (optional)
             login.FormClosed += (s, args) => this.Close();
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            LoadControl(new ucHome());
+        }
+
+        private void btnClass_Click(object sender, EventArgs e)
+        {
+            LoadControl(new ucClass());
+        }
+
+        private void btnSubject_Click(object sender, EventArgs e)
+        {
+            LoadControl(new ucSubject());
+        }
+
+        private void btnStudent_Click(object sender, EventArgs e)
+        {
+            LoadControl(new ucStudents());
+        }
+
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            LoadControl(new ucReports());
         }
     }
 }

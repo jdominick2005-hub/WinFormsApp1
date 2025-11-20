@@ -332,11 +332,12 @@ namespace WinFormsApp1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(871, 56);
+            label1.Location = new Point(801, 53);
             label1.Name = "label1";
             label1.Size = new Size(78, 25);
             label1.TabIndex = 80;
             label1.Text = "ADMIN";
+            label1.Click += label1_Click;
             // 
             // lblFullName
             // 
@@ -388,35 +389,35 @@ namespace WinFormsApp1
             txtEmail.Location = new Point(189, 85);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(191, 23);
-            txtEmail.TabIndex = 89;
+            txtEmail.TabIndex = 2;
             // 
             // txtFullName
             // 
             txtFullName.Location = new Point(189, 47);
             txtFullName.Name = "txtFullName";
             txtFullName.Size = new Size(191, 23);
-            txtFullName.TabIndex = 90;
+            txtFullName.TabIndex = 1;
             // 
             // txtPassword
             // 
             txtPassword.Location = new Point(189, 142);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(191, 23);
-            txtPassword.TabIndex = 91;
+            txtPassword.TabIndex = 4;
             // 
             // txtUsername
             // 
             txtUsername.Location = new Point(189, 114);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(191, 23);
-            txtUsername.TabIndex = 92;
+            txtUsername.TabIndex = 3;
             // 
             // btnAdd
             // 
             btnAdd.Location = new Point(485, 114);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(75, 23);
-            btnAdd.TabIndex = 94;
+            btnAdd.TabIndex = 8;
             btnAdd.Text = "  Add";
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += btnAdd_Click;
@@ -426,7 +427,7 @@ namespace WinFormsApp1
             btnSendEmail.Location = new Point(485, 60);
             btnSendEmail.Name = "btnSendEmail";
             btnSendEmail.Size = new Size(75, 23);
-            btnSendEmail.TabIndex = 95;
+            btnSendEmail.TabIndex = 7;
             btnSendEmail.Text = "Send Email";
             btnSendEmail.UseVisualStyleBackColor = true;
             btnSendEmail.Click += btnSendEmail_Click;
@@ -436,7 +437,7 @@ namespace WinFormsApp1
             btnClear.Location = new Point(485, 141);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(75, 23);
-            btnClear.TabIndex = 96;
+            btnClear.TabIndex = 9;
             btnClear.Text = "Delete";
             btnClear.UseVisualStyleBackColor = true;
             btnClear.Click += btnClear_Click;
@@ -446,7 +447,7 @@ namespace WinFormsApp1
             btnShow.Location = new Point(485, 170);
             btnShow.Name = "btnShow";
             btnShow.Size = new Size(75, 23);
-            btnShow.TabIndex = 97;
+            btnShow.TabIndex = 10;
             btnShow.Text = "Show";
             btnShow.UseVisualStyleBackColor = true;
             btnShow.Click += btnExit_Click;
@@ -456,7 +457,7 @@ namespace WinFormsApp1
             txtDepartment.Location = new Point(189, 179);
             txtDepartment.Name = "txtDepartment";
             txtDepartment.Size = new Size(191, 23);
-            txtDepartment.TabIndex = 98;
+            txtDepartment.TabIndex = 5;
             // 
             // gbProfessorSectionRegistration
             // 
@@ -489,7 +490,7 @@ namespace WinFormsApp1
             dgvRegisteredProf.Location = new Point(26, 232);
             dgvRegisteredProf.Name = "dgvRegisteredProf";
             dgvRegisteredProf.Size = new Size(551, 179);
-            dgvRegisteredProf.TabIndex = 99;
+            dgvRegisteredProf.TabIndex = 6;
             // 
             // ProfessorsForm
             // 

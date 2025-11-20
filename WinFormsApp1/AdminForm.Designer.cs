@@ -65,11 +65,12 @@
             // 
             lblUserName.AutoSize = true;
             lblUserName.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUserName.Location = new Point(841, 64);
+            lblUserName.Location = new Point(746, 49);
             lblUserName.Name = "lblUserName";
             lblUserName.Size = new Size(78, 25);
             lblUserName.TabIndex = 62;
             lblUserName.Text = "ADMIN";
+            lblUserName.Click += lblUserName_Click;
             // 
             // pictureBox2
             // 

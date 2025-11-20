@@ -179,44 +179,71 @@ namespace WinFormsApp1
 
         private void btnSendEmail_Click(object sender, EventArgs e)
         {
-            string recipientEmail = txtEmail.Text.Trim();
-            string fullName = txtFullName.Text.Trim();
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(recipientEmail))
+            if (dgvRegisteredProf.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please enter a valid email address.", "Missing Email",
+                MessageBox.Show("Please select a professor first.", "No Selection",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Get selected row data
+            string fullName = dgvRegisteredProf.SelectedRows[0].Cells["FullName"].Value.ToString();
+            string email = dgvRegisteredProf.SelectedRows[0].Cells["Email"].Value.ToString();
+            string username = dgvRegisteredProf.SelectedRows[0].Cells["Username"].Value.ToString();
+
+            // Get password from database
+            string password = "";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT Password FROM Logins WHERE Username = @Username";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Username", username);
+                password = cmd.ExecuteScalar()?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Password not found for this user.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             try
             {
-                string senderEmail = ConfigurationManager.AppSettings["EmailAddress"];
-                string senderPassword = ConfigurationManager.AppSettings["EmailPassword"];
+                MailMessage msg = new MailMessage();
+                msg.From = new MailAddress("AttendanceSystem.test@outlook.com");
+                msg.To.Add(email);
+                msg.Subject = "Your Faculty Account Has Been Created";
 
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress(senderEmail);
-                mail.To.Add(recipientEmail);
-                mail.Subject = "Your Professor Account Details";
-                mail.Body = $"Hello {fullName},\n\n" +
-                            $"Your account has been created successfully.\n\n" +
-                            $"Username: {username}\nPassword: {password}\n\n" +
-                            "You may now log in to the system.\n\n- Admin";
+                msg.Body =
+                    $"Hello {fullName},\n\n" +
+                    "Your faculty account has been successfully created.\n\n" +
+                    "Here are your login credentials:\n" +
+                    $"• Username: {username}\n" +
+                    $"• Password: {password}\n\n" +
+                    "You may now log in to the system using these credentials. " +
+                    "If you did not request this account, please contact the administrator immediately.\n\n" +
+                    "Regards,\n" +
+                    "Admin Team";
 
-                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                smtp.Credentials = new NetworkCredential(senderEmail, senderPassword);
-                smtp.EnableSsl = true;
+                SmtpClient client = new SmtpClient("", 587);
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(
+                    "AttendanceSystem.test@outlook.com",
+                    "spblmrrgadotcvkj"
+                );
 
-                smtp.Send(mail);
-                MessageBox.Show("Email sent successfully!", "Notification Sent",
+                client.Send(msg);
+
+                MessageBox.Show("Account notification email sent!", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to send email:\n" + ex.Message,
-                    "Email Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to send email:\n" + ex.Message, "Email Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -246,6 +273,11 @@ namespace WinFormsApp1
             UsersForm users = new UsersForm();
             users.Show();
             this.Hide();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

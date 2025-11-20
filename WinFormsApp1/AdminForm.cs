@@ -100,5 +100,10 @@
             this.Hide();
 
         }
+
+        private void lblUserName_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
