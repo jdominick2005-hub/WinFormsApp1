@@ -221,14 +221,21 @@ namespace WinFormsApp1
         private void btnProfessors_Click(object sender, EventArgs e)
         {
             ProfessorsForm profForm = new ProfessorsForm();
-    profForm.Show();
-    this.Hide();
+            profForm.Show();
+            this.Hide();
         }
 
         private void btnManage_Click(object sender, EventArgs e)
         {
             ManageForm manage = new ManageForm();
             manage.Show();
+            this.Hide();
+        }
+
+        private void btnStudentRegistration_Click(object sender, EventArgs e)
+        {
+            StudentRegistration StudentRegister = new StudentRegistration();
+            StudentRegister.Show();
             this.Hide();
         }
     }

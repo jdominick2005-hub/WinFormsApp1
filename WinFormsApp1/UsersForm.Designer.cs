@@ -33,6 +33,8 @@
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
             panel3 = new Panel();
+            lblStudentRegistration = new Label();
+            btnStudentRegistration = new Button();
             label8 = new Label();
             pictureBox6 = new PictureBox();
             pictureBox5 = new PictureBox();
@@ -98,6 +100,8 @@
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
+            panel3.Controls.Add(lblStudentRegistration);
+            panel3.Controls.Add(btnStudentRegistration);
             panel3.Controls.Add(label8);
             panel3.Controls.Add(pictureBox6);
             panel3.Controls.Add(pictureBox5);
@@ -114,6 +118,25 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(235, 460);
             panel3.TabIndex = 1;
+            // 
+            // lblStudentRegistration
+            // 
+            lblStudentRegistration.AutoSize = true;
+            lblStudentRegistration.BackColor = Color.White;
+            lblStudentRegistration.Location = new Point(42, 312);
+            lblStudentRegistration.Name = "lblStudentRegistration";
+            lblStudentRegistration.Size = new Size(140, 15);
+            lblStudentRegistration.TabIndex = 74;
+            lblStudentRegistration.Text = "STUDENT REGISTRATION\r\n";
+            // 
+            // btnStudentRegistration
+            // 
+            btnStudentRegistration.Location = new Point(12, 299);
+            btnStudentRegistration.Name = "btnStudentRegistration";
+            btnStudentRegistration.Size = new Size(187, 40);
+            btnStudentRegistration.TabIndex = 73;
+            btnStudentRegistration.UseVisualStyleBackColor = true;
+            btnStudentRegistration.Click += btnStudentRegistration_Click;
             // 
             // label8
             // 
@@ -347,5 +370,7 @@
         private Label label2;
         private Label label5;
         private Button button1;
+        private Label lblStudentRegistration;
+        private Button btnStudentRegistration;
     }
 }

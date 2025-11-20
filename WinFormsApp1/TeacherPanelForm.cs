@@ -38,6 +38,18 @@ namespace WinFormsApp1
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
+            // Ask for confirmation
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            // If user selects No, stop the logout process
+            if (result == DialogResult.No)
+                return;
+
             // Hide TeacherPanelForm
             this.Hide();
 

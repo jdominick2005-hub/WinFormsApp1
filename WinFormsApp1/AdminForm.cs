@@ -93,5 +93,12 @@
             this.Hide();
         }
 
+        private void btnStudentRegistration_Click(object sender, EventArgs e)
+        {
+            StudentRegistration StudentRegister = new StudentRegistration();
+            StudentRegister.Show();
+            this.Hide();
+
+        }
     }
 }

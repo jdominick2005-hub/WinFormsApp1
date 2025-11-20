@@ -49,6 +49,8 @@ namespace WinFormsApp1
             panel1 = new Panel();
             pictureBox1 = new PictureBox();
             panel3 = new Panel();
+            lblStudentRegistration = new Label();
+            btnStudentRegistration = new Button();
             label1 = new Label();
             lblFullName = new Label();
             lblEmailAddress = new Label();
@@ -64,7 +66,7 @@ namespace WinFormsApp1
             btnClear = new Button();
             btnShow = new Button();
             txtDepartment = new TextBox();
-            groupBox1 = new GroupBox();
+            gbProfessorSectionRegistration = new GroupBox();
             dgvRegisteredProf = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -74,7 +76,7 @@ namespace WinFormsApp1
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
-            groupBox1.SuspendLayout();
+            gbProfessorSectionRegistration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRegisteredProf).BeginInit();
             SuspendLayout();
             // 
@@ -289,6 +291,8 @@ namespace WinFormsApp1
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
+            panel3.Controls.Add(lblStudentRegistration);
+            panel3.Controls.Add(btnStudentRegistration);
             panel3.Controls.Add(label8);
             panel3.Controls.Add(pictureBox6);
             panel3.Controls.Add(pictureBox5);
@@ -305,6 +309,24 @@ namespace WinFormsApp1
             panel3.Name = "panel3";
             panel3.Size = new Size(235, 460);
             panel3.TabIndex = 1;
+            // 
+            // lblStudentRegistration
+            // 
+            lblStudentRegistration.AutoSize = true;
+            lblStudentRegistration.BackColor = Color.White;
+            lblStudentRegistration.Location = new Point(42, 336);
+            lblStudentRegistration.Name = "lblStudentRegistration";
+            lblStudentRegistration.Size = new Size(140, 15);
+            lblStudentRegistration.TabIndex = 74;
+            lblStudentRegistration.Text = "STUDENT REGISTRATION";
+            // 
+            // btnStudentRegistration
+            // 
+            btnStudentRegistration.Location = new Point(12, 320);
+            btnStudentRegistration.Name = "btnStudentRegistration";
+            btnStudentRegistration.Size = new Size(196, 46);
+            btnStudentRegistration.TabIndex = 73;
+            btnStudentRegistration.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -415,7 +437,7 @@ namespace WinFormsApp1
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(75, 23);
             btnClear.TabIndex = 96;
-            btnClear.Text = "Clear";
+            btnClear.Text = "Delete";
             btnClear.UseVisualStyleBackColor = true;
             btnClear.Click += btnClear_Click;
             // 
@@ -425,7 +447,7 @@ namespace WinFormsApp1
             btnShow.Name = "btnShow";
             btnShow.Size = new Size(75, 23);
             btnShow.TabIndex = 97;
-            btnShow.Text = "Show\r\n";
+            btnShow.Text = "Show";
             btnShow.UseVisualStyleBackColor = true;
             btnShow.Click += btnExit_Click;
             // 
@@ -436,29 +458,29 @@ namespace WinFormsApp1
             txtDepartment.Size = new Size(191, 23);
             txtDepartment.TabIndex = 98;
             // 
-            // groupBox1
+            // gbProfessorSectionRegistration
             // 
-            groupBox1.Controls.Add(dgvRegisteredProf);
-            groupBox1.Controls.Add(btnAdd);
-            groupBox1.Controls.Add(btnSendEmail);
-            groupBox1.Controls.Add(btnClear);
-            groupBox1.Controls.Add(btnShow);
-            groupBox1.Controls.Add(txtDepartment);
-            groupBox1.Controls.Add(lblDepartment);
-            groupBox1.Controls.Add(lblPassword);
-            groupBox1.Controls.Add(lblUsername);
-            groupBox1.Controls.Add(txtFullName);
-            groupBox1.Controls.Add(txtUsername);
-            groupBox1.Controls.Add(txtEmail);
-            groupBox1.Controls.Add(lblEmailAddress);
-            groupBox1.Controls.Add(txtPassword);
-            groupBox1.Controls.Add(lblFullName);
-            groupBox1.Location = new Point(319, 173);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(604, 444);
-            groupBox1.TabIndex = 99;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Proffesor Section Registration";
+            gbProfessorSectionRegistration.Controls.Add(dgvRegisteredProf);
+            gbProfessorSectionRegistration.Controls.Add(btnAdd);
+            gbProfessorSectionRegistration.Controls.Add(btnSendEmail);
+            gbProfessorSectionRegistration.Controls.Add(btnClear);
+            gbProfessorSectionRegistration.Controls.Add(btnShow);
+            gbProfessorSectionRegistration.Controls.Add(txtDepartment);
+            gbProfessorSectionRegistration.Controls.Add(lblDepartment);
+            gbProfessorSectionRegistration.Controls.Add(lblPassword);
+            gbProfessorSectionRegistration.Controls.Add(lblUsername);
+            gbProfessorSectionRegistration.Controls.Add(txtFullName);
+            gbProfessorSectionRegistration.Controls.Add(txtUsername);
+            gbProfessorSectionRegistration.Controls.Add(txtEmail);
+            gbProfessorSectionRegistration.Controls.Add(lblEmailAddress);
+            gbProfessorSectionRegistration.Controls.Add(txtPassword);
+            gbProfessorSectionRegistration.Controls.Add(lblFullName);
+            gbProfessorSectionRegistration.Location = new Point(319, 173);
+            gbProfessorSectionRegistration.Name = "gbProfessorSectionRegistration";
+            gbProfessorSectionRegistration.Size = new Size(604, 444);
+            gbProfessorSectionRegistration.TabIndex = 99;
+            gbProfessorSectionRegistration.TabStop = false;
+            gbProfessorSectionRegistration.Text = "Professor Section Registration";
             // 
             // dgvRegisteredProf
             // 
@@ -480,7 +502,7 @@ namespace WinFormsApp1
             Controls.Add(button1);
             Controls.Add(panel1);
             Controls.Add(label1);
-            Controls.Add(groupBox1);
+            Controls.Add(gbProfessorSectionRegistration);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "ProfessorsForm";
@@ -495,8 +517,8 @@ namespace WinFormsApp1
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            gbProfessorSectionRegistration.ResumeLayout(false);
+            gbProfessorSectionRegistration.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRegisteredProf).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -548,7 +570,9 @@ namespace WinFormsApp1
         private Button btnClear;
         private Button btnShow;
         private TextBox txtDepartment;
-        private GroupBox groupBox1;
+        private GroupBox gbProfessorSectionRegistration;
         private DataGridView dgvRegisteredProf;
+        private Label lblStudentRegistration;
+        private Button btnStudentRegistration;
     }
 }

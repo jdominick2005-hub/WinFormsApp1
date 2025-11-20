@@ -38,6 +38,8 @@
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
             panel3 = new Panel();
+            lblStudentRegistration = new Label();
+            btnStudentRegistration = new Button();
             lblProfessors = new Label();
             pictureBox6 = new PictureBox();
             pictureBox5 = new PictureBox();
@@ -131,8 +133,6 @@
             btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
             btnHome.UseVisualStyleBackColor = false;
-          
-
             // 
             // pictureBox1
             // 
@@ -163,6 +163,8 @@
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
+            panel3.Controls.Add(lblStudentRegistration);
+            panel3.Controls.Add(btnStudentRegistration);
             panel3.Controls.Add(lblProfessors);
             panel3.Controls.Add(pictureBox6);
             panel3.Controls.Add(pictureBox5);
@@ -179,6 +181,26 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(235, 460);
             panel3.TabIndex = 1;
+            // 
+            // lblStudentRegistration
+            // 
+            lblStudentRegistration.AutoSize = true;
+            lblStudentRegistration.BackColor = Color.White;
+            lblStudentRegistration.Location = new Point(42, 329);
+            lblStudentRegistration.Name = "lblStudentRegistration";
+            lblStudentRegistration.Size = new Size(140, 15);
+            lblStudentRegistration.TabIndex = 74;
+            lblStudentRegistration.Text = "STUDENT REGISTRATION";
+            // 
+            // btnStudentRegistration
+            // 
+            btnStudentRegistration.Location = new Point(18, 317);
+            btnStudentRegistration.Name = "btnStudentRegistration";
+            btnStudentRegistration.Size = new Size(188, 38);
+            btnStudentRegistration.TabIndex = 73;
+            btnStudentRegistration.TextImageRelation = TextImageRelation.ImageAboveText;
+            btnStudentRegistration.UseVisualStyleBackColor = true;
+            btnStudentRegistration.Click += btnStudentRegistration_Click;
             // 
             // lblProfessors
             // 
@@ -260,7 +282,6 @@
             label3.Size = new Size(47, 17);
             label3.TabIndex = 65;
             label3.Text = "HOME";
-          
             // 
             // pictureBox3
             // 
@@ -356,5 +377,7 @@
         private PictureBox pictureBox4;
         private Label lblProfessors;
         public Label lblUserName;
+        private Button btnStudentRegistration;
+        private Label lblStudentRegistration;
     }
 }
