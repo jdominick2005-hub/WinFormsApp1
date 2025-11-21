@@ -1,4 +1,5 @@
-﻿namespace WinFormsApp1
+﻿
+namespace WinFormsApp1
 {
     partial class StudentRegistration
     {
@@ -29,6 +30,8 @@
         private void InitializeComponent()
         {
             gbStudentRegistration = new GroupBox();
+            lblSection = new Label();
+            txtSection = new TextBox();
             txtClassified = new TextBox();
             txtUnits = new TextBox();
             txtCourse = new TextBox();
@@ -47,6 +50,7 @@
             btnUpdate = new Button();
             btnShow = new Button();
             dgvStudentRegistration = new DataGridView();
+            btnEdit = new Button();
             gbStudentRegistration.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStudentRegistration).BeginInit();
@@ -55,6 +59,8 @@
             // gbStudentRegistration
             // 
             gbStudentRegistration.AutoSize = true;
+            gbStudentRegistration.Controls.Add(lblSection);
+            gbStudentRegistration.Controls.Add(txtSection);
             gbStudentRegistration.Controls.Add(txtClassified);
             gbStudentRegistration.Controls.Add(txtUnits);
             gbStudentRegistration.Controls.Add(txtCourse);
@@ -69,28 +75,44 @@
             gbStudentRegistration.Controls.Add(lblStudentId);
             gbStudentRegistration.Location = new Point(105, 61);
             gbStudentRegistration.Name = "gbStudentRegistration";
-            gbStudentRegistration.Size = new Size(529, 251);
+            gbStudentRegistration.Size = new Size(529, 264);
             gbStudentRegistration.TabIndex = 0;
             gbStudentRegistration.TabStop = false;
             gbStudentRegistration.Text = "Student Registration";
             // 
+            // lblSection
+            // 
+            lblSection.AutoSize = true;
+            lblSection.Location = new Point(136, 169);
+            lblSection.Name = "lblSection";
+            lblSection.Size = new Size(49, 15);
+            lblSection.TabIndex = 13;
+            lblSection.Text = "Section:";
+            // 
+            // txtSection
+            // 
+            txtSection.Location = new Point(201, 161);
+            txtSection.Name = "txtSection";
+            txtSection.Size = new Size(195, 23);
+            txtSection.TabIndex = 12;
+            // 
             // txtClassified
             // 
-            txtClassified.Location = new Point(201, 192);
+            txtClassified.Location = new Point(200, 219);
             txtClassified.Name = "txtClassified";
             txtClassified.Size = new Size(196, 23);
             txtClassified.TabIndex = 11;
             // 
             // txtUnits
             // 
-            txtUnits.Location = new Point(201, 163);
+            txtUnits.Location = new Point(201, 190);
             txtUnits.Name = "txtUnits";
             txtUnits.Size = new Size(196, 23);
             txtUnits.TabIndex = 10;
             // 
             // txtCourse
             // 
-            txtCourse.Location = new Point(201, 134);
+            txtCourse.Location = new Point(201, 132);
             txtCourse.Name = "txtCourse";
             txtCourse.Size = new Size(196, 23);
             txtCourse.TabIndex = 9;
@@ -119,7 +141,7 @@
             // lblClassified
             // 
             lblClassified.AutoSize = true;
-            lblClassified.Location = new Point(135, 200);
+            lblClassified.Location = new Point(134, 227);
             lblClassified.Name = "lblClassified";
             lblClassified.Size = new Size(60, 15);
             lblClassified.TabIndex = 5;
@@ -128,7 +150,7 @@
             // lblUnits
             // 
             lblUnits.AutoSize = true;
-            lblUnits.Location = new Point(141, 171);
+            lblUnits.Location = new Point(136, 198);
             lblUnits.Name = "lblUnits";
             lblUnits.Size = new Size(37, 15);
             lblUnits.TabIndex = 4;
@@ -137,7 +159,7 @@
             // lblCourse
             // 
             lblCourse.AutoSize = true;
-            lblCourse.Location = new Point(141, 142);
+            lblCourse.Location = new Point(134, 140);
             lblCourse.Name = "lblCourse";
             lblCourse.Size = new Size(47, 15);
             lblCourse.TabIndex = 3;
@@ -155,7 +177,7 @@
             // lblName
             // 
             lblName.AutoSize = true;
-            lblName.Location = new Point(141, 84);
+            lblName.Location = new Point(136, 84);
             lblName.Name = "lblName";
             lblName.Size = new Size(42, 15);
             lblName.TabIndex = 1;
@@ -182,6 +204,7 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(btnEdit);
             groupBox2.Controls.Add(btnDelete);
             groupBox2.Controls.Add(btnUpdate);
             groupBox2.Controls.Add(btnShow);
@@ -194,7 +217,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(65, 131);
+            btnDelete.Location = new Point(65, 160);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(75, 23);
             btnDelete.TabIndex = 5;
@@ -204,7 +227,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(65, 102);
+            btnUpdate.Location = new Point(65, 131);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(75, 23);
             btnUpdate.TabIndex = 4;
@@ -231,6 +254,16 @@
             dgvStudentRegistration.Size = new Size(642, 150);
             dgvStudentRegistration.TabIndex = 3;
             // 
+            // btnEdit
+            // 
+            btnEdit.Location = new Point(65, 102);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(75, 23);
+            btnEdit.TabIndex = 6;
+            btnEdit.Text = "Edit";
+            btnEdit.UseVisualStyleBackColor = true;
+            btnEdit.Click += btnEdit_Click;
+            // 
             // StudentRegistration
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -248,6 +281,11 @@
             ((System.ComponentModel.ISupportInitialize)dgvStudentRegistration).EndInit();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -271,5 +309,8 @@
         private Button btnUpdate;
         private Button btnShow;
         private DataGridView dgvStudentRegistration;
+        private Label lblSection;
+        private TextBox txtSection;
+        private Button btnEdit;
     }
 }

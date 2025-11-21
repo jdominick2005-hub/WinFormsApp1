@@ -67,6 +67,8 @@ namespace WinFormsApp1
             btnShow = new Button();
             txtDepartment = new TextBox();
             gbProfessorSectionRegistration = new GroupBox();
+            btnUpdate = new Button();
+            btnEdit = new Button();
             dgvRegisteredProf = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -327,6 +329,7 @@ namespace WinFormsApp1
             btnStudentRegistration.Size = new Size(196, 46);
             btnStudentRegistration.TabIndex = 73;
             btnStudentRegistration.UseVisualStyleBackColor = true;
+            btnStudentRegistration.Click += btnStudentRegistration_Click;
             // 
             // label1
             // 
@@ -337,7 +340,6 @@ namespace WinFormsApp1
             label1.Size = new Size(78, 25);
             label1.TabIndex = 80;
             label1.Text = "ADMIN";
-            label1.Click += label1_Click;
             // 
             // lblFullName
             // 
@@ -414,7 +416,7 @@ namespace WinFormsApp1
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(485, 114);
+            btnAdd.Location = new Point(485, 89);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(75, 23);
             btnAdd.TabIndex = 8;
@@ -424,7 +426,7 @@ namespace WinFormsApp1
             // 
             // btnSendEmail
             // 
-            btnSendEmail.Location = new Point(485, 60);
+            btnSendEmail.Location = new Point(482, 43);
             btnSendEmail.Name = "btnSendEmail";
             btnSendEmail.Size = new Size(75, 23);
             btnSendEmail.TabIndex = 7;
@@ -434,7 +436,7 @@ namespace WinFormsApp1
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(485, 141);
+            btnClear.Location = new Point(485, 162);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(75, 23);
             btnClear.TabIndex = 9;
@@ -444,7 +446,7 @@ namespace WinFormsApp1
             // 
             // btnShow
             // 
-            btnShow.Location = new Point(485, 170);
+            btnShow.Location = new Point(485, 191);
             btnShow.Name = "btnShow";
             btnShow.Size = new Size(75, 23);
             btnShow.TabIndex = 10;
@@ -461,6 +463,8 @@ namespace WinFormsApp1
             // 
             // gbProfessorSectionRegistration
             // 
+            gbProfessorSectionRegistration.Controls.Add(btnUpdate);
+            gbProfessorSectionRegistration.Controls.Add(btnEdit);
             gbProfessorSectionRegistration.Controls.Add(dgvRegisteredProf);
             gbProfessorSectionRegistration.Controls.Add(btnAdd);
             gbProfessorSectionRegistration.Controls.Add(btnSendEmail);
@@ -482,6 +486,26 @@ namespace WinFormsApp1
             gbProfessorSectionRegistration.TabIndex = 99;
             gbProfessorSectionRegistration.TabStop = false;
             gbProfessorSectionRegistration.Text = "Professor Section Registration";
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.Location = new Point(485, 141);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(75, 23);
+            btnUpdate.TabIndex = 90;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
+            // 
+            // btnEdit
+            // 
+            btnEdit.Location = new Point(485, 114);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(75, 23);
+            btnEdit.TabIndex = 89;
+            btnEdit.Text = "Edit";
+            btnEdit.UseVisualStyleBackColor = true;
+            btnEdit.Click += btnEdit_Click;
             // 
             // dgvRegisteredProf
             // 
@@ -575,5 +599,7 @@ namespace WinFormsApp1
         private DataGridView dgvRegisteredProf;
         private Label lblStudentRegistration;
         private Button btnStudentRegistration;
+        private Button btnUpdate;
+        private Button btnEdit;
     }
 }

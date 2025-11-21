@@ -1,13 +1,14 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
     public partial class ManageForm : Form
     {
         string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB"].ConnectionString;
-
 
         public ManageForm()
         {
@@ -20,9 +21,9 @@ namespace WinFormsApp1
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"SELECT t.TeacherID
-                         FROM Teachers t
-                         INNER JOIN Logins l ON t.UserID = l.UserID
-                         WHERE l.Name = @Name";
+                                 FROM Teachers t
+                                 INNER JOIN Logins l ON t.UserID = l.UserID
+                                 WHERE l.Name = @Name";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Name", professorName);
 
@@ -32,8 +33,8 @@ namespace WinFormsApp1
 
                 return result != null ? Convert.ToInt32(result) : (int?)null;
             }
-
         }
+
         private int GetNextSubjectId()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -47,12 +48,10 @@ namespace WinFormsApp1
             }
         }
 
-
         // Add subject
         private void btnAdd_Click(object sender, EventArgs e)
         {
-
-            int? teacherId = GetTeacherIdByName(txtProffesors.Text);
+            int? teacherId = GetTeacherIdByName(txtProfessor.Text);
             if (teacherId == null)
             {
                 MessageBox.Show("Professor not found. Please check the name.");
@@ -61,54 +60,90 @@ namespace WinFormsApp1
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "INSERT INTO Subjects (SubjectName, Section, Schedule, TeacherID) " +
-                               "VALUES (@SubjectName, @Section, @Schedule, @TeacherID)";
+                string query = @"INSERT INTO Subjects (SubjectName, Section, Schedule, YearLevel, TeacherID) 
+                                 VALUES (@SubjectName, @Section, @Schedule, @YearLevel, @TeacherID)";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@SubjectName", txtSubjectName.Text);
                 cmd.Parameters.AddWithValue("@Section", txtSection.Text);
                 cmd.Parameters.AddWithValue("@Schedule", txtSchedule.Text);
+                cmd.Parameters.AddWithValue("@YearLevel", txtYearLevel.Text);
                 cmd.Parameters.AddWithValue("@TeacherID", teacherId);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
-                MessageBox.Show("Subject added successfully.");
-                LoadSubjects(); // optional: refresh your grid
+                MessageBox.Show("Added successfully.");
+                LoadSubjects();
             }
-
-
         }
 
         // Update subject
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (dgvProffesors.SelectedRows.Count > 0)
+            if (dgvProffesors.SelectedRows.Count == 0)
             {
+                MessageBox.Show("Please select you want to update.");
+                return;
+            }
 
-                int? teacherId = GetTeacherIdByName(txtProffesors.Text);
-                if (teacherId == null) ;
+            int subjectId = Convert.ToInt32(dgvProffesors.SelectedRows[0].Cells["SubjectID"].Value);
+
+            // Get TeacherID by professor name
+            int? teacherId = GetTeacherIdByName(txtProfessor.Text);
+            if (teacherId == null)
+            {
+                MessageBox.Show("Professor not found.");
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                List<string> updates = new List<string>();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+
+                // Add only fields that are edited
+                if (!string.IsNullOrWhiteSpace(txtSubjectName.Text))
                 {
-                    MessageBox.Show("Professor not found.");
-                    return;
+                    updates.Add("SubjectName=@SubjectName");
+                    cmd.Parameters.AddWithValue("@SubjectName", txtSubjectName.Text);
+                }
+                if (!string.IsNullOrWhiteSpace(txtSection.Text))
+                {
+                    updates.Add("Section=@Section");
+                    cmd.Parameters.AddWithValue("@Section", txtSection.Text);
+                }
+                if (!string.IsNullOrWhiteSpace(txtSchedule.Text))
+                {
+                    updates.Add("Schedule=@Schedule");
+                    cmd.Parameters.AddWithValue("@Schedule", txtSchedule.Text);
+                }
+                if (!string.IsNullOrWhiteSpace(txtYearLevel.Text))
+                {
+                    updates.Add("YearLevel=@YearLevel");
+                    cmd.Parameters.AddWithValue("@YearLevel", txtYearLevel.Text);
                 }
 
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                // Always update TeacherID if professor changed
+                updates.Add("TeacherID=@TeacherID");
+                cmd.Parameters.AddWithValue("@TeacherID", teacherId);
+
+                if (updates.Count > 0)
                 {
-                    string query = "UPDATE Subjects SET SubjectName=@SubjectName, Section=@Section, Schedule=@Schedule, TeacherID=@TeacherID WHERE SubjectID=@SubjectID";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@SubjectName", txtSubjectName.Text);
-                    cmd.Parameters.AddWithValue("@Section", txtSection.Text);
-                    cmd.Parameters.AddWithValue("@Schedule", txtSchedule.Text);
-                    cmd.Parameters.AddWithValue("@TeacherID", teacherId);
-
-
-                    conn.Open();
+                    string updateQuery = $"UPDATE Subjects SET {string.Join(", ", updates)} WHERE SubjectID=@SubjectID";
+                    cmd.Parameters.AddWithValue("@SubjectID", subjectId);
+                    cmd.CommandText = updateQuery;
                     cmd.ExecuteNonQuery();
-                    conn.Close();
 
-                    MessageBox.Show("Subject updated successfully.");
+                    MessageBox.Show("Updated successfully!");
                     LoadSubjects();
+                }
+                else
+                {
+                    MessageBox.Show("No changes detected to update.");
                 }
             }
         }
@@ -120,7 +155,6 @@ namespace WinFormsApp1
             {
                 int subjectId = Convert.ToInt32(dgvProffesors.SelectedRows[0].Cells["SubjectID"].Value);
 
-                // Confirmation dialog
                 DialogResult result = MessageBox.Show(
                     "Are you sure you want to delete this subject?",
                     "Confirm Delete",
@@ -128,7 +162,6 @@ namespace WinFormsApp1
                     MessageBoxIcon.Warning
                 );
 
-                // Stop if user clicks NO
                 if (result != DialogResult.Yes)
                     return;
 
@@ -142,13 +175,13 @@ namespace WinFormsApp1
                     cmd.ExecuteNonQuery();
                     conn.Close();
 
-                    MessageBox.Show("Subject deleted successfully.");
+                    MessageBox.Show("Deleted successfully.");
                     LoadSubjects();
                 }
             }
             else
             {
-                MessageBox.Show("Please select a subject to delete.", "No Selection",
+                MessageBox.Show("Please select first before proceeding to delete.", "No Selection",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -158,27 +191,21 @@ namespace WinFormsApp1
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"SELECT s.SubjectID, s.SubjectName, s.Section, s.Schedule,
-                         l.Name AS ProfessorName
-                         FROM Subjects s
-                         LEFT JOIN Teachers t ON s.TeacherID = t.TeacherID
-                         LEFT JOIN Logins l ON t.UserID = l.UserID";
+                string query = @"SELECT s.SubjectID, s.SubjectName, s.Section, s.Schedule, s.YearLevel,
+                                 l.Name AS ProfessorName
+                                 FROM Subjects s
+                                 LEFT JOIN Teachers t ON s.TeacherID = t.TeacherID
+                                 LEFT JOIN Logins l ON t.UserID = l.UserID";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 dgvProffesors.DataSource = dt;
 
-                // Hide SubjectID column
                 if (dgvProffesors.Columns.Contains("SubjectID"))
-                {
                     dgvProffesors.Columns["SubjectID"].Visible = false;
-                }
 
-                // Make columns fill the DataGridView
                 dgvProffesors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-                // Optional UI Improvements:
                 dgvProffesors.ReadOnly = true;
                 dgvProffesors.AllowUserToAddRows = false;
                 dgvProffesors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -195,7 +222,7 @@ namespace WinFormsApp1
                 txtSubjectName.Text = row.Cells["SubjectName"].Value.ToString();
                 txtSection.Text = row.Cells["Section"].Value.ToString();
                 txtSchedule.Text = row.Cells["Schedule"].Value.ToString();
-
+                txtYearLevel.Text = row.Cells["YearLevel"].Value.ToString(); // NEW
             }
         }
 
@@ -239,5 +266,4 @@ namespace WinFormsApp1
             this.Hide();
         }
     }
-
 }

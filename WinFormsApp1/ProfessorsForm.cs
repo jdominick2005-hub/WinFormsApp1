@@ -10,6 +10,7 @@ namespace WinFormsApp1
     public partial class ProfessorsForm : Form
     {
         string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB"].ConnectionString;
+        private object txtTeacherId;
 
         public ProfessorsForm()
         {
@@ -24,6 +25,7 @@ namespace WinFormsApp1
 
         private void LoadProfessors()
         {
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -31,32 +33,26 @@ namespace WinFormsApp1
                     conn.Open();
 
                     string query = @"SELECT T.TeacherID, T.FullName, T.Department, T.Email, L.Username 
-                             FROM Teachers T
-                             INNER JOIN Logins L ON T.UserID = L.UserID";
+                                     FROM Teachers T
+                                     INNER JOIN Logins L ON T.UserID = L.UserID";
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
                     dgvRegisteredProf.DataSource = dt;
 
-                    // Hide TeacherID
                     if (dgvRegisteredProf.Columns.Contains("TeacherID"))
                         dgvRegisteredProf.Columns["TeacherID"].Visible = false;
 
-                    // Auto-fill grid
                     dgvRegisteredProf.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-                    // Optional: make read-only
                     dgvRegisteredProf.ReadOnly = true;
                     dgvRegisteredProf.AllowUserToAddRows = false;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading data:\n" + ex.Message,
-                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading data:\n" + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -77,8 +73,7 @@ namespace WinFormsApp1
                 string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(department))
             {
-                MessageBox.Show("Please fill in all fields.", "Missing Information",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please fill in all fields.", "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -106,16 +101,14 @@ namespace WinFormsApp1
                     cmdTeacher.Parameters.AddWithValue("@Email", email);
                     cmdTeacher.ExecuteNonQuery();
 
-                    MessageBox.Show("Professor account successfully added!",
-                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Professor account successfully added!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    LoadProfessors(); // Refresh DataGrid after adding
+                    LoadProfessors(); // Refresh DataGrid
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error adding account:\n" + ex.Message,
-                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error adding account:\n" + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -274,11 +267,140 @@ namespace WinFormsApp1
             users.Show();
             this.Hide();
         }
-
-        private void label1_Click(object sender, EventArgs e)
+        private void btnStudentRegistration_Click(object sender, EventArgs e)
         {
-
+            StudentRegistration StudentRegister = new StudentRegistration();
+            StudentRegister.Show();
+            this.Hide();
         }
-    }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (dgvRegisteredProf.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = dgvRegisteredProf.SelectedRows[0];
+
+                txtFullName.Text = row.Cells["FullName"].Value.ToString();
+                txtDepartment.Text = row.Cells["Department"].Value.ToString();
+                txtEmail.Text = row.Cells["Email"].Value.ToString();
+                txtUsername.Text = row.Cells["Username"].Value.ToString();
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Password FROM Logins WHERE Username=@Username";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Username", txtUsername.Text);
+                    object result = cmd.ExecuteScalar();
+                    txtPassword.Text = result?.ToString() ?? "";
+                }
+
+                txtFullName.Enabled = true;
+                txtDepartment.Enabled = true;
+                txtEmail.Enabled = true;
+                txtUsername.Enabled = true;
+                txtPassword.Enabled = true;
+
+                MessageBox.Show("You can now edit the fields. Click UPDATE to save changes.");
+            }
+            else
+            {
+                MessageBox.Show("Please select a professor FullName first.");
+            }
+        }
+
+        private void dgvRegisteredProf_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgvRegisteredProf.Rows[e.RowIndex];
+
+               
+                txtFullName.Text = row.Cells["FullName"].Value.ToString();
+                txtDepartment.Text = row.Cells["Department"].Value.ToString();
+                txtEmail.Text = row.Cells["Email"].Value.ToString();
+                txtUsername.Text = row.Cells["Username"].Value.ToString();
+
+                // Load password from database
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Password FROM Logins WHERE Username=@Username";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Username", txtUsername.Text);
+                    txtPassword.Text = cmd.ExecuteScalar()?.ToString() ?? "";
+                }
+            }
+        }
+
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtFullName.Text))
+            {
+                MessageBox.Show("Please select a professor FullName to update.");
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Get the TeacherID from FullName
+                string getTeacherIdQuery = "SELECT TeacherID FROM Teachers WHERE FullName=@FullName";
+                SqlCommand cmdGet = new SqlCommand(getTeacherIdQuery, conn);
+                cmdGet.Parameters.AddWithValue("@FullName", txtFullName.Text);
+                object result = cmdGet.ExecuteScalar();
+
+                if (result == null)
+                {
+                    MessageBox.Show("Professor not found in database.");
+                    return;
+                }
+
+                int teacherId = Convert.ToInt32(result);
+
+                // Update only fields that are not empty
+                if (!string.IsNullOrWhiteSpace(txtDepartment.Text))
+                {
+                    string updateTeacher = "UPDATE Teachers SET Department=@Department WHERE TeacherID=@TeacherID";
+                    SqlCommand cmd = new SqlCommand(updateTeacher, conn);
+                    cmd.Parameters.AddWithValue("@Department", txtDepartment.Text);
+                    cmd.Parameters.AddWithValue("@TeacherID", teacherId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtEmail.Text))
+                {
+                    string updateTeacher = "UPDATE Teachers SET Email=@Email WHERE TeacherID=@TeacherID";
+                    SqlCommand cmd = new SqlCommand(updateTeacher, conn);
+                    cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                    cmd.Parameters.AddWithValue("@TeacherID", teacherId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtUsername.Text))
+                {
+                    string updateLogin = "UPDATE Logins SET Username=@Username WHERE UserID=(SELECT UserID FROM Teachers WHERE TeacherID=@TeacherID)";
+                    SqlCommand cmdLogin = new SqlCommand(updateLogin, conn);
+                    cmdLogin.Parameters.AddWithValue("@Username", txtUsername.Text);
+                    cmdLogin.Parameters.AddWithValue("@TeacherID", teacherId);
+                    cmdLogin.ExecuteNonQuery();
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
+                {
+                    string updateLogin = "UPDATE Logins SET Password=@Password WHERE UserID=(SELECT UserID FROM Teachers WHERE TeacherID=@TeacherID)";
+                    SqlCommand cmdLogin = new SqlCommand(updateLogin, conn);
+                    cmdLogin.Parameters.AddWithValue("@Password", txtPassword.Text);
+                    cmdLogin.Parameters.AddWithValue("@TeacherID", teacherId);
+                    cmdLogin.ExecuteNonQuery();
+                }
+
+                MessageBox.Show("Professor updated successfully!");
+                LoadProfessors(); // Refresh DataGridView
+            }
+        }
+      }
 }
 
