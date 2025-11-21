@@ -16,123 +16,345 @@ namespace WinFormsApp1
             InitializeComponent();
             teacherID = teacherId;
 
-            LoadSubjects(); // load subjects on UC load
+            // wire events (if not wired in designer)
+            cmbSection.SelectedIndexChanged += CmbSection_SelectedIndexChanged;
+            cmbSubjects.SelectedIndexChanged += CmbSubjects_SelectedIndexChanged;
+            btnSave.Click += BtnSave_Click;
+            btnLoad.Click += BtnLoad_Click;
+            dtpDate.ValueChanged += DtpDate_ValueChanged;
+
+            // initial load
+            LoadSections();
+            LoadYearLevels();
+            LoadSubjects(); // load all subjects for teacher (will filter when section selected)
+            SetupDataGridAfterBind();
         }
 
-        // =========================
-        // Load subjects for teacher
-        // =========================
-        private void LoadSubjects()
+        // -----------------------
+        // Load distinct sections for this teacher (from Subjects)
+        // -----------------------
+        private void LoadSections()
         {
+            cmbSection.Items.Clear();
             using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("SELECT DISTINCT Section FROM Subjects WHERE TeacherID = @TeacherID ORDER BY Section", conn))
             {
-                string query = @"SELECT SubjectID, SubjectName + ' (' + Section + ')' AS SubjectDisplay
-                                 FROM Subjects
-                                 WHERE TeacherID = @TeacherID";
-
-                SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@TeacherID", teacherID);
-
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                cmbSubjects.DisplayMember = "SubjectDisplay";
-                cmbSubjects.ValueMember = "SubjectID";
-                cmbSubjects.DataSource = dt;
+                conn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                    while (dr.Read())
+                        cmbSection.Items.Add(dr["Section"].ToString());
             }
+
+            if (cmbSection.Items.Count > 0)
+                cmbSection.SelectedIndex = 0;
         }
 
-        // =========================
-        // Load students for selected subject
-        // =========================
-        private void LoadStudents(int subjectID)
+        // -----------------------
+        // Load distinct year levels (optional source: Subjects)
+        // -----------------------
+        private void LoadYearLevels()
         {
+            cmbYearLevel.Items.Clear();
             using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("SELECT DISTINCT YearLevel FROM Subjects WHERE TeacherID = @TeacherID ORDER BY YearLevel", conn))
             {
-                string query = @"SELECT s.StudentID, s.Name, ISNULL(a.Status, 'Not Recorded') AS Status
-                                 FROM Students s
-                                 INNER JOIN Enrollments e ON s.StudentID = e.StudentID
-                                 LEFT JOIN Attendance a 
-                                     ON s.StudentID = a.StudentID 
-                                     AND a.SubjectID = @SubjectID
-                                 WHERE e.SubjectID = @SubjectID";
+                cmd.Parameters.AddWithValue("@TeacherID", teacherID);
+                conn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                    while (dr.Read())
+                        cmbYearLevel.Items.Add(dr["YearLevel"].ToString());
+            }
 
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@SubjectID", subjectID);
+            if (cmbYearLevel.Items.Count > 0)
+                cmbYearLevel.SelectedIndex = 0;
+        }
+
+        // -----------------------
+        // Load subjects for teacher, optional section filter
+        // -----------------------
+        private void LoadSubjects(string section = null)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+                SELECT SubjectID, SubjectName + ' (' + ISNULL(Section,'') + ')' AS SubjectDisplay
+                FROM Subjects
+                WHERE TeacherID = @TeacherID
+                " + (string.IsNullOrEmpty(section) ? "" : "AND Section = @Section") + @"
+                ORDER BY SubjectName", conn))
+            {
+                cmd.Parameters.AddWithValue("@TeacherID", teacherID);
+                if (!string.IsNullOrEmpty(section))
+                    cmd.Parameters.AddWithValue("@Section", section);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
                 da.Fill(dt);
-
-                dvgStudents.DataSource = dt;
             }
+
+            cmbSubjects.DisplayMember = "SubjectDisplay";
+            cmbSubjects.ValueMember = "SubjectID";
+            cmbSubjects.DataSource = dt;
+            if (cmbSubjects.Items.Count > 0) cmbSubjects.SelectedIndex = 0;
         }
 
-        private void cmbSubjects_SelectedIndexChanged(object sender, EventArgs e)
+        // -----------------------
+        // Load students and existing attendance for selected subject/section/date
+        // -----------------------
+        private void LoadStudentsForSelection()
         {
-            if (cmbSubjects.SelectedValue != null)
-            {
-                int subjectID = Convert.ToInt32(cmbSubjects.SelectedValue);
-                LoadStudents(subjectID);
-            }
-        }
-
-        // =========================
-        // Record attendance
-        // =========================
-        private void btnMarkAttendance_Click(object sender, EventArgs e)
-        {
-            if (cmbSubjects.SelectedValue == null)
-            {
-                MessageBox.Show("Please select a subject.");
-                return;
-            }
+            if (cmbSubjects.SelectedValue == null) return;
 
             int subjectID = Convert.ToInt32(cmbSubjects.SelectedValue);
+            string section = cmbSection.Text ?? "";
+            string yearLevel = cmbYearLevel.Text ?? "";
+            DateTime date = dtpDate.Value.Date;
 
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+                SELECT s.StudentID, s.Name AS FullName,
+                       ISNULL(a.Status, 'Not Recorded') AS Status,
+                       ISNULL(a.AttendanceID, 0) AS AttendanceID,
+                       ISNULL(a.Remarks, '') AS Remarks
+                FROM Students s
+                INNER JOIN Enrollments e ON s.StudentID = e.StudentID
+                LEFT JOIN Attendance a ON a.StudentID = s.StudentID AND a.SubjectID = @SubjectID AND CAST(a.DateTaken AS DATE) = @DateTaken
+                WHERE e.SubjectID = @SubjectID
+                  AND s.Section = @Section
+                  " + (string.IsNullOrEmpty(yearLevel) ? "" : " AND s.YearLevel = @YearLevel ") + @"
+                ORDER BY s.Name", conn))
+            {
+                cmd.Parameters.AddWithValue("@SubjectID", subjectID);
+                cmd.Parameters.AddWithValue("@DateTaken", date);
+                cmd.Parameters.AddWithValue("@Section", section);
+                if (!string.IsNullOrEmpty(yearLevel))
+                    cmd.Parameters.AddWithValue("@YearLevel", yearLevel);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+
+            dvgStudents.DataSource = dt;
+
+            // hide internal columns
+            if (dvgStudents.Columns.Contains("AttendanceID"))
+                dvgStudents.Columns["AttendanceID"].Visible = false;
+            if (dvgStudents.Columns.Contains("StudentID"))
+                dvgStudents.Columns["StudentID"].Visible = false;
+            if (dvgStudents.Columns.Contains("FullName"))
+                dvgStudents.Columns["FullName"].ReadOnly = true;
+        }
+
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(cmbSection.Text))
+            {
+                MessageBox.Show("Please select a section.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (cmbSubjects.SelectedValue == null)
+            {
+                MessageBox.Show("Please select a subject.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(cmbYearLevel.Text))
+            {
+                MessageBox.Show("Please select a year level.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (dvgStudents.Rows.Count == 0)
+            {
+                MessageBox.Show("There are no students to save attendance for.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Check if at least one status is selected
             foreach (DataGridViewRow row in dvgStudents.Rows)
             {
-                int studentID = Convert.ToInt32(row.Cells["StudentID"].Value);
-                string status = row.Cells["Status"].Value.ToString();
+                if (row.IsNewRow) continue;
 
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                string status = row.Cells["Status"].Value?.ToString() ?? "";
+
+                if (string.IsNullOrWhiteSpace(status) || status == "Not Recorded")
                 {
-                    string checkQuery = @"SELECT COUNT(*) FROM Attendance 
-                                          WHERE StudentID=@StudentID AND SubjectID=@SubjectID";
-
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                    checkCmd.Parameters.AddWithValue("@StudentID", studentID);
-                    checkCmd.Parameters.AddWithValue("@SubjectID", subjectID);
-
-                    conn.Open();
-                    int count = (int)checkCmd.ExecuteScalar();
-                    conn.Close();
-
-                    if (count == 0)
-                    {
-                        string insertQuery = @"INSERT INTO Attendance (StudentID, SubjectID, Status)
-                                               VALUES (@StudentID, @SubjectID, @Status)";
-
-                        SqlCommand insertCmd = new SqlCommand(insertQuery, conn);
-                        insertCmd.Parameters.AddWithValue("@StudentID", studentID);
-                        insertCmd.Parameters.AddWithValue("@SubjectID", subjectID);
-                        insertCmd.Parameters.AddWithValue("@Status", status);
-
-                        conn.Open();
-                        insertCmd.ExecuteNonQuery();
-                        conn.Close();
-                    }
+                    MessageBox.Show("Some students do not have a status selected.\nPlease update all rows before saving.",
+                        "Status Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
                 }
             }
 
-            MessageBox.Show("Attendance recorded successfully!");
-            LoadStudents(subjectID);
+            return true;
         }
 
-        private void dtpDate_ValueChanged(object sender, EventArgs e)
+        private bool AttendanceAlreadyExists(int subjectID, string section, DateTime date)
         {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+        SELECT COUNT(*) 
+        FROM Attendance
+        WHERE SubjectID = @SubjectID
+          AND Section = @Section
+          AND CAST(DateTaken AS DATE) = @DateTaken", conn))
+            {
+                cmd.Parameters.AddWithValue("@SubjectID", subjectID);
+                cmd.Parameters.AddWithValue("@Section", section);
+                cmd.Parameters.AddWithValue("@DateTaken", date);
 
+                conn.Open();
+                int count = (int)cmd.ExecuteScalar();
+                conn.Close();
+
+                return count > 0;
+            }
         }
+
+        private void SaveAttendance()
+        {
+            // Validate dropdowns, students, and statuses
+            if (!ValidateInputs())
+                return;
+
+            int subjectID = Convert.ToInt32(cmbSubjects.SelectedValue);
+            string section = cmbSection.Text;
+            DateTime date = dtpDate.Value.Date;
+
+            // Prevent duplicate saving for same date
+            if (AttendanceAlreadyExists(subjectID, section, date))
+            {
+                DialogResult result = MessageBox.Show(
+                    "Attendance for this section and date already exists.\n\n" +
+                    "Do you want to overwrite it?",
+                    "Duplicate Attendance",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                    return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                foreach (DataGridViewRow row in dvgStudents.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    int studentID = Convert.ToInt32(row.Cells["StudentID"].Value);
+                    string status = row.Cells["Status"].Value?.ToString() ?? "Not Recorded";
+                    string remarks = row.Cells["Remarks"]?.Value?.ToString() ?? "";
+                    int attendanceId = Convert.ToInt32(row.Cells["AttendanceID"].Value);
+
+                    if (attendanceId > 0)
+                    {
+                        // update
+                        using (SqlCommand update = new SqlCommand(@"
+                    UPDATE Attendance
+                    SET Status = @Status,
+                        Remarks = @Remarks,
+                        Section = @Section,
+                        DateTaken = @DateTaken
+                    WHERE AttendanceID = @AttendanceID", conn))
+                        {
+                            update.Parameters.AddWithValue("@Status", status);
+                            update.Parameters.AddWithValue("@Remarks", remarks);
+                            update.Parameters.AddWithValue("@Section", section);
+                            update.Parameters.AddWithValue("@DateTaken", date);
+                            update.Parameters.AddWithValue("@AttendanceID", attendanceId);
+                            update.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        // insert
+                        using (SqlCommand insert = new SqlCommand(@"
+                    INSERT INTO Attendance (StudentID, SubjectID, Section, DateTaken, Status, Remarks)
+                    VALUES (@StudentID, @SubjectID, @Section, @DateTaken, @Status, @Remarks)", conn))
+                        {
+                            insert.Parameters.AddWithValue("@StudentID", studentID);
+                            insert.Parameters.AddWithValue("@SubjectID", subjectID);
+                            insert.Parameters.AddWithValue("@Section", section);
+                            insert.Parameters.AddWithValue("@DateTaken", date);
+                            insert.Parameters.AddWithValue("@Status", status);
+                            insert.Parameters.AddWithValue("@Remarks", remarks);
+                            insert.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                conn.Close();
+            }
+
+            MessageBox.Show("Attendance saved successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            LoadStudentsForSelection();
+        }
+
+
+        // -----------------------
+        // Helper event handlers
+        // -----------------------
+        private void BtnSave_Click(object sender, EventArgs e) => SaveAttendance();
+        private void BtnLoad_Click(object sender, EventArgs e) => LoadStudentsForSelection();
+        private void DtpDate_ValueChanged(object sender, EventArgs e) => LoadStudentsForSelection();
+        private void CmbSubjects_SelectedIndexChanged(object sender, EventArgs e) => LoadStudentsForSelection();
+        private void CmbSection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // When section changes, reload subjects for that section and then students
+            LoadSubjects(cmbSection.Text);
+            LoadStudentsForSelection();
+        }
+
+        // -----------------------
+        // Ensure grid Status column is a combobox and Remarks column exists
+        // -----------------------
+        private void SetupDataGridAfterBind()
+        {
+            dvgStudents.AutoGenerateColumns = true;
+            dvgStudents.AllowUserToAddRows = false;
+            dvgStudents.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            dvgStudents.DataBindingComplete += (s, e) =>
+            {
+                // Replace Status column with ComboBox column if needed
+                if (dvgStudents.Columns.Contains("Status"))
+                {
+                    var col = dvgStudents.Columns["Status"];
+                    if (!(col is DataGridViewComboBoxColumn))
+                    {
+                        int idx = col.Index;
+                        DataGridViewComboBoxColumn cb = new DataGridViewComboBoxColumn
+                        {
+                            Name = "Status",
+                            HeaderText = "Status",
+                            DataPropertyName = "Status"
+                        };
+                        cb.Items.AddRange("Present", "Absent", "Late", "Not Recorded");
+
+                        dvgStudents.Columns.Remove(col);
+                        dvgStudents.Columns.Insert(idx, cb);
+                    }
+                }
+
+                if (!dvgStudents.Columns.Contains("Remarks"))
+                {
+                    DataGridViewTextBoxColumn remarks = new DataGridViewTextBoxColumn
+                    {
+                        Name = "Remarks",
+                        HeaderText = "Remarks",
+                        DataPropertyName = "Remarks"
+                    };
+                    dvgStudents.Columns.Add(remarks);
+                }
+            };
+        }
+
+        // legacy stub events (if wired from designer)
+        private void dtpDate_ValueChanged(object sender, EventArgs e) { /* handled above */ }
+        private void lblYearLevel_Click(object sender, EventArgs e) { /* nothing */ }
     }
 }
