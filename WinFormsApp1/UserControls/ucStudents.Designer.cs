@@ -53,6 +53,6 @@
 
         #endregion
 
-        private Label label1;
+        private Label lblStudents;
     }
 }
