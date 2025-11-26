@@ -57,21 +57,21 @@ namespace WinFormsApp1
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             label1 = new Label();
-            label7 = new Label();
-            label9 = new Label();
-            label10 = new Label();
+            lblSchedule = new Label();
+            lblSection = new Label();
             txtSubjectName = new TextBox();
             txtSchedule = new TextBox();
             txtSection = new TextBox();
-            label12 = new Label();
+            lblProfessor = new Label();
             btnAdd = new Button();
             btnDelete = new Button();
             btnUpdate = new Button();
-            dgvProffesors = new DataGridView();
+            dgvProfessors = new DataGridView();
             gbProfessorSectionAssignment = new GroupBox();
-            label11 = new Label();
+            cmbProfessor = new ComboBox();
+            lblSubjectName = new Label();
+            lblYear = new Label();
             txtYearLevel = new TextBox();
-            txtProfessor = new TextBox();
             btnView = new Button();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -81,7 +81,7 @@ namespace WinFormsApp1
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvProffesors).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProfessors).BeginInit();
             gbProfessorSectionAssignment.SuspendLayout();
             SuspendLayout();
             // 
@@ -344,62 +344,54 @@ namespace WinFormsApp1
             label1.TabIndex = 68;
             label1.Text = "ADMIN";
             // 
-            // label7
+            // lblSchedule
             // 
-            label7.AutoSize = true;
-            label7.Location = new Point(103, 69);
-            label7.Name = "label7";
-            label7.Size = new Size(81, 15);
-            label7.TabIndex = 71;
-            label7.Text = "SubjectName:";
+            lblSchedule.AutoSize = true;
+            lblSchedule.Location = new Point(103, 135);
+            lblSchedule.Name = "lblSchedule";
+            lblSchedule.Size = new Size(58, 15);
+            lblSchedule.TabIndex = 72;
+            lblSchedule.Text = "Schedule:";
             // 
-            // label9
+            // lblSection
             // 
-            label9.AutoSize = true;
-            label9.Location = new Point(122, 98);
-            label9.Name = "label9";
-            label9.Size = new Size(58, 15);
-            label9.TabIndex = 72;
-            label9.Text = "Schedule:";
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Location = new Point(122, 162);
-            label10.Name = "label10";
-            label10.Size = new Size(49, 15);
-            label10.TabIndex = 73;
-            label10.Text = "Section:\r\n";
+            lblSection.AutoSize = true;
+            lblSection.Location = new Point(103, 194);
+            lblSection.Name = "lblSection";
+            lblSection.Size = new Size(49, 15);
+            lblSection.TabIndex = 73;
+            lblSection.Text = "Section:\r\n";
             // 
             // txtSubjectName
             // 
-            txtSubjectName.Location = new Point(190, 61);
+            txtSubjectName.Location = new Point(190, 99);
             txtSubjectName.Name = "txtSubjectName";
             txtSubjectName.Size = new Size(204, 23);
             txtSubjectName.TabIndex = 74;
+            txtSubjectName.TextChanged += txtSubjectName_TextChanged;
             // 
             // txtSchedule
             // 
-            txtSchedule.Location = new Point(190, 90);
+            txtSchedule.Location = new Point(190, 128);
             txtSchedule.Name = "txtSchedule";
             txtSchedule.Size = new Size(204, 23);
             txtSchedule.TabIndex = 75;
             // 
             // txtSection
             // 
-            txtSection.Location = new Point(190, 154);
+            txtSection.Location = new Point(190, 186);
             txtSection.Name = "txtSection";
             txtSection.Size = new Size(204, 23);
             txtSection.TabIndex = 77;
             // 
-            // label12
+            // lblProfessor
             // 
-            label12.AutoSize = true;
-            label12.Location = new Point(122, 191);
-            label12.Name = "label12";
-            label12.Size = new Size(59, 15);
-            label12.TabIndex = 79;
-            label12.Text = "Professor:";
+            lblProfessor.AutoSize = true;
+            lblProfessor.Location = new Point(30, 42);
+            lblProfessor.Name = "lblProfessor";
+            lblProfessor.Size = new Size(160, 15);
+            lblProfessor.TabIndex = 79;
+            lblProfessor.Text = "Please select a Professor first:";
             // 
             // btnAdd
             // 
@@ -419,7 +411,7 @@ namespace WinFormsApp1
             btnDelete.TabIndex = 90;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
-            btnDelete.Click += btnDelete_Click_1;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnUpdate
             // 
@@ -431,37 +423,37 @@ namespace WinFormsApp1
             btnUpdate.UseVisualStyleBackColor = true;
             btnUpdate.Click += btnUpdate_Click;
             // 
-            // dgvProffesors
+            // dgvProfessors
             // 
-            dgvProffesors.BackgroundColor = Color.Gainsboro;
-            dgvProffesors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProffesors.Location = new Point(34, 229);
-            dgvProffesors.MultiSelect = false;
-            dgvProffesors.Name = "dgvProffesors";
-            dgvProffesors.ReadOnly = true;
-            dgvProffesors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProffesors.Size = new Size(643, 156);
-            dgvProffesors.TabIndex = 94;
-            dgvProffesors.CellContentClick += dgvProffesors_CellContentClick;
+            dgvProfessors.BackgroundColor = Color.Gainsboro;
+            dgvProfessors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProfessors.Location = new Point(34, 229);
+            dgvProfessors.MultiSelect = false;
+            dgvProfessors.Name = "dgvProfessors";
+            dgvProfessors.ReadOnly = true;
+            dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProfessors.Size = new Size(643, 156);
+            dgvProfessors.TabIndex = 94;
+            dgvProfessors.CellContentClick += dgvProfessors_CellClick;
             // 
             // gbProfessorSectionAssignment
             // 
             gbProfessorSectionAssignment.BackColor = SystemColors.Control;
-            gbProfessorSectionAssignment.Controls.Add(label11);
+            gbProfessorSectionAssignment.Controls.Add(cmbProfessor);
+            gbProfessorSectionAssignment.Controls.Add(lblSubjectName);
+            gbProfessorSectionAssignment.Controls.Add(lblYear);
             gbProfessorSectionAssignment.Controls.Add(txtYearLevel);
-            gbProfessorSectionAssignment.Controls.Add(txtProfessor);
             gbProfessorSectionAssignment.Controls.Add(btnView);
-            gbProfessorSectionAssignment.Controls.Add(dgvProffesors);
-            gbProfessorSectionAssignment.Controls.Add(label12);
+            gbProfessorSectionAssignment.Controls.Add(dgvProfessors);
+            gbProfessorSectionAssignment.Controls.Add(lblProfessor);
             gbProfessorSectionAssignment.Controls.Add(btnDelete);
             gbProfessorSectionAssignment.Controls.Add(btnUpdate);
             gbProfessorSectionAssignment.Controls.Add(txtSchedule);
             gbProfessorSectionAssignment.Controls.Add(txtSubjectName);
-            gbProfessorSectionAssignment.Controls.Add(label9);
-            gbProfessorSectionAssignment.Controls.Add(label7);
+            gbProfessorSectionAssignment.Controls.Add(lblSchedule);
             gbProfessorSectionAssignment.Controls.Add(btnAdd);
             gbProfessorSectionAssignment.Controls.Add(txtSection);
-            gbProfessorSectionAssignment.Controls.Add(label10);
+            gbProfessorSectionAssignment.Controls.Add(lblSection);
             gbProfessorSectionAssignment.FlatStyle = FlatStyle.Flat;
             gbProfessorSectionAssignment.ForeColor = Color.Black;
             gbProfessorSectionAssignment.Location = new Point(271, 138);
@@ -471,28 +463,38 @@ namespace WinFormsApp1
             gbProfessorSectionAssignment.TabStop = false;
             gbProfessorSectionAssignment.Text = "Professor Section Assignment";
             // 
-            // label11
+            // cmbProfessor
             // 
-            label11.AutoSize = true;
-            label11.Location = new Point(122, 127);
-            label11.Name = "label11";
-            label11.Size = new Size(62, 15);
-            label11.TabIndex = 98;
-            label11.Text = "Year Level:";
+            cmbProfessor.FormattingEnabled = true;
+            cmbProfessor.Location = new Point(190, 39);
+            cmbProfessor.Name = "cmbProfessor";
+            cmbProfessor.Size = new Size(204, 23);
+            cmbProfessor.TabIndex = 99;
+            // 
+            // lblSubjectName
+            // 
+            lblSubjectName.AutoSize = true;
+            lblSubjectName.Location = new Point(103, 107);
+            lblSubjectName.Name = "lblSubjectName";
+            lblSubjectName.Size = new Size(81, 15);
+            lblSubjectName.TabIndex = 97;
+            lblSubjectName.Text = "SubjectName:";
+            // 
+            // lblYear
+            // 
+            lblYear.AutoSize = true;
+            lblYear.Location = new Point(103, 165);
+            lblYear.Name = "lblYear";
+            lblYear.Size = new Size(62, 15);
+            lblYear.TabIndex = 98;
+            lblYear.Text = "Year Level:";
             // 
             // txtYearLevel
             // 
-            txtYearLevel.Location = new Point(190, 119);
+            txtYearLevel.Location = new Point(190, 157);
             txtYearLevel.Name = "txtYearLevel";
             txtYearLevel.Size = new Size(204, 23);
             txtYearLevel.TabIndex = 97;
-            // 
-            // txtProfessor
-            // 
-            txtProfessor.Location = new Point(190, 183);
-            txtProfessor.Name = "txtProfessor";
-            txtProfessor.Size = new Size(204, 23);
-            txtProfessor.TabIndex = 96;
             // 
             // btnView
             // 
@@ -502,7 +504,7 @@ namespace WinFormsApp1
             btnView.TabIndex = 95;
             btnView.Text = "View";
             btnView.UseVisualStyleBackColor = true;
-            btnView.Click += btnView_Click;
+            btnView.Click += btnAdd_Click;
             // 
             // ManageForm
             // 
@@ -521,7 +523,7 @@ namespace WinFormsApp1
             Name = "ManageForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Manage";
-            Load += ManageForm_Load;
+            Load += ManageFormLoad;
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
@@ -531,34 +533,19 @@ namespace WinFormsApp1
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvProffesors).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProfessors).EndInit();
             gbProfessorSectionAssignment.ResumeLayout(false);
             gbProfessorSectionAssignment.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
-        private void ManageForm_Load(object sender, EventArgs e)
-        {
-           
-        }
 
-        private void btnShow_Click(object sender, EventArgs e)
-        {
-          
-        }
 
-        private void Initialization()
-        {
-            
-        }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(this.cmbAssignProf);
-        }
 
-       
+
+
 
         #endregion
 
@@ -582,28 +569,27 @@ namespace WinFormsApp1
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private Label label1;
-        private Label label7;
-        private Label label9;
-        private Label label10;
+        private Label lblSchedule;
+        private Label lblSection;
         private TextBox txtSubjectName;
         private TextBox txtSchedule;
         private TextBox txtSection;
-        private Label label12;
+        private Label lblProfessor;
         private Button btnAdd;
         private Button btnDelete;
         private Button btnUpdate;
-        private DataGridView dgvProffesors;
+        private DataGridView dgvProfessors;
         private GroupBox gbProfessorSectionAssignment;
         private Button btnView;
        
 
-        public ManageForm(ComboBox cmbYearLevels) => this.cmbYearLevel = cmbYearLevels;
-        private ComboBox cmbYearLevel;
-        private object cmbAssignProf;
-        private TextBox txtProfessor;
+   
+  
         private Label lblStudentRegistration;
         private Button btnStudentRegistration;
         private TextBox txtYearLevel;
-        private Label label11;
+        private Label lblYear;
+        private ComboBox cmbProfessor;
+        private Label lblSubjectName;
     }
 }

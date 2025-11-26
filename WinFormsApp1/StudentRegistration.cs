@@ -9,7 +9,7 @@ namespace WinFormsApp1
 {
     public partial class StudentRegistration : Form
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
 
         public StudentRegistration()
         {
@@ -20,13 +20,40 @@ namespace WinFormsApp1
         private void StudentRegistration_Load(object sender, EventArgs e)
         {
             LoadStudents();
+            LoadSubjects();
+        }
+        private void LoadSubjects()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("SELECT SubjectID, SubjectName + ' (' + Section + ')' AS FullName FROM Subjects", conn))
+            {
+                conn.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+
+                cmbEnrollSubject.DataSource = dt;
+                cmbEnrollSubject.DisplayMember = "FullName";
+                cmbEnrollSubject.ValueMember = "SubjectID";
+            }
         }
 
         private void LoadStudents()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT StudentID, Name, YearLevel, Course, Units, Classified, Section, DateRegistered FROM Students";
+                string query = @"
+                    SELECT 
+                        StudentID,
+                        FirstName,
+                        LastName,
+                        YearLevel,
+                        Course,
+                        Section,
+                        Units,
+                        Classification,
+                        DateRegistered
+                    FROM Students";
+
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -39,133 +66,103 @@ namespace WinFormsApp1
             }
         }
 
-        // Cell click just selects row, does not enable editing
         private void dgvStudentRegistration_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvStudentRegistration.Rows[e.RowIndex];
 
-                txtStudentId.Text = row.Cells["StudentID"].Value?.ToString() ?? "";
-                txtName.Text = row.Cells["Name"].Value?.ToString() ?? "";
+                txtStudentID.Text = row.Cells["StudentID"].Value?.ToString() ?? "";
+                txtFirstName.Text = row.Cells["FirstName"].Value?.ToString() ?? "";
+                txtLastName.Text = row.Cells["LastName"].Value?.ToString() ?? "";
                 txtYearLevel.Text = row.Cells["YearLevel"].Value?.ToString() ?? "";
                 txtCourse.Text = row.Cells["Course"].Value?.ToString() ?? "";
                 txtUnits.Text = row.Cells["Units"].Value?.ToString() ?? "";
-                txtClassified.Text = row.Cells["Classified"].Value?.ToString() ?? "";
+                txtClassification.Text = row.Cells["Classification"].Value?.ToString() ?? "";
                 txtSection.Text = row.Cells["Section"].Value?.ToString() ?? "";
 
-                // Disable textboxes until Edit button is clicked
-                txtName.Enabled = false;
-                txtYearLevel.Enabled = false;
-                txtCourse.Enabled = false;
-                txtUnits.Enabled = false;
-                txtClassified.Enabled = false;
-                txtSection.Enabled = false;
+                ToggleTextboxes(false);
             }
+        }
+
+        private void ToggleTextboxes(bool enabled)
+        {
+            txtFirstName.Enabled = enabled;
+            txtLastName.Enabled = enabled;
+            txtYearLevel.Enabled = enabled;
+            txtCourse.Enabled = enabled;
+            txtUnits.Enabled = enabled;
+            txtClassification.Enabled = enabled;
+            txtSection.Enabled = enabled;
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtStudentId.Text))
+            if (string.IsNullOrEmpty(txtStudentID.Text))
             {
-                MessageBox.Show("Please select a studentID first before editing. ");
+                MessageBox.Show("Please select a student first.");
                 return;
             }
 
-            // Enable only the textboxes for editing
-            txtName.Enabled = true;
-            txtYearLevel.Enabled = true;
-            txtCourse.Enabled = true;
-            txtUnits.Enabled = true;
-            txtClassified.Enabled = true;
-            txtSection.Enabled = true;
-
-            MessageBox.Show("You can now edit the fields. Click UPDATE to save changes.");
+            ToggleTextboxes(true);
+            MessageBox.Show("Fields enabled — click UPDATE to save.");
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtStudentId.Text))
+            if (string.IsNullOrEmpty(txtStudentID.Text))
             {
-                MessageBox.Show("Please select a student record to update.");
+                MessageBox.Show("No student selected.");
                 return;
             }
 
-            int studentId = Convert.ToInt32(txtStudentId.Text);
+            int studentId = Convert.ToInt32(txtStudentID.Text);
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                List<string> updates = new List<string>();
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = conn;
 
-                if (!string.IsNullOrWhiteSpace(txtName.Text))
-                {
-                    updates.Add("Name=@Name");
-                    cmd.Parameters.AddWithValue("@Name", txtName.Text);
-                }
-                if (!string.IsNullOrWhiteSpace(txtYearLevel.Text))
-                {
-                    updates.Add("YearLevel=@YearLevel");
-                    cmd.Parameters.AddWithValue("@YearLevel", txtYearLevel.Text);
-                }
-                if (!string.IsNullOrWhiteSpace(txtCourse.Text))
-                {
-                    updates.Add("Course=@Course");
-                    cmd.Parameters.AddWithValue("@Course", txtCourse.Text);
-                }
-                if (!string.IsNullOrWhiteSpace(txtUnits.Text))
-                {
-                    updates.Add("Units=@Units");
-                    cmd.Parameters.AddWithValue("@Units", txtUnits.Text);
-                }
-                if (!string.IsNullOrWhiteSpace(txtClassified.Text))
-                {
-                    updates.Add("Classified=@Classified");
-                    cmd.Parameters.AddWithValue("@Classified", txtClassified.Text);
-                }
-                if (!string.IsNullOrWhiteSpace(txtSection.Text))
-                {
-                    updates.Add("Section=@Section");
-                    cmd.Parameters.AddWithValue("@Section", txtSection.Text);
-                }
+                string query = @"
+                    UPDATE Students SET
+                        FirstName = @FirstName,
+                        LastName = @LastName,
+                        YearLevel = @YearLevel,
+                        Course = @Course,
+                        Section = @Section,
+                        Units = @Units,
+                        Classification = @Classification
+                    WHERE StudentID = @StudentID";
 
-                if (updates.Count > 0)
-                {
-                    string updateQuery = $"UPDATE Students SET {string.Join(", ", updates)} WHERE StudentID=@StudentID";
-                    cmd.CommandText = updateQuery;
-                    cmd.Parameters.AddWithValue("@StudentID", studentId);
-                    cmd.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                cmd.Parameters.AddWithValue("@YearLevel", txtYearLevel.Text);
+                cmd.Parameters.AddWithValue("@Course", txtCourse.Text);
+                cmd.Parameters.AddWithValue("@Section", txtSection.Text);
+                cmd.Parameters.AddWithValue("@Units", txtUnits.Text);
+                cmd.Parameters.AddWithValue("@Classification", txtClassification.Text);
+                cmd.Parameters.AddWithValue("@StudentID", studentId);
 
-                    MessageBox.Show("Student updated successfully!");
-                    LoadStudents();
-                }
-                else
-                {
-                    MessageBox.Show("No changes detected to update.");
-                }
+                cmd.ExecuteNonQuery();
             }
+
+            MessageBox.Show("Student updated successfully!");
+            LoadStudents();
+            ToggleTextboxes(false);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dgvStudentRegistration.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Select a row to delete.");
+                MessageBox.Show("Select a student to delete.");
                 return;
             }
 
             int id = Convert.ToInt32(dgvStudentRegistration.SelectedRows[0].Cells["StudentID"].Value);
 
-            DialogResult result = MessageBox.Show(
-                "Are you sure you want to delete this student?",
-                "Confirm Delete",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-            );
-
-            if (result == DialogResult.Yes)
+            if (MessageBox.Show("Delete this student?", "Confirm", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -177,14 +174,150 @@ namespace WinFormsApp1
                     cmd.ExecuteNonQuery();
                 }
 
-                MessageBox.Show("Student deleted successfully!");
+                MessageBox.Show("Student deleted.");
                 LoadStudents();
             }
         }
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtFirstName.Text) ||
+                string.IsNullOrWhiteSpace(txtLastName.Text))
+            {
+                MessageBox.Show("First Name and Last Name are required.");
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"
+            INSERT INTO Students (FirstName, LastName, YearLevel, Course, Section, Units, Classification)
+            VALUES (@FirstName, @LastName, @YearLevel, @Course, @Section, @Units, @Classification)";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                cmd.Parameters.AddWithValue("@YearLevel", txtYearLevel.Text);
+                cmd.Parameters.AddWithValue("@Course", txtCourse.Text);
+                cmd.Parameters.AddWithValue("@Section", txtSection.Text);
+
+                // convert Units safely
+                int units = 0;
+                int.TryParse(txtUnits.Text, out units);
+                cmd.Parameters.AddWithValue("@Units", units);
+
+                cmd.Parameters.AddWithValue("@Classification", txtClassification.Text);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Student registered successfully!");
+
+            LoadStudents();
+            ClearFields();
+        }
+        private void ClearFields()
+        {
+            txtStudentID.Text = "";
+            txtFirstName.Text = "";
+            txtLastName.Text = "";
+            txtYearLevel.Text = "";
+            txtCourse.Text = "";
+            txtUnits.Text = "";
+            txtClassification.Text = "";
+            txtSection.Text = "";
+        }
+
+        private void btnEnroll_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtStudentID.Text))
+            {
+                MessageBox.Show("Select or Register a student first.");
+                return;
+            }
+
+            int studentID = int.Parse(txtStudentID.Text);
+            int subjectID = (int)cmbEnrollSubject.SelectedValue;
+
+            if (IsStudentAlreadyEnrolled(studentID, subjectID))
+            {
+                MessageBox.Show("Student is already enrolled in this subject.");
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+        INSERT INTO Enrollments (StudentID, SubjectID)
+        VALUES (@StudentID, @SubjectID)", conn))
+            {
+                cmd.Parameters.AddWithValue("@StudentID", studentID);
+                cmd.Parameters.AddWithValue("@SubjectID", subjectID);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Student successfully enrolled in the subject.");
+        }
+        private bool IsStudentAlreadyEnrolled(int studentID, int subjectID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+        SELECT COUNT(*)
+        FROM Enrollments
+        WHERE StudentID = @StudentID AND SubjectID = @SubjectID", conn))
+            {
+                cmd.Parameters.AddWithValue("@StudentID", studentID);
+                cmd.Parameters.AddWithValue("@SubjectID", subjectID);
+
+                conn.Open();
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+
 
         private void btnShow_Click(object sender, EventArgs e)
         {
             LoadStudents();
+        }
+
+        private void gbStudentRegistration_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblEnroll_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            AdminForm home = new AdminForm();
+            home.Show();
+            this.Hide();
+        }
+
+        private void btnManage_Click(object sender, EventArgs e)
+        {
+            ManageForm manage = new ManageForm();
+            manage.Show();
+            this.Hide();
+        }
+
+        private void btnUsers_Click(object sender, EventArgs e)
+        {
+            UsersForm users = new UsersForm();
+            users.Show();
+            this.Hide();
+        }
+
+        private void btnProfessors_Click(object sender, EventArgs e)
+        {
+            ProfessorsForm prof = new ProfessorsForm();
+            prof.Show();
+            this.Hide();
         }
     }
 }

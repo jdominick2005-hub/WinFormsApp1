@@ -1,4 +1,14 @@
-﻿namespace WinFormsApp1
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WinFormsApp1
 {
     public partial class UsersForm : Form
     {
@@ -6,7 +16,13 @@
         {
             InitializeComponent();
         }
-
+        private void btnStudentRegistration_Click(object sender, EventArgs e)
+        {
+            StudentRegistration StudentRegister = new StudentRegistration();
+            StudentRegister.Show();
+            this.Hide();
+        }
+    
         private void btnUsers_Click(object sender, EventArgs e)
         {
             UsersForm Users = new UsersForm();
@@ -36,11 +52,6 @@
             this.Hide();
         }
 
-        private void btnStudentRegistration_Click(object sender, EventArgs e)
-        {
-            StudentRegistration StudentRegister = new StudentRegistration();
-            StudentRegister.Show();
-            this.Hide();
-        }
     }
+
 }

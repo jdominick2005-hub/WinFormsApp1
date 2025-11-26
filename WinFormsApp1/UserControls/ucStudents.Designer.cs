@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            lblStudents = new Label();
             SuspendLayout();
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(342, 243);
-            label1.Name = "label1";
-            label1.Size = new Size(53, 15);
-            label1.TabIndex = 1;
-            label1.Text = "Students";
+            lblStudents.AutoSize = true;
+            lblStudents.Location = new Point(342, 243);
+            lblStudents.Name = "label1";
+            lblStudents.Size = new Size(53, 15);
+            lblStudents.TabIndex = 1;
+            lblStudents.Text = "Students";
             // 
             // ucStudents
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(label1);
+            Controls.Add(lblStudents);
             Name = "ucStudents";
             Size = new Size(752, 501);
             ResumeLayout(false);

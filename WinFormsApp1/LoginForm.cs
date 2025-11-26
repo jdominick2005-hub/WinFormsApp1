@@ -1,11 +1,13 @@
 using System.Configuration;
 using System.Data.SqlClient;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WinFormsApp1
 {
     public partial class LoginForm : Form
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
 
         public LoginForm()
         {
@@ -32,10 +34,14 @@ namespace WinFormsApp1
                     conn.Open();
 
                     string query = @"
-                SELECT L.Role, L.Name, T.TeacherID
-                FROM Logins L
-                LEFT JOIN Teachers T ON L.UserID = T.UserID
-                WHERE L.Username = @username AND L.Password = @password";
+            SELECT 
+                U.Role,
+                CONCAT(U.FirstName, ' ', U.LastName) AS FullName,
+                T.TeacherID
+            FROM Logins U
+            LEFT JOIN Teachers T ON U.UserID = T.UserID
+            WHERE U.Username = @username
+              AND U.Password = @password";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -52,7 +58,7 @@ namespace WinFormsApp1
                         }
 
                         string role = reader["Role"].ToString();
-                        string name = reader["Name"].ToString();
+                        string name = reader["FullName"].ToString();
 
                         MessageBox.Show($"Welcome, {name}!", "Login Successful",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -61,7 +67,7 @@ namespace WinFormsApp1
 
                         if (role == "Admin")
                         {
-                            AdminForm adminForm = new AdminForm(name);  // Pass name
+                            AdminForm adminForm = new AdminForm(name);
                             adminForm.Show();
                         }
                         else if (role == "Teacher")
@@ -72,7 +78,7 @@ namespace WinFormsApp1
 
                             if (teacherID == 0)
                             {
-                                MessageBox.Show("Teacher account is not linked to Teachers table!",
+                                MessageBox.Show("Teacher account is not linked in Teachers table!",
                                     "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
                             }
@@ -89,6 +95,7 @@ namespace WinFormsApp1
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
         private void btnShow_Click(object sender, EventArgs e)

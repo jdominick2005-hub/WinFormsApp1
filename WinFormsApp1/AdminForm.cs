@@ -105,5 +105,12 @@
         {
 
         }
+
+        private void lblStudentRegistration_Click(object sender, EventArgs e)
+        {
+            StudentRegistration sr = new StudentRegistration();
+            sr.Show();
+            this.Hide();
+        }
     }
 }

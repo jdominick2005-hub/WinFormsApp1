@@ -192,6 +192,7 @@
             lblStudentRegistration.Size = new Size(140, 15);
             lblStudentRegistration.TabIndex = 74;
             lblStudentRegistration.Text = "STUDENT REGISTRATION";
+            lblStudentRegistration.Click += lblStudentRegistration_Click;
             // 
             // btnStudentRegistration
             // 

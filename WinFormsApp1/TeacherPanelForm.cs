@@ -15,6 +15,7 @@ namespace WinFormsApp1
             InitializeComponent();
             teacherName = name;
             teacherID = id;
+            lblUserName.Text = teacherName;
 
             LoadControl(new UserControls.ucHome());
 

@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UsersForm));
-            label1 = new Label();
-            pictureBox1 = new PictureBox();
-            panel1 = new Panel();
-            panel3 = new Panel();
+            pictureBox2 = new PictureBox();
+            label2 = new Label();
+            label5 = new Label();
+            button1 = new Button();
             lblStudentRegistration = new Label();
             btnStudentRegistration = new Button();
             label8 = new Label();
@@ -47,77 +47,58 @@
             btnProfessors = new Button();
             btnUsers = new Button();
             btnHome = new Button();
-            pictureBox2 = new PictureBox();
-            label2 = new Label();
-            label5 = new Label();
-            button1 = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            panel1.SuspendLayout();
-            panel3.SuspendLayout();
+            panel1 = new Panel();
+            pictureBox1 = new PictureBox();
+            panel3 = new Panel();
+            label1 = new Label();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // pictureBox2
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(867, 56);
-            label1.Name = "label1";
-            label1.Size = new Size(78, 25);
-            label1.TabIndex = 74;
-            label1.Text = "ADMIN";
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Location = new Point(951, 49);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(40, 40);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.TabIndex = 79;
+            pictureBox2.TabStop = false;
             // 
-            // pictureBox1
+            // label2
             // 
-            pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.BackgroundImageLayout = ImageLayout.None;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(-1, -1);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(235, 187);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(303, 47);
+            label2.Name = "label2";
+            label2.Size = new Size(86, 32);
+            label2.TabIndex = 81;
+            label2.Text = "USERS";
             // 
-            // panel1
+            // label5
             // 
-            panel1.BackColor = Color.SteelBlue;
-            panel1.BackgroundImageLayout = ImageLayout.None;
-            panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(pictureBox1);
-            panel1.Controls.Add(panel3);
-            panel1.Dock = DockStyle.Left;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(235, 644);
-            panel1.TabIndex = 72;
+            label5.AutoSize = true;
+            label5.BackColor = Color.Silver;
+            label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label5.Location = new Point(83, 205);
+            label5.Name = "label5";
+            label5.Size = new Size(0, 20);
+            label5.TabIndex = 77;
             // 
-            // panel3
+            // button1
             // 
-            panel3.BackColor = Color.SteelBlue;
-            panel3.BackgroundImageLayout = ImageLayout.None;
-            panel3.Controls.Add(lblStudentRegistration);
-            panel3.Controls.Add(btnStudentRegistration);
-            panel3.Controls.Add(label8);
-            panel3.Controls.Add(pictureBox6);
-            panel3.Controls.Add(pictureBox5);
-            panel3.Controls.Add(pictureBox4);
-            panel3.Controls.Add(label6);
-            panel3.Controls.Add(label4);
-            panel3.Controls.Add(label3);
-            panel3.Controls.Add(pictureBox3);
-            panel3.Controls.Add(btnManage);
-            panel3.Controls.Add(btnProfessors);
-            panel3.Controls.Add(btnUsers);
-            panel3.Controls.Add(btnHome);
-            panel3.Location = new Point(-1, 183);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(235, 460);
-            panel3.TabIndex = 1;
+            button1.Location = new Point(939, 85);
+            button1.Name = "button1";
+            button1.Size = new Size(66, 29);
+            button1.TabIndex = 82;
+            button1.Text = "Log out";
+            button1.UseVisualStyleBackColor = true;
             // 
             // lblStudentRegistration
             // 
@@ -133,7 +114,7 @@
             // 
             btnStudentRegistration.Location = new Point(12, 299);
             btnStudentRegistration.Name = "btnStudentRegistration";
-            btnStudentRegistration.Size = new Size(187, 40);
+            btnStudentRegistration.Size = new Size(219, 40);
             btnStudentRegistration.TabIndex = 73;
             btnStudentRegistration.UseVisualStyleBackColor = true;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
@@ -239,6 +220,7 @@
             btnManage.TabIndex = 5;
             btnManage.UseVisualStyleBackColor = false;
             btnManage.Click += btnManage_Click;
+
             // 
             // btnProfessors
             // 
@@ -251,7 +233,7 @@
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.UseVisualStyleBackColor = false;
-            btnProfessors.Click += btnProfessors_Click;
+            btnProfessors.Click += this.btnProfessors_Click;
             // 
             // btnUsers
             // 
@@ -266,6 +248,7 @@
             btnUsers.TabIndex = 2;
             btnUsers.UseVisualStyleBackColor = false;
             btnUsers.Click += btnUsers_Click;
+
             // 
             // btnHome
             // 
@@ -279,81 +262,101 @@
             btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
             btnHome.UseVisualStyleBackColor = false;
+            btnHome.Click += btnHome_Click;
+
             // 
-            // pictureBox2
+            // panel1
             // 
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(947, 49);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(40, 40);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 73;
-            pictureBox2.TabStop = false;
+            panel1.BackColor = Color.SteelBlue;
+            panel1.BackgroundImageLayout = ImageLayout.None;
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(pictureBox1);
+            panel1.Controls.Add(panel3);
+            panel1.Dock = DockStyle.Left;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(235, 644);
+            panel1.TabIndex = 78;
             // 
-            // label2
+            // pictureBox1
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(299, 47);
-            label2.Name = "label2";
-            label2.Size = new Size(86, 32);
-            label2.TabIndex = 75;
-            label2.Text = "USERS";
+            pictureBox1.BackColor = Color.Transparent;
+            pictureBox1.BackgroundImageLayout = ImageLayout.None;
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(-1, -1);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(235, 187);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
             // 
-            // label5
+            // panel3
             // 
-            label5.AutoSize = true;
-            label5.BackColor = Color.Silver;
-            label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label5.Location = new Point(79, 205);
-            label5.Name = "label5";
-            label5.Size = new Size(0, 20);
-            label5.TabIndex = 71;
+            panel3.BackColor = Color.SteelBlue;
+            panel3.BackgroundImageLayout = ImageLayout.None;
+            panel3.Controls.Add(lblStudentRegistration);
+            panel3.Controls.Add(btnStudentRegistration);
+            panel3.Controls.Add(label8);
+            panel3.Controls.Add(pictureBox6);
+            panel3.Controls.Add(pictureBox5);
+            panel3.Controls.Add(pictureBox4);
+            panel3.Controls.Add(label6);
+            panel3.Controls.Add(label4);
+            panel3.Controls.Add(label3);
+            panel3.Controls.Add(pictureBox3);
+            panel3.Controls.Add(btnManage);
+            panel3.Controls.Add(btnProfessors);
+            panel3.Controls.Add(btnUsers);
+            panel3.Controls.Add(btnHome);
+            panel3.Location = new Point(-1, 183);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(235, 460);
+            panel3.TabIndex = 1;
             // 
-            // button1
+            // label1
             // 
-            button1.Location = new Point(935, 85);
-            button1.Name = "button1";
-            button1.Size = new Size(66, 29);
-            button1.TabIndex = 76;
-            button1.Text = "Log out";
-            button1.UseVisualStyleBackColor = true;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(871, 56);
+            label1.Name = "label1";
+            label1.Size = new Size(78, 25);
+            label1.TabIndex = 80;
+            label1.Text = "ADMIN";
             // 
             // UsersForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1008, 644);
-            Controls.Add(label1);
-            Controls.Add(panel1);
             Controls.Add(pictureBox2);
             Controls.Add(label2);
             Controls.Add(label5);
             Controls.Add(button1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
+            Controls.Add(panel1);
+            Controls.Add(label1);
             Name = "UsersForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "USERS";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            panel1.ResumeLayout(false);
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
+            Text = "tempform";
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
-        private PictureBox pictureBox1;
-        private Panel panel1;
-        private Panel panel3;
+        private PictureBox pictureBox2;
+        private Label label2;
+        private Label label5;
+        private Button button1;
+        private Label lblStudentRegistration;
+        private Button btnStudentRegistration;
         private Label label8;
         private PictureBox pictureBox6;
         private PictureBox pictureBox5;
@@ -366,11 +369,9 @@
         private Button btnProfessors;
         private Button btnUsers;
         private Button btnHome;
-        private PictureBox pictureBox2;
-        private Label label2;
-        private Label label5;
-        private Button button1;
-        private Label lblStudentRegistration;
-        private Button btnStudentRegistration;
+        private Panel panel1;
+        private PictureBox pictureBox1;
+        private Panel panel3;
+        private Label label1;
     }
 }
