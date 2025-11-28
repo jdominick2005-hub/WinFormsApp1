@@ -44,35 +44,37 @@ namespace WinFormsApp1
 
         private void btnHome_Click(object sender, EventArgs e)
         {
+
+            AdminForm admin = new AdminForm();
+            admin.Show();
             this.Hide();
-            var f = new AdminForm(); // open AdminForm as Home
-            f.Show();
         }
 
         private void btnManage_Click(object sender, EventArgs e)
         {
+
+            ManageForm manage = new ManageForm();
+            manage.Show();
             this.Hide();
-            var f = new ManageForm();
-            f.Show();
         }
 
         private void btnUsers_Click(object sender, EventArgs e)
         {
+
+            UsersForm users = new UsersForm();
+            users.Show();
             this.Hide();
-            var f = new UsersForm();
-            f.Show();
         }
 
         private void btnProfessors_Click(object sender, EventArgs e)
         {
-            // We're already here. Optionally refresh.
-            LoadTeachers();
+
         }
 
         private void btnStudentRegistration_Click(object sender, EventArgs e)
         {
-            StudentRegistration sr = new StudentRegistration();
-            sr.Show();
+            StudentRegistration form = new StudentRegistration();
+            form.Show();
             this.Hide();
         }
 

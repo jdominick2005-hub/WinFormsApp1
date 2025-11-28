@@ -31,7 +31,6 @@ namespace WinFormsApp1
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentRegistration));
             gbStudentRegistration = new GroupBox();
-            btnEnroll = new Button();
             lblEnroll = new Label();
             cmbEnrollSubject = new ComboBox();
             lblLastName = new Label();
@@ -50,6 +49,7 @@ namespace WinFormsApp1
             lblYearLevel = new Label();
             lblFirstName = new Label();
             lblStudentId = new Label();
+            btnEnroll = new Button();
             btnRegister = new Button();
             groupBox2 = new GroupBox();
             btnEdit = new Button();
@@ -120,16 +120,6 @@ namespace WinFormsApp1
             gbStudentRegistration.TabStop = false;
             gbStudentRegistration.Text = "Student Registration";
             gbStudentRegistration.Enter += gbStudentRegistration_Enter;
-            // 
-            // btnEnroll
-            // 
-            btnEnroll.Location = new Point(65, 189);
-            btnEnroll.Name = "btnEnroll";
-            btnEnroll.Size = new Size(75, 23);
-            btnEnroll.TabIndex = 16;
-            btnEnroll.Text = "Enroll";
-            btnEnroll.UseVisualStyleBackColor = true;
-            btnEnroll.Click += btnEnroll_Click;
             // 
             // lblEnroll
             // 
@@ -277,6 +267,16 @@ namespace WinFormsApp1
             lblStudentId.TabIndex = 5;
             lblStudentId.Text = "StudentId:";
             // 
+            // btnEnroll
+            // 
+            btnEnroll.Location = new Point(65, 189);
+            btnEnroll.Name = "btnEnroll";
+            btnEnroll.Size = new Size(75, 23);
+            btnEnroll.TabIndex = 16;
+            btnEnroll.Text = "Enroll";
+            btnEnroll.UseVisualStyleBackColor = true;
+            btnEnroll.Click += btnEnroll_Click;
+            // 
             // btnRegister
             // 
             btnRegister.Location = new Point(65, 44);
@@ -345,7 +345,7 @@ namespace WinFormsApp1
             // 
             dgvStudentRegistration.BackgroundColor = Color.Gainsboro;
             dgvStudentRegistration.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudentRegistration.Location = new Point(266, 418);
+            dgvStudentRegistration.Location = new Point(300, 406);
             dgvStudentRegistration.Name = "dgvStudentRegistration";
             dgvStudentRegistration.Size = new Size(642, 170);
             dgvStudentRegistration.TabIndex = 3;
@@ -623,6 +623,7 @@ namespace WinFormsApp1
             Controls.Add(dgvStudentRegistration);
             Controls.Add(gbStudentRegistration);
             Controls.Add(groupBox2);
+            MaximizeBox = false;
             Name = "StudentRegistration";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "StudentRegistration";

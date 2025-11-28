@@ -29,8 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblUserName = new Label();
-            pictureBox2 = new PictureBox();
             btnManage = new Button();
             btnProfessors = new Button();
             btnUsers = new Button();
@@ -38,7 +40,6 @@
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
             panel3 = new Panel();
-            lblStudentRegistration = new Label();
             btnStudentRegistration = new Button();
             lblProfessors = new Label();
             pictureBox6 = new PictureBox();
@@ -48,10 +49,26 @@
             lblManage = new Label();
             label3 = new Label();
             pictureBox3 = new PictureBox();
-            btnLogout = new Button();
             label2 = new Label();
             label5 = new Label();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            panel2 = new Panel();
+            lblstudnum = new Label();
+            lblstudents = new Label();
+            panel4 = new Panel();
+            lblprofnum = new Label();
+            lblprof = new Label();
+            panel5 = new Panel();
+            lblpresent = new Label();
+            lblpresentnum = new Label();
+            panel6 = new Panel();
+            lblabsentnum = new Label();
+            lblabsent = new Label();
+            dataGridView1 = new DataGridView();
+            btnLogout = new Button();
+            pictureBox2 = new PictureBox();
+            label1 = new Label();
+            dateTimePicker1 = new DateTimePicker();
+            chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -59,28 +76,24 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            panel2.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
             // 
             // lblUserName
             // 
             lblUserName.AutoSize = true;
-            lblUserName.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUserName.Location = new Point(746, 49);
+            lblUserName.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUserName.Location = new Point(931, 53);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(78, 25);
+            lblUserName.Size = new Size(64, 21);
             lblUserName.TabIndex = 62;
             lblUserName.Text = "ADMIN";
-            lblUserName.Click += lblUserName_Click;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(925, 49);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(40, 40);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 61;
-            pictureBox2.TabStop = false;
             // 
             // btnManage
             // 
@@ -88,7 +101,7 @@
             btnManage.FlatAppearance.BorderSize = 0;
             btnManage.FlatStyle = FlatStyle.Flat;
             btnManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnManage.Location = new Point(12, 89);
+            btnManage.Location = new Point(12, 90);
             btnManage.Name = "btnManage";
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
@@ -101,12 +114,11 @@
             btnProfessors.FlatAppearance.BorderSize = 0;
             btnProfessors.FlatStyle = FlatStyle.Flat;
             btnProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnProfessors.Location = new Point(12, 237);
+            btnProfessors.Location = new Point(12, 240);
             btnProfessors.Name = "btnProfessors";
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.UseVisualStyleBackColor = false;
-            btnProfessors.Click += btnProfessors_Click;
             // 
             // btnUsers
             // 
@@ -115,7 +127,7 @@
             btnUsers.FlatAppearance.BorderSize = 0;
             btnUsers.FlatStyle = FlatStyle.Flat;
             btnUsers.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnUsers.Location = new Point(12, 163);
+            btnUsers.Location = new Point(12, 165);
             btnUsers.Name = "btnUsers";
             btnUsers.Size = new Size(223, 56);
             btnUsers.TabIndex = 2;
@@ -164,7 +176,6 @@
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
-            panel3.Controls.Add(lblStudentRegistration);
             panel3.Controls.Add(btnStudentRegistration);
             panel3.Controls.Add(lblProfessors);
             panel3.Controls.Add(pictureBox6);
@@ -183,26 +194,18 @@
             panel3.Size = new Size(235, 460);
             panel3.TabIndex = 1;
             // 
-            // lblStudentRegistration
-            // 
-            lblStudentRegistration.AutoSize = true;
-            lblStudentRegistration.BackColor = Color.White;
-            lblStudentRegistration.Location = new Point(42, 329);
-            lblStudentRegistration.Name = "lblStudentRegistration";
-            lblStudentRegistration.Size = new Size(140, 15);
-            lblStudentRegistration.TabIndex = 74;
-            lblStudentRegistration.Text = "STUDENT REGISTRATION";
-            lblStudentRegistration.Click += lblStudentRegistration_Click;
-            // 
             // btnStudentRegistration
             // 
-            btnStudentRegistration.Location = new Point(18, 317);
+            btnStudentRegistration.FlatAppearance.BorderSize = 0;
+            btnStudentRegistration.FlatStyle = FlatStyle.Flat;
+            btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnStudentRegistration.Location = new Point(13, 315);
             btnStudentRegistration.Name = "btnStudentRegistration";
-            btnStudentRegistration.Size = new Size(188, 38);
+            btnStudentRegistration.Size = new Size(223, 56);
             btnStudentRegistration.TabIndex = 73;
+            btnStudentRegistration.Text = "REGISTER";
             btnStudentRegistration.TextImageRelation = TextImageRelation.ImageAboveText;
             btnStudentRegistration.UseVisualStyleBackColor = true;
-            btnStudentRegistration.Click += btnStudentRegistration_Click;
             // 
             // lblProfessors
             // 
@@ -214,7 +217,6 @@
             lblProfessors.Size = new Size(87, 17);
             lblProfessors.TabIndex = 72;
             lblProfessors.Text = "PROFESSORS";
-            lblProfessors.Click += lblProfessors_Click;
             // 
             // pictureBox6
             // 
@@ -259,7 +261,6 @@
             lblUsers.Size = new Size(46, 17);
             lblUsers.TabIndex = 67;
             lblUsers.Text = "USERS";
-            lblUsers.Click += lblUsers_Click;
             // 
             // lblManage
             // 
@@ -272,7 +273,6 @@
             lblManage.Size = new Size(64, 17);
             lblManage.TabIndex = 66;
             lblManage.Text = "MANAGE";
-            lblManage.Click += lblManage_Click;
             // 
             // label3
             // 
@@ -295,25 +295,14 @@
             pictureBox3.Size = new Size(24, 20);
             pictureBox3.TabIndex = 65;
             pictureBox3.TabStop = false;
-            pictureBox3.Click += pictureBox3_Click;
-            // 
-            // btnLogout
-            // 
-            btnLogout.Location = new Point(913, 85);
-            btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(66, 29);
-            btnLogout.TabIndex = 64;
-            btnLogout.Text = "Log out";
-            btnLogout.UseVisualStyleBackColor = true;
-            btnLogout.Click += btnLogout_Click;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(277, 47);
+            label2.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(281, 51);
             label2.Name = "label2";
-            label2.Size = new Size(164, 32);
+            label2.Size = new Size(192, 40);
             label2.TabIndex = 63;
             label2.Text = "DASHBOARD";
             // 
@@ -327,16 +316,225 @@
             label5.Size = new Size(0, 20);
             label5.TabIndex = 59;
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.SteelBlue;
+            panel2.BorderStyle = BorderStyle.Fixed3D;
+            panel2.Controls.Add(lblstudnum);
+            panel2.Controls.Add(lblstudents);
+            panel2.Location = new Point(807, 286);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(160, 90);
+            panel2.TabIndex = 65;
+            // 
+            // lblstudnum
+            // 
+            lblstudnum.AutoSize = true;
+            lblstudnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblstudnum.Location = new Point(57, 42);
+            lblstudnum.Name = "lblstudnum";
+            lblstudnum.Size = new Size(42, 32);
+            lblstudnum.TabIndex = 71;
+            lblstudnum.Text = "50";
+            lblstudnum.Click += lblstudnum_Click;
+            // 
+            // lblstudents
+            // 
+            lblstudents.AutoSize = true;
+            lblstudents.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblstudents.Location = new Point(7, 21);
+            lblstudents.Name = "lblstudents";
+            lblstudents.Size = new Size(142, 21);
+            lblstudents.TabIndex = 70;
+            lblstudents.Text = "TOTAL STUDENTS";
+            lblstudents.Click += lblstudents_Click;
+            // 
+            // panel4
+            // 
+            panel4.BackColor = Color.SteelBlue;
+            panel4.BorderStyle = BorderStyle.Fixed3D;
+            panel4.Controls.Add(lblprofnum);
+            panel4.Controls.Add(lblprof);
+            panel4.Location = new Point(623, 286);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(160, 90);
+            panel4.TabIndex = 66;
+            // 
+            // lblprofnum
+            // 
+            lblprofnum.AutoSize = true;
+            lblprofnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblprofnum.Location = new Point(55, 42);
+            lblprofnum.Name = "lblprofnum";
+            lblprofnum.Size = new Size(42, 32);
+            lblprofnum.TabIndex = 72;
+            lblprofnum.Text = "50";
+            lblprofnum.Click += lblprofnum_Click;
+            // 
+            // lblprof
+            // 
+            lblprof.AutoSize = true;
+            lblprof.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblprof.Location = new Point(-2, 21);
+            lblprof.Name = "lblprof";
+            lblprof.Size = new Size(158, 21);
+            lblprof.TabIndex = 72;
+            lblprof.Text = "TOTAL PROFESSORS";
+            lblprof.Click += lblprof_Click;
+            // 
+            // panel5
+            // 
+            panel5.BackColor = Color.SteelBlue;
+            panel5.BorderStyle = BorderStyle.Fixed3D;
+            panel5.Controls.Add(lblpresent);
+            panel5.Controls.Add(lblpresentnum);
+            panel5.Location = new Point(623, 175);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(160, 90);
+            panel5.TabIndex = 67;
+            // 
+            // lblpresent
+            // 
+            lblpresent.AutoSize = true;
+            lblpresent.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblpresent.ForeColor = Color.Black;
+            lblpresent.Location = new Point(11, 22);
+            lblpresent.Name = "lblpresent";
+            lblpresent.Size = new Size(135, 21);
+            lblpresent.TabIndex = 73;
+            lblpresent.Text = "PRESENT TODAY";
+            lblpresent.Click += lblpresent_Click;
+            // 
+            // lblpresentnum
+            // 
+            lblpresentnum.AutoSize = true;
+            lblpresentnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblpresentnum.ForeColor = Color.Black;
+            lblpresentnum.Location = new Point(55, 42);
+            lblpresentnum.Name = "lblpresentnum";
+            lblpresentnum.Size = new Size(42, 32);
+            lblpresentnum.TabIndex = 73;
+            lblpresentnum.Text = "50";
+            lblpresentnum.Click += lblpresentnum_Click;
+            // 
+            // panel6
+            // 
+            panel6.BackColor = Color.SteelBlue;
+            panel6.BorderStyle = BorderStyle.Fixed3D;
+            panel6.Controls.Add(lblabsentnum);
+            panel6.Controls.Add(lblabsent);
+            panel6.Location = new Point(807, 175);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(160, 90);
+            panel6.TabIndex = 68;
+            // 
+            // lblabsentnum
+            // 
+            lblabsentnum.AutoSize = true;
+            lblabsentnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblabsentnum.Location = new Point(57, 43);
+            lblabsentnum.Name = "lblabsentnum";
+            lblabsentnum.Size = new Size(42, 32);
+            lblabsentnum.TabIndex = 74;
+            lblabsentnum.Text = "50";
+            lblabsentnum.Click += lblabsentnum_Click;
+            // 
+            // lblabsent
+            // 
+            lblabsent.AutoSize = true;
+            lblabsent.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblabsent.Location = new Point(15, 22);
+            lblabsent.Name = "lblabsent";
+            lblabsent.Size = new Size(127, 21);
+            lblabsent.TabIndex = 74;
+            lblabsent.Text = "ABSENT TODAY";
+            lblabsent.Click += lblabsent_Click;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.BackgroundColor = Color.White;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(281, 424);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(392, 109);
+            dataGridView1.TabIndex = 69;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            // 
+            // btnLogout
+            // 
+            btnLogout.FlatAppearance.BorderColor = Color.FromArgb(255, 128, 128);
+            btnLogout.FlatAppearance.BorderSize = 8;
+            btnLogout.Location = new Point(871, 76);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(66, 29);
+            btnLogout.TabIndex = 64;
+            btnLogout.Text = "Log out";
+            btnLogout.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Location = new Point(885, 42);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(40, 40);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.TabIndex = 61;
+            pictureBox2.TabStop = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(281, 117);
+            label1.Name = "label1";
+            label1.Size = new Size(215, 13);
+            label1.TabIndex = 70;
+            label1.Text = "WELCOME TO COLLEGE OF INFORMATICS";
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Enabled = false;
+            dateTimePicker1.Location = new Point(680, 51);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(190, 23);
+            dateTimePicker1.TabIndex = 72;
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
+            // 
+            // chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chart1.Legends.Add(legend1);
+            chart1.Location = new Point(281, 133);
+            chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chart1.Series.Add(series1);
+            chart1.Size = new Size(320, 271);
+            chart1.TabIndex = 73;
+            chart1.Text = "chart1";
+            chart1.Click += chart1_Click;
+            // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1008, 644);
-            Controls.Add(lblUserName);
-            Controls.Add(pictureBox2);
-            Controls.Add(panel1);
+            Controls.Add(panel5);
+            Controls.Add(chart1);
+            Controls.Add(dateTimePicker1);
+            Controls.Add(label1);
             Controls.Add(btnLogout);
+            Controls.Add(pictureBox2);
+            Controls.Add(lblUserName);
             Controls.Add(label2);
+            Controls.Add(dataGridView1);
+            Controls.Add(panel6);
+            Controls.Add(panel4);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
             Controls.Add(label5);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -344,7 +542,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminForm";
             Load += AdminForm_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
@@ -353,12 +550,22 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private PictureBox pictureBox2;
         private Button btnAttendanceReport;
         private Button btnManage;
         private Button btnProfessors;
@@ -367,7 +574,6 @@
         private PictureBox pictureBox1;
         private Panel panel1;
         private Panel panel3;
-        private Button btnLogout;
         private Label label2;
         private Label label5;
         private PictureBox pictureBox3;
@@ -380,6 +586,23 @@
         private Label lblProfessors;
         public Label lblUserName;
         private Button btnStudentRegistration;
-        private Label lblStudentRegistration;
+        private Panel panel2;
+        private Panel panel4;
+        private Panel panel5;
+        private Panel panel6;
+        private DataGridView dataGridView1;
+        private Label lblstudnum;
+        private Label lblstudents;
+        private Label lblprofnum;
+        private Label lblprof;
+        private Label lblpresent;
+        private Label lblpresentnum;
+        private Label lblabsentnum;
+        private Label lblabsent;
+        private Button btnLogout;
+        private PictureBox pictureBox2;
+        private Label label1;
+        private DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }

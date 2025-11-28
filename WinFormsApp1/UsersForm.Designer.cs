@@ -220,7 +220,6 @@
             btnManage.TabIndex = 5;
             btnManage.UseVisualStyleBackColor = false;
             btnManage.Click += btnManage_Click;
-
             // 
             // btnProfessors
             // 
@@ -233,7 +232,7 @@
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.UseVisualStyleBackColor = false;
-            btnProfessors.Click += this.btnProfessors_Click;
+            btnProfessors.Click += btnProfessors_Click;
             // 
             // btnUsers
             // 
@@ -248,7 +247,6 @@
             btnUsers.TabIndex = 2;
             btnUsers.UseVisualStyleBackColor = false;
             btnUsers.Click += btnUsers_Click;
-
             // 
             // btnHome
             // 
@@ -263,7 +261,6 @@
             btnHome.TabIndex = 0;
             btnHome.UseVisualStyleBackColor = false;
             btnHome.Click += btnHome_Click;
-
             // 
             // panel1
             // 
@@ -334,7 +331,10 @@
             Controls.Add(button1);
             Controls.Add(panel1);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "UsersForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "tempform";
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
