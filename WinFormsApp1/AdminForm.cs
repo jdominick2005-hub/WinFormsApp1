@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -10,9 +13,9 @@ namespace WinFormsApp1
     public partial class AdminForm : Form
     {
         private readonly string connectionString = @"Server=.\SQLEXPRESS;Database=AttendanceDB_v2;Trusted_Connection=True;";
-
         private DateTime currentDate = DateTime.Today;
         private System.Windows.Forms.Timer refreshTimer;
+
         public AdminForm(string name)
         {
             InitializeComponent();
@@ -26,120 +29,90 @@ namespace WinFormsApp1
 
         private void AdminForm_Load(object sender, EventArgs e)
         {
-            // initialize current date from the date picker if present
-            if (this.Controls.ContainsKey("dateTimePicker1"))
+            if (Controls.ContainsKey("dateTimePicker1"))
             {
-                var dtp = this.Controls["dateTimePicker1"] as DateTimePicker;
-                if (dtp != null)
-                {
-                    dtp.Value = currentDate;
-                }
+                var dtp = Controls["dateTimePicker1"] as DateTimePicker;
+                if (dtp != null) dtp.Value = currentDate;
             }
 
-            // initial load
             LoadDate(currentDate);
 
-            // start refresh timer (fallback)
-            refreshTimer = new System.Windows.Forms.Timer(); refreshTimer.Interval = 15000; // 15s
+            refreshTimer = new System.Windows.Forms.Timer();
+            refreshTimer.Interval = 15000;
             refreshTimer.Tick += RefreshTimer_Tick;
             refreshTimer.Start();
+
+            ApplyKpiLabelLayout();
+            MakeRoundedPanelSafe(panel5, 30);
+            MakeRoundedPanelSafe(panel6, 30);
+            MakeRoundedPanelSafe(panel4, 30);
+            MakeRoundedPanelSafe(panel2, 30);
+            Resize -= AdminForm_Resize;
+            Resize += AdminForm_Resize;
         }
 
         private void RefreshTimer_Tick(object sender, EventArgs e)
         {
-            // lightweight refresh of counts for current date
             LoadKpis(currentDate);
         }
 
-        // ---------------------------
-        // Event handlers you requested
-        // ---------------------------
-
-        // label for total students (title) - optional click behavior
         private void lblstudents_Click(object sender, EventArgs e)
         {
-            // show students list in the grid
             ShowAllStudentsInGrid();
         }
 
-        // label for total absent (title)
         private void lblabsent_Click(object sender, EventArgs e)
         {
-            // filter grid to absent for current date
             FilterGridByStatus("Absent");
         }
 
-        // label for total present (title)
         private void lblpresent_Click(object sender, EventArgs e)
         {
-            // filter grid to present for current date
             FilterGridByStatus("Present");
         }
 
-        // label for professor (title)
         private void lblprof_Click(object sender, EventArgs e)
         {
-            // show teachers/professors list in grid
             ShowAllTeachersInGrid();
         }
 
-        // label for the number of students (number label)
         private void lblstudnum_Click(object sender, EventArgs e)
         {
-            // drilldown: open students list
             ShowAllStudentsInGrid();
         }
 
-        // label for the number of prof (number label)
         private void lblprofnum_Click(object sender, EventArgs e)
         {
             ShowAllTeachersInGrid();
         }
 
-        // label for number of present (number label)
         private void lblpresentnum_Click(object sender, EventArgs e)
         {
             FilterGridByStatus("Present");
         }
 
-        // label for number of absent (number label)
         private void lblabsentnum_Click(object sender, EventArgs e)
         {
             FilterGridByStatus("Absent");
         }
 
-        // label for the data grid view - cell content click
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // optional: handle actions like edit or view details if you add buttons to the grid
         }
 
-        // panel for the date - DateTimePicker value changed
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            try
-            {
-                var dtp = sender as DateTimePicker;
-                if (dtp == null) return;
-                currentDate = dtp.Value.Date;
-                LoadDate(currentDate);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Date change error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            var dtp = sender as DateTimePicker;
+            if (dtp == null) return;
+            currentDate = dtp.Value.Date;
+            LoadDate(currentDate);
         }
 
-        // panel for the chart click
         private void chart1_Click(object sender, EventArgs e)
         {
-            // optional: you could change chart type or show details
             MessageBox.Show("Chart clicked. You can implement drilldown here.", "Chart", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // ---------------------------
-        // Main loading functions
-        // ---------------------------
         private void LoadDate(DateTime date)
         {
             currentDate = date;
@@ -152,30 +125,25 @@ namespace WinFormsApp1
         {
             try
             {
-                // Total students
                 int totalStudents = ExecuteScalarInt("SELECT COUNT(*) FROM Students");
-                lblstudnum.Text = totalStudents.ToString();
-                // set title text if needed
+                if (lblstudnum != null) lblstudnum.Text = totalStudents.ToString();
                 if (lblstudents != null) lblstudents.Text = "Total Students";
 
-                // Total professors (Teachers table)
                 int totalTeachers = ExecuteScalarInt("SELECT COUNT(*) FROM Teachers");
-                lblprofnum.Text = totalTeachers.ToString();
+                if (lblprofnum != null) lblprofnum.Text = totalTeachers.ToString();
                 if (lblprof != null) lblprof.Text = "Total Professors";
 
-                // Present for the date
                 int present = ExecuteScalarInt(
                     "SELECT COUNT(*) FROM Attendance WHERE DateTaken = @date AND Status = 'Present'",
                     new Dictionary<string, object> { { "@date", date } });
-                lblpresentnum.Text = present.ToString();
-                if (lblpresent != null) lblpresent.Text = "Today's  Present";
+                if (lblpresentnum != null) lblpresentnum.Text = present.ToString();
+                if (lblpresent != null) lblpresent.Text = "Present Today";
 
-                // Absent for the date
                 int absent = ExecuteScalarInt(
                     "SELECT COUNT(*) FROM Attendance WHERE DateTaken = @date AND Status = 'Absent'",
                     new Dictionary<string, object> { { "@date", date } });
-                lblabsentnum.Text = absent.ToString();
-                if (lblabsent != null) lblabsent.Text = "Today's    Absent";
+                if (lblabsentnum != null) lblabsentnum.Text = absent.ToString();
+                if (lblabsent != null) lblabsent.Text = "Absent Today";
             }
             catch (Exception ex)
             {
@@ -198,7 +166,6 @@ namespace WinFormsApp1
 
                 dataGridView1.DataSource = dt;
 
-                // polish columns
                 if (dataGridView1.Columns.Contains("AttendanceID")) dataGridView1.Columns["AttendanceID"].Visible = false;
                 if (dataGridView1.Columns.Contains("StudentID")) dataGridView1.Columns["StudentID"].HeaderText = "ID";
                 if (dataGridView1.Columns.Contains("FirstName")) dataGridView1.Columns["FirstName"].HeaderText = "First Name";
@@ -225,37 +192,68 @@ namespace WinFormsApp1
                     GROUP BY Status";
                 DataTable dt = GetDataTable(sql, new Dictionary<string, object> { { "@date", date } });
 
-                // prepare counts (ensure zeros if missing)
                 var counts = new Dictionary<string, int> { { "Present", 0 }, { "Absent", 0 }, { "Late", 0 } };
                 foreach (DataRow r in dt.Rows)
                 {
                     string status = r["Status"].ToString();
                     int total = Convert.ToInt32(r["Total"]);
-                    counts[status] = total;
+                    if (counts.ContainsKey(status)) counts[status] = total;
+                    else counts[status] = total;
                 }
 
-                // clear and build chart
+                int totalAll = counts.Values.Sum();
+                if (totalAll == 0) totalAll = 1;
+
                 chart1.Series.Clear();
                 chart1.ChartAreas.Clear();
+                chart1.Legends.Clear();
 
                 ChartArea area = new ChartArea("Main");
+                area.AxisX.Enabled = AxisEnabled.False;
+                area.AxisY.Enabled = AxisEnabled.False;
                 chart1.ChartAreas.Add(area);
-                area.AxisX.Interval = 1;
-                area.AxisX.Title = "Status";
-                area.AxisY.Title = "Count";
 
-                Series series = new Series("Counts");
-                series.ChartType = SeriesChartType.Column;
-                series.IsValueShownAsLabel = true;
+                Series series = new Series("Attendance")
+                {
+                    ChartType = SeriesChartType.Doughnut,
+                    IsValueShownAsLabel = true,
+                    Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+                };
 
-                series.Points.AddXY("Present", counts["Present"]);
-                series.Points.AddXY("Absent", counts["Absent"]);
-                series.Points.AddXY("Late", counts["Late"]);
+                series["DoughnutRadius"] = "60";
+                series["PieLabelStyle"] = "Outside";
+                series.BorderWidth = 2;
+                series.BorderColor = Color.White;
+
+                foreach (var kvp in counts)
+                {
+                    int idx = series.Points.AddY(kvp.Value);
+                    var pt = series.Points[idx];
+                    int value = kvp.Value;
+                    double percent = (double)value / totalAll * 100.0;
+                    pt.AxisLabel = kvp.Key;
+                    pt.Label = $"{value} ({Math.Round(percent)}%)";
+                    pt.LegendText = kvp.Key;
+                    pt.ToolTip = $"{kvp.Key}: {value} ({percent:F1}%)";
+                }
+
+                var colors = new[] { Color.FromArgb(72, 133, 199), Color.FromArgb(237, 125, 49), Color.FromArgb(165, 196, 61) };
+                for (int i = 0; i < series.Points.Count; i++)
+                {
+                    series.Points[i].Color = colors[i % colors.Length];
+                }
 
                 chart1.Series.Add(series);
 
-                chart1.Legends.Clear();
-                chart1.Legends.Add(new Legend("Legend") { Docking = Docking.Bottom });
+                var legend = new Legend("Legend");
+                legend.Docking = Docking.Bottom;
+                legend.Alignment = StringAlignment.Center;
+                chart1.Legends.Add(legend);
+
+                chart1.ChartAreas[0].Position = new ElementPosition(10, 5, 80, 85);
+                chart1.ChartAreas[0].InnerPlotPosition = new ElementPosition(15, 10, 70, 70);
+
+                chart1.Invalidate();
             }
             catch (Exception ex)
             {
@@ -263,9 +261,6 @@ namespace WinFormsApp1
             }
         }
 
-        // ---------------------------
-        // Small helper actions
-        // ---------------------------
         private void ShowAllStudentsInGrid()
         {
             try
@@ -304,7 +299,6 @@ namespace WinFormsApp1
         {
             try
             {
-                // if grid is showing attendance results, apply DataView filter
                 if (dataGridView1.DataSource is DataTable dt)
                 {
                     DataView dv = new DataView(dt) { RowFilter = $"Status = '{status.Replace("'", "''")}'" };
@@ -312,7 +306,6 @@ namespace WinFormsApp1
                 }
                 else
                 {
-                    // fallback: reload attendance for current date filtered by status
                     string sql = @"
                         SELECT a.AttendanceID, s.StudentID, s.FirstName, s.LastName, sub.SubjectName, a.Status, a.Remarks
                         FROM Attendance a
@@ -330,9 +323,6 @@ namespace WinFormsApp1
             }
         }
 
-        // ---------------------------
-        // Inline ADO.NET helpers
-        // ---------------------------
         private int ExecuteScalarInt(string sql, Dictionary<string, object> parameters = null)
         {
             using (var conn = new SqlConnection(connectionString))
@@ -368,9 +358,72 @@ namespace WinFormsApp1
             return dt;
         }
 
-        // ---------------------------
-        // Cleanup
-        // ---------------------------
+        private void MakeRoundedPanelSafe(Panel panel, int radius)
+        {
+            if (panel == null) return;
+            panel.SuspendLayout();
+            if (panel.Width == 0 || panel.Height == 0)
+            {
+                panel.ResumeLayout();
+                panel.HandleCreated += (s, e) => MakeRoundedPanel(panel, radius);
+            }
+            else
+            {
+                MakeRoundedPanel(panel, radius);
+                panel.ResumeLayout();
+            }
+        }
+
+        private void MakeRoundedPanel(Panel panel, int radius)
+        {
+            var path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(panel.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(panel.Width - radius, panel.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, panel.Height - radius, radius, radius), 90, 90);
+            path.CloseFigure();
+            panel.Region = new Region(path);
+        }
+
+        private void ApplyKpiLabelLayout()
+        {
+            try
+            {
+                LayoutKpiPanel(panel5, lblstudents, lblstudnum);
+                LayoutKpiPanel(panel6, lblprof, lblprofnum);
+                LayoutKpiPanel(panel4, lblpresent, lblpresentnum);
+                LayoutKpiPanel(panel2, lblabsent, lblabsentnum);
+            }
+            catch { }
+        }
+
+        private void LayoutKpiPanel(Panel panel, Label titleLabel, Label numberLabel, int titleHeight = 28)
+        {
+            if (panel == null || titleLabel == null || numberLabel == null) return;
+            if (titleLabel.Parent != panel) panel.Controls.Add(titleLabel);
+            if (numberLabel.Parent != panel) panel.Controls.Add(numberLabel);
+            titleLabel.AutoSize = false;
+            numberLabel.AutoSize = false;
+            titleLabel.Dock = DockStyle.Top;
+            titleLabel.Height = titleHeight;
+            titleLabel.TextAlign = ContentAlignment.MiddleCenter;
+            titleLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            numberLabel.Dock = DockStyle.Fill;
+            numberLabel.TextAlign = ContentAlignment.MiddleCenter;
+            numberLabel.Font = new Font("Segoe UI", 26F, FontStyle.Bold);
+            panel.Padding = new Padding(8);
+        }
+
+        private void AdminForm_Resize(object sender, EventArgs e)
+        {
+            ApplyKpiLabelLayout();
+            MakeRoundedPanelSafe(panel5, 30);
+            MakeRoundedPanelSafe(panel6, 30);
+            MakeRoundedPanelSafe(panel4, 30);
+            MakeRoundedPanelSafe(panel2, 30);
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
@@ -389,12 +442,42 @@ namespace WinFormsApp1
 
         private void btnManage_Click(object sender, EventArgs e)
         {
-
+            ManageForm manage = new ManageForm();
+            manage.Show();
+            this.Hide();
         }
 
         private void btnUsers_Click(object sender, EventArgs e)
         {
+            UsersForm form = new UsersForm();
+            form.Show();
+            this.Hide();
+        }
 
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                var login = new LoginForm();
+                login.Show();
+                Hide();
+                login.FormClosed += (s, args) => Close();
+            }
+        }
+
+        private void btnProfessors_Click(object sender, EventArgs e)
+        {
+            ProfessorsForm form = new ProfessorsForm();
+            form.Show();
+            this.Hide();
+        }
+
+        private void btnStudentRegistration_Click(object sender, EventArgs e)
+        {
+            StudentRegistration form = new StudentRegistration();
+            form.Show();
+            this.Hide();
         }
     }
 }
