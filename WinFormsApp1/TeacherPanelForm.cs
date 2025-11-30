@@ -70,7 +70,7 @@ namespace WinFormsApp1
 
         private void btnSubject_Click(object sender, EventArgs e)
         {
-            LoadControl(new ucSubject());
+            LoadControl(new ucSubject(teacherName, teacherID));
         }
 
         private void btnStudent_Click(object sender, EventArgs e)
