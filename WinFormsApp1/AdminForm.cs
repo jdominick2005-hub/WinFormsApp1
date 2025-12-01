@@ -12,7 +12,7 @@ namespace WinFormsApp1
 {
     public partial class AdminForm : Form
     {
-        private readonly string connectionString = @"Data Source=GERALD\SQLEXPRESS;Initial Catalog=AttendanceDB_v2;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Data Source=JAY\SQLEXPRESS;Initial Catalog=AttendanceDB_v2;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         private DateTime currentDate = DateTime.Today;
         private System.Windows.Forms.Timer refreshTimer;
 
@@ -478,6 +478,11 @@ namespace WinFormsApp1
             StudentRegistration form = new StudentRegistration();
             form.Show();
             this.Hide();
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

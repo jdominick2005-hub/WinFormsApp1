@@ -33,16 +33,7 @@
             label2 = new Label();
             label5 = new Label();
             button1 = new Button();
-            lblStudentRegistration = new Label();
             btnStudentRegistration = new Button();
-            label8 = new Label();
-            pictureBox6 = new PictureBox();
-            pictureBox5 = new PictureBox();
-            pictureBox4 = new PictureBox();
-            label6 = new Label();
-            label4 = new Label();
-            label3 = new Label();
-            pictureBox3 = new PictureBox();
             btnManage = new Button();
             btnProfessors = new Button();
             btnUsers = new Button();
@@ -52,10 +43,6 @@
             panel3 = new Panel();
             label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
@@ -100,113 +87,18 @@
             button1.Text = "Log out";
             button1.UseVisualStyleBackColor = true;
             // 
-            // lblStudentRegistration
-            // 
-            lblStudentRegistration.AutoSize = true;
-            lblStudentRegistration.BackColor = Color.White;
-            lblStudentRegistration.Location = new Point(42, 312);
-            lblStudentRegistration.Name = "lblStudentRegistration";
-            lblStudentRegistration.Size = new Size(140, 15);
-            lblStudentRegistration.TabIndex = 74;
-            lblStudentRegistration.Text = "STUDENT REGISTRATION\r\n";
-            // 
             // btnStudentRegistration
             // 
-            btnStudentRegistration.Location = new Point(12, 299);
+            btnStudentRegistration.FlatAppearance.BorderSize = 0;
+            btnStudentRegistration.FlatStyle = FlatStyle.Flat;
+            btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            btnStudentRegistration.Location = new Point(12, 311);
             btnStudentRegistration.Name = "btnStudentRegistration";
-            btnStudentRegistration.Size = new Size(219, 40);
+            btnStudentRegistration.Size = new Size(223, 56);
             btnStudentRegistration.TabIndex = 73;
+            btnStudentRegistration.Text = "REGISTER";
             btnStudentRegistration.UseVisualStyleBackColor = true;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.BackColor = Color.Transparent;
-            label8.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            label8.Location = new Point(95, 255);
-            label8.Name = "label8";
-            label8.Size = new Size(87, 17);
-            label8.TabIndex = 72;
-            label8.Text = "PROFESSORS";
-            // 
-            // pictureBox6
-            // 
-            pictureBox6.BackColor = Color.White;
-            pictureBox6.BackgroundImage = (Image)resources.GetObject("pictureBox6.BackgroundImage");
-            pictureBox6.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox6.Location = new Point(51, 172);
-            pictureBox6.Name = "pictureBox6";
-            pictureBox6.Size = new Size(32, 33);
-            pictureBox6.TabIndex = 71;
-            pictureBox6.TabStop = false;
-            // 
-            // pictureBox5
-            // 
-            pictureBox5.BackColor = Color.Transparent;
-            pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
-            pictureBox5.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox5.Location = new Point(51, 248);
-            pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(33, 29);
-            pictureBox5.TabIndex = 70;
-            pictureBox5.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.BackColor = Color.Transparent;
-            pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
-            pictureBox4.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox4.Location = new Point(52, 100);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(30, 29);
-            pictureBox4.TabIndex = 69;
-            pictureBox4.TabStop = false;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.BackColor = Color.White;
-            label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            label6.Location = new Point(95, 182);
-            label6.Name = "label6";
-            label6.Size = new Size(46, 17);
-            label6.TabIndex = 67;
-            label6.Text = "USERS";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.BackColor = Color.Transparent;
-            label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.ForeColor = Color.Black;
-            label4.Location = new Point(95, 109);
-            label4.Name = "label4";
-            label4.Size = new Size(64, 17);
-            label4.TabIndex = 66;
-            label4.Text = "MANAGE";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.BackColor = Color.Transparent;
-            label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(95, 36);
-            label3.Name = "label3";
-            label3.Size = new Size(47, 17);
-            label3.TabIndex = 65;
-            label3.Text = "HOME";
-            // 
-            // pictureBox3
-            // 
-            pictureBox3.BackColor = Color.Transparent;
-            pictureBox3.BackgroundImage = (Image)resources.GetObject("pictureBox3.BackgroundImage");
-            pictureBox3.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox3.Location = new Point(55, 35);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(24, 20);
-            pictureBox3.TabIndex = 65;
-            pictureBox3.TabStop = false;
             // 
             // btnManage
             // 
@@ -218,6 +110,7 @@
             btnManage.Name = "btnManage";
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
+            btnManage.Text = "MANAGE";
             btnManage.UseVisualStyleBackColor = false;
             btnManage.Click += btnManage_Click;
             // 
@@ -231,6 +124,7 @@
             btnProfessors.Name = "btnProfessors";
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
+            btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
             btnProfessors.Click += btnProfessors_Click;
             // 
@@ -245,6 +139,7 @@
             btnUsers.Name = "btnUsers";
             btnUsers.Size = new Size(223, 56);
             btnUsers.TabIndex = 2;
+            btnUsers.Text = "USERS";
             btnUsers.UseVisualStyleBackColor = false;
             btnUsers.Click += btnUsers_Click;
             // 
@@ -259,6 +154,7 @@
             btnHome.Name = "btnHome";
             btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
+            btnHome.Text = "HOME";
             btnHome.UseVisualStyleBackColor = false;
             btnHome.Click += btnHome_Click;
             // 
@@ -291,16 +187,7 @@
             // 
             panel3.BackColor = Color.SteelBlue;
             panel3.BackgroundImageLayout = ImageLayout.None;
-            panel3.Controls.Add(lblStudentRegistration);
             panel3.Controls.Add(btnStudentRegistration);
-            panel3.Controls.Add(label8);
-            panel3.Controls.Add(pictureBox6);
-            panel3.Controls.Add(pictureBox5);
-            panel3.Controls.Add(pictureBox4);
-            panel3.Controls.Add(label6);
-            panel3.Controls.Add(label4);
-            panel3.Controls.Add(label3);
-            panel3.Controls.Add(pictureBox3);
             panel3.Controls.Add(btnManage);
             panel3.Controls.Add(btnProfessors);
             panel3.Controls.Add(btnUsers);
@@ -337,14 +224,9 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "tempform";
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel3.ResumeLayout(false);
-            panel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -355,16 +237,7 @@
         private Label label2;
         private Label label5;
         private Button button1;
-        private Label lblStudentRegistration;
         private Button btnStudentRegistration;
-        private Label label8;
-        private PictureBox pictureBox6;
-        private PictureBox pictureBox5;
-        private PictureBox pictureBox4;
-        private Label label6;
-        private Label label4;
-        private Label label3;
-        private PictureBox pictureBox3;
         private Button btnManage;
         private Button btnProfessors;
         private Button btnUsers;

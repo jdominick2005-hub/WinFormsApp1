@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -14,18 +16,16 @@ namespace WinFormsApp1
         public ProfessorsForm()
         {
             InitializeComponent();
-            // Ensure DataGridView selection mode
+
             dgvTeachers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTeachers.MultiSelect = false;
 
-            // Wire up handlers if Designer missed them
             btnManage.Click += btnManage_Click;
             btnProfessors.Click += btnProfessors_Click;
             btnUsers.Click += btnUsers_Click;
             btnHome.Click += btnHome_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
             btnSendEmail.Click += btnSendEmail_Click;
-
 
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
@@ -36,50 +36,52 @@ namespace WinFormsApp1
             dgvTeachers.CellClick += dgvTeachers_CellClick;
 
             LoadTeachers();
-
         }
 
+        private void ShowOrCreateForm<T>() where T : Form, new()
+        {
+            var existing = Application.OpenForms.OfType<T>().FirstOrDefault();
 
-        // Navigation buttons
+            if (existing != null)
+            {
+                existing.Show();
+                existing.BringToFront();
+                existing.WindowState = FormWindowState.Normal;
+            }
+            else
+            {
+                var f = new T();
+                f.Show();
+            }
+
+            this.Close();
+        }
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-
-            AdminForm admin = new AdminForm();
-            admin.Show();
-            this.Hide();
+            ShowOrCreateForm<AdminForm>();
         }
 
         private void btnManage_Click(object sender, EventArgs e)
         {
-
-            ManageForm manage = new ManageForm();
-            manage.Show();
-            this.Hide();
+            ShowOrCreateForm<ManageForm>();
         }
 
         private void btnUsers_Click(object sender, EventArgs e)
         {
-
-            UsersForm users = new UsersForm();
-            users.Show();
-            this.Hide();
+            ShowOrCreateForm<UsersForm>();
         }
 
         private void btnProfessors_Click(object sender, EventArgs e)
         {
-
+            this.BringToFront();
+            this.WindowState = FormWindowState.Normal;
         }
 
         private void btnStudentRegistration_Click(object sender, EventArgs e)
         {
-            StudentRegistration form = new StudentRegistration();
-            form.Show();
-            this.Hide();
+            ShowOrCreateForm<StudentRegistration>();
         }
-
-
-        // Utility: show/hide password
 
         private void btnShow_Click(object sender, EventArgs e)
         {
@@ -95,9 +97,6 @@ namespace WinFormsApp1
             }
         }
 
-
-        // Grid loading & helpers
-
         private void LoadTeachers()
         {
             try
@@ -105,15 +104,16 @@ namespace WinFormsApp1
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string sql = @"
-                SELECT
-                    T.TeacherID,
-                    CONCAT(L.FirstName, ' ', L.LastName) AS FullName,
-                    L.Username,
-                    T.Email,
-                    T.Department
-                FROM Teachers T
-                JOIN Logins L ON T.UserID = L.UserID
-            ";
+                        SELECT
+                            T.TeacherID,
+                            CONCAT(L.FirstName, ' ', L.LastName) AS FullName,
+                            L.Username,
+                            T.Email,
+                            T.Department,
+                            L.UserID
+                        FROM Teachers T
+                        JOIN Logins L ON T.UserID = L.UserID
+                    ";
 
                     SqlDataAdapter da = new SqlDataAdapter(sql, conn);
                     DataTable dt = new DataTable();
@@ -121,11 +121,9 @@ namespace WinFormsApp1
 
                     dgvTeachers.DataSource = dt;
 
-                    // Hide ID column (internal use only)
                     if (dgvTeachers.Columns.Contains("TeacherID"))
                         dgvTeachers.Columns["TeacherID"].Visible = false;
 
-                    // Organize datagrid
                     dgvTeachers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                     dgvTeachers.ReadOnly = true;
                     dgvTeachers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -139,9 +137,6 @@ namespace WinFormsApp1
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-        // Add / Edit / Update / Delete
 
         private bool UsernameExists(string username, int excludeUserId = 0)
         {
@@ -162,23 +157,22 @@ namespace WinFormsApp1
             }
             catch
             {
-                return true; // treat as existing to be safe on DB error
+                return true;
             }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // Validate
             if (!ValidateProfessorInputs(requirePassword: true)) return;
 
             string username = txtUsername.Text.Trim();
+
             if (UsernameExists(username))
             {
                 MessageBox.Show("Username already exists. Choose another.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Insert Login + Teacher inside a transaction
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -187,15 +181,16 @@ namespace WinFormsApp1
                     try
                     {
                         string insertLogin = @"
-INSERT INTO Logins (Username, Password, FirstName, LastName, Role)
-VALUES (@username, @password, @fn, @ln, 'Teacher');
-SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                            INSERT INTO Logins (Username, Password, FirstName, LastName, Role)
+                            VALUES (@username, @password, @fn, @ln, 'Teacher');
+                            SELECT CAST(SCOPE_IDENTITY() AS INT);
+                        ";
 
                         int newUserId;
+
                         using (SqlCommand cmd = new SqlCommand(insertLogin, conn, trx))
                         {
                             cmd.Parameters.AddWithValue("@username", username);
-                            // TODO: Hash password before storing
                             cmd.Parameters.AddWithValue("@password", txtPassword.Text);
                             cmd.Parameters.AddWithValue("@fn", txtFirstName.Text.Trim());
                             cmd.Parameters.AddWithValue("@ln", txtLastName.Text.Trim());
@@ -203,8 +198,9 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);";
                         }
 
                         string insertTeacher = @"
-INSERT INTO Teachers (UserID, Department, Email)
-VALUES (@userid, @dept, @mail);";
+                            INSERT INTO Teachers (UserID, Department, Email)
+                            VALUES (@userid, @dept, @mail);
+                        ";
 
                         using (SqlCommand cmd2 = new SqlCommand(insertTeacher, conn, trx))
                         {
@@ -218,7 +214,6 @@ VALUES (@userid, @dept, @mail);";
                         MessageBox.Show("Teacher added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadTeachers();
                         ClearFields();
-
                     }
                     catch (Exception ex)
                     {
@@ -231,19 +226,19 @@ VALUES (@userid, @dept, @mail);";
 
         private void dgvTeachers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // populate fields when row clicked
             if (e.RowIndex < 0) return;
+
             DataGridViewRow row = dgvTeachers.Rows[e.RowIndex];
 
             if (dgvTeachers.Columns.Contains("TeacherID"))
                 txtTeacherID.Text = row.Cells["TeacherID"].Value?.ToString() ?? "";
+
             if (dgvTeachers.Columns.Contains("UserID"))
                 txtUserID.Text = row.Cells["UserID"].Value?.ToString() ?? "";
 
             txtUsername.Text = row.Cells["Username"].Value?.ToString() ?? "";
-            // We don't show password for security, but Designer expects a field; leave blank.
             txtPassword.Text = "";
-            // FullName splitting into first/last (best-effort)
+
             string full = row.Cells["FullName"].Value?.ToString() ?? "";
             SplitFullNameToFields(full);
 
@@ -265,26 +260,19 @@ VALUES (@userid, @dept, @mail);";
             }
 
             var parts = full.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
             txtFirstName.Text = parts.Length > 0 ? parts[0] : "";
-            if (parts.Length > 1)
-            {
-                // join the rest as last name
-                txtLastName.Text = string.Join(" ", parts, 1, parts.Length - 1);
-            }
-            else
-            {
-                txtLastName.Text = "";
-            }
+            txtLastName.Text = parts.Length > 1 ? string.Join(" ", parts, 1, parts.Length - 1) : "";
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            // Alias for selecting current row - same as clicking a row
             if (dgvTeachers.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Select a teacher row first.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             dgvTeachers_CellClick(this, new DataGridViewCellEventArgs(0, dgvTeachers.SelectedRows[0].Index));
         }
 
@@ -315,11 +303,12 @@ VALUES (@userid, @dept, @mail);";
                     try
                     {
                         string updateLogin = @"
-UPDATE Logins
-SET Username = @username,
-    FirstName = @fn,
-    LastName = @ln
-WHERE UserID = @uid;";
+                            UPDATE Logins
+                            SET Username = @username,
+                                FirstName = @fn,
+                                LastName = @ln
+                            WHERE UserID = @uid;
+                        ";
 
                         using (SqlCommand cmd = new SqlCommand(updateLogin, conn, trx))
                         {
@@ -330,13 +319,12 @@ WHERE UserID = @uid;";
                             cmd.ExecuteNonQuery();
                         }
 
-                        // Update password only if provided
                         if (!string.IsNullOrWhiteSpace(txtPassword.Text))
                         {
                             string updatePw = "UPDATE Logins SET Password = @pw WHERE UserID = @uid";
+
                             using (SqlCommand cmdPw = new SqlCommand(updatePw, conn, trx))
                             {
-                                // TODO: Hash password
                                 cmdPw.Parameters.AddWithValue("@pw", txtPassword.Text);
                                 cmdPw.Parameters.AddWithValue("@uid", userId);
                                 cmdPw.ExecuteNonQuery();
@@ -344,10 +332,11 @@ WHERE UserID = @uid;";
                         }
 
                         string updateTeacher = @"
-UPDATE Teachers
-SET Department = @dept,
-    Email = @mail
-WHERE TeacherID = @tid;";
+                            UPDATE Teachers
+                            SET Department = @dept,
+                                Email = @mail
+                            WHERE TeacherID = @tid;
+                        ";
 
                         using (SqlCommand cmd2 = new SqlCommand(updateTeacher, conn, trx))
                         {
@@ -360,7 +349,6 @@ WHERE TeacherID = @tid;";
                         trx.Commit();
                         MessageBox.Show("Teacher updated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadTeachers();
-
                     }
                     catch (Exception ex)
                     {
@@ -393,7 +381,6 @@ WHERE TeacherID = @tid;";
                 {
                     conn.Open();
 
-                    string query = "DELETE FROM Teachers WHERE TeacherID = @id";
                     using (SqlCommand cmdCredits = new SqlCommand(
                      "DELETE FROM TeacherCredits WHERE TeacherID = @tid", conn))
                     {
@@ -401,7 +388,6 @@ WHERE TeacherID = @tid;";
                         cmdCredits.ExecuteNonQuery();
                     }
 
-                    // Now delete teacher
                     using (SqlCommand cmdTeacher = new SqlCommand(
                         "DELETE FROM Teachers WHERE TeacherID = @tid", conn))
                     {
@@ -410,38 +396,35 @@ WHERE TeacherID = @tid;";
                     }
                 }
 
-
                 MessageBox.Show("Teacher deleted successfully.");
                 LoadTeachers();
             }
         }
 
-
-
-        // Clear & send email (optional)
-
-
         private void btnSendEmail_Click(object sender, EventArgs e)
         {
-            // Minimal demo: open default mail client with mailto:
             string to = txtEmail.Text.Trim();
+
             if (string.IsNullOrWhiteSpace(to) || !IsValidEmail(to))
             {
                 MessageBox.Show("Enter a valid email to send.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             try
             {
-                System.Diagnostics.Process.Start($"mailto:{to}");
+                var psi = new ProcessStartInfo
+                {
+                    FileName = $"mailto:{to}",
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Cannot open mail client: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-        // Simple helpers
 
         private bool ValidateProfessorInputs(bool requirePassword)
         {
@@ -451,13 +434,15 @@ WHERE TeacherID = @tid;";
                 string.IsNullOrWhiteSpace(txtDepartment.Text) ||
                 string.IsNullOrWhiteSpace(txtEmail.Text))
             {
-                MessageBox.Show("Please fill First Name, Last Name, Username, Department and Email.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please fill First Name, Last Name, Username, Department and Email.",
+                    "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             if (requirePassword && string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                MessageBox.Show("Password is required when creating a new teacher.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Password is required when creating a new teacher.",
+                    "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -473,12 +458,15 @@ WHERE TeacherID = @tid;";
         private bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email)) return false;
+
             try
             {
-                // Basic regex check; for strict validation use MailAddress
                 return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -490,12 +478,13 @@ WHERE TeacherID = @tid;";
             txtPassword.Clear();
             txtDepartment.Clear();
 
-            dgvTeachers.ClearSelection();  // deselect row
+            dgvTeachers.ClearSelection();
 
-            btnAdd.Enabled = true;        // allow adding again
+            btnAdd.Enabled = true;
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
         }
+
         private void ClearFields()
         {
             txtFirstName.Clear();
@@ -507,12 +496,10 @@ WHERE TeacherID = @tid;";
 
             dgvTeachers.ClearSelection();
 
-            // Enable Add again, disable Update/Delete
             btnAdd.Enabled = true;
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
         }
-
-
     }
 }
+
