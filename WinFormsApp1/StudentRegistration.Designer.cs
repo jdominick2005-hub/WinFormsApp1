@@ -111,7 +111,7 @@ namespace WinFormsApp1
             // lblEnroll
             // 
             lblEnroll.AutoSize = true;
-            lblEnroll.Location = new Point(342, 31);
+            lblEnroll.Location = new Point(379, 36);
             lblEnroll.Name = "lblEnroll";
             lblEnroll.Size = new Size(83, 15);
             lblEnroll.TabIndex = 15;
@@ -121,9 +121,9 @@ namespace WinFormsApp1
             // cmbEnrollSubject
             // 
             cmbEnrollSubject.FormattingEnabled = true;
-            cmbEnrollSubject.Location = new Point(422, 28);
+            cmbEnrollSubject.Location = new Point(379, 57);
             cmbEnrollSubject.Name = "cmbEnrollSubject";
-            cmbEnrollSubject.Size = new Size(149, 23);
+            cmbEnrollSubject.Size = new Size(177, 23);
             cmbEnrollSubject.TabIndex = 14;
             // 
             // lblLastName
@@ -332,7 +332,7 @@ namespace WinFormsApp1
             // 
             dgvStudentRegistration.BackgroundColor = Color.Gainsboro;
             dgvStudentRegistration.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudentRegistration.Location = new Point(300, 406);
+            dgvStudentRegistration.Location = new Point(300, 446);
             dgvStudentRegistration.Name = "dgvStudentRegistration";
             dgvStudentRegistration.Size = new Size(642, 170);
             dgvStudentRegistration.TabIndex = 3;

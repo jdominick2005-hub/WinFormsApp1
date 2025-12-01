@@ -135,22 +135,50 @@ VALUES (@name, @sched, @year, @section, @teacher)";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string sql = @"
-UPDATE Subjects SET
-    SubjectName=@name,
-    Schedule=@sched,
-    YearLevel=@year,
-    Section=@section,
-    TeacherID=@teacher
-WHERE SubjectID=@id";
+                List<string> updates = new List<string>();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@name", txtSubjectName.Text.Trim());
-                cmd.Parameters.AddWithValue("@sched", txtSchedule.Text.Trim());
-                cmd.Parameters.AddWithValue("@year", txtYearLevel.Text.Trim());
-                cmd.Parameters.AddWithValue("@section", txtSection.Text.Trim());
-                cmd.Parameters.AddWithValue("@teacher", cmbProfessor.SelectedValue);
+                // Only add fields that have been changed or have value
+                if (!string.IsNullOrWhiteSpace(txtSubjectName.Text))
+                {
+                    updates.Add("SubjectName=@name");
+                    cmd.Parameters.AddWithValue("@name", txtSubjectName.Text.Trim());
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtSchedule.Text))
+                {
+                    updates.Add("Schedule=@sched");
+                    cmd.Parameters.AddWithValue("@sched", txtSchedule.Text.Trim());
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtYearLevel.Text))
+                {
+                    updates.Add("YearLevel=@year");
+                    cmd.Parameters.AddWithValue("@year", txtYearLevel.Text.Trim());
+                }
+
+                if (!string.IsNullOrWhiteSpace(txtSection.Text))
+                {
+                    updates.Add("Section=@section");
+                    cmd.Parameters.AddWithValue("@section", txtSection.Text.Trim());
+                }
+
+                if (cmbProfessor.SelectedValue != null)
+                {
+                    updates.Add("TeacherID=@teacher");
+                    cmd.Parameters.AddWithValue("@teacher", cmbProfessor.SelectedValue);
+                }
+
+                if (updates.Count == 0)
+                {
+                    MessageBox.Show("No changes detected to update.");
+                    return;
+                }
+
+                string sql = "UPDATE Subjects SET " + string.Join(", ", updates) + " WHERE SubjectID=@id";
                 cmd.Parameters.AddWithValue("@id", subjectId);
+                cmd.CommandText = sql;
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -159,6 +187,7 @@ WHERE SubjectID=@id";
                 LoadSubjects();
                 ClearFields();
             }
+
         }
 
         //  DELETE SUBJECT

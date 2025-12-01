@@ -81,7 +81,6 @@ namespace WinFormsApp1
                 txtClassification.Text = row.Cells["Classification"].Value?.ToString() ?? "";
                 txtSection.Text = row.Cells["Section"].Value?.ToString() ?? "";
 
-                ToggleTextboxes(false);
             }
         }
 
@@ -116,37 +115,50 @@ namespace WinFormsApp1
                 return;
             }
 
-            int studentId = Convert.ToInt32(txtStudentID.Text);
+            int studentId;
+            if (!int.TryParse(txtStudentID.Text, out studentId))
+            {
+                MessageBox.Show("Invalid Student ID.");
+                return;
+            }
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                string query = @"
-                    UPDATE Students SET
-                        FirstName = @FirstName,
-                        LastName = @LastName,
-                        YearLevel = @YearLevel,
-                        Course = @Course,
-                        Section = @Section,
-                        Units = @Units,
-                        Classification = @Classification
-                    WHERE StudentID = @StudentID";
+                string updateQuery = @"
+            UPDATE Students SET
+                FirstName = @FirstName,
+                LastName = @LastName,
+                YearLevel = @YearLevel,
+                Course = @Course,
+                Section = @Section,
+                Units = @Units,
+                Classification = @Classification
+            WHERE StudentID = @StudentID";
 
-                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlCommand cmd = new SqlCommand(updateQuery, conn);
                 cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                 cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
                 cmd.Parameters.AddWithValue("@YearLevel", txtYearLevel.Text);
                 cmd.Parameters.AddWithValue("@Course", txtCourse.Text);
                 cmd.Parameters.AddWithValue("@Section", txtSection.Text);
-                cmd.Parameters.AddWithValue("@Units", txtUnits.Text);
+
+                int units;
+                int.TryParse(txtUnits.Text, out units);
+                cmd.Parameters.AddWithValue("@Units", units);
+
                 cmd.Parameters.AddWithValue("@Classification", txtClassification.Text);
                 cmd.Parameters.AddWithValue("@StudentID", studentId);
 
-                cmd.ExecuteNonQuery();
+                int result = cmd.ExecuteNonQuery();
+
+                if (result > 0)
+                    MessageBox.Show("Student updated successfully!");
+                else
+                    MessageBox.Show("Update failed. Student not found.");
             }
 
-            MessageBox.Show("Student updated successfully!");
             LoadStudents();
             ToggleTextboxes(false);
         }

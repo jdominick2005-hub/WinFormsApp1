@@ -22,7 +22,7 @@ namespace WinFormsApp1.UserControls
             LoadSubjectsForProfessor(professorId);
         }
 
-        
+
         public void LoadSubjectsForProfessor(int professorId, string sectionFilter = "")
         {
             try
@@ -130,15 +130,15 @@ namespace WinFormsApp1.UserControls
 
         private void cmbSections_SelectedIndexChanged(object sender, EventArgs e)
         {
-          
-        {
-            if (cmbsection.SelectedIndex != -1)
-            {
-                string selectedSection = cmbsection.Text;
-                LoadSubjectsForProfessor(professorId, selectedSection);
-            }
-        }
 
+            {
+                if (cmbsection.SelectedIndex != -1)
+                {
+                    string selectedSection = cmbsection.Text;
+                    LoadSubjectsForProfessor(professorId, selectedSection);
+                }
+            }
+
+        }
     }
-}
 }

@@ -41,10 +41,11 @@ namespace WinFormsApp1.UserControls
             // subjects
             // 
             subjects.BackColor = SystemColors.ActiveCaption;
+            subjects.Dock = DockStyle.Top;
             subjects.Font = new Font("Century", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            subjects.Location = new Point(64, 15);
+            subjects.Location = new Point(0, 0);
             subjects.Name = "subjects";
-            subjects.Size = new Size(976, 56);
+            subjects.Size = new Size(861, 42);
             subjects.TabIndex = 1;
             subjects.Text = "SUBJECT";
             subjects.TextAlign = ContentAlignment.MiddleCenter;
@@ -52,37 +53,40 @@ namespace WinFormsApp1.UserControls
             // dgvsubjects
             // 
             dgvsubjects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvsubjects.BackgroundColor = Color.Gainsboro;
             dgvsubjects.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvsubjects.Location = new Point(64, 259);
+            dgvsubjects.Location = new Point(56, 194);
+            dgvsubjects.Margin = new Padding(3, 2, 3, 2);
             dgvsubjects.Name = "dgvsubjects";
             dgvsubjects.RowHeadersWidth = 51;
-            dgvsubjects.Size = new Size(851, 432);
+            dgvsubjects.Size = new Size(745, 324);
             dgvsubjects.TabIndex = 2;
             dgvsubjects.CellContentClick += dgvsubjects_CellContentClick;
             // 
             // lblProfessor
             // 
             lblProfessor.AutoSize = true;
-            lblProfessor.Location = new Point(64, 152);
+            lblProfessor.Location = new Point(56, 114);
             lblProfessor.Name = "lblProfessor";
-            lblProfessor.Size = new Size(77, 20);
+            lblProfessor.Size = new Size(62, 15);
             lblProfessor.TabIndex = 3;
             lblProfessor.Text = "Professor: ";
             // 
             // txtprofessor
             // 
-            txtprofessor.Location = new Point(147, 152);
+            txtprofessor.Location = new Point(129, 114);
+            txtprofessor.Margin = new Padding(3, 2, 3, 2);
             txtprofessor.Name = "txtprofessor";
-            txtprofessor.Size = new Size(243, 27);
+            txtprofessor.Size = new Size(213, 23);
             txtprofessor.TabIndex = 4;
             txtprofessor.TextChanged += txtprofessor_TextChanged;
             // 
             // lblsection
             // 
             lblsection.AutoSize = true;
-            lblsection.Location = new Point(64, 203);
+            lblsection.Location = new Point(56, 152);
             lblsection.Name = "lblsection";
-            lblsection.Size = new Size(59, 20);
+            lblsection.Size = new Size(48, 15);
             lblsection.TabIndex = 5;
             lblsection.Text = "section:";
             // 
@@ -90,15 +94,15 @@ namespace WinFormsApp1.UserControls
             // 
             cmbsection.FormattingEnabled = true;
             cmbsection.Items.AddRange(new object[] { "BSIT-1A", "BSCS-2A", "BSIS-3B" });
-            cmbsection.Location = new Point(147, 203);
+            cmbsection.Location = new Point(129, 152);
+            cmbsection.Margin = new Padding(3, 2, 3, 2);
             cmbsection.Name = "cmbsection";
-            cmbsection.Size = new Size(225, 28);
+            cmbsection.Size = new Size(197, 23);
             cmbsection.TabIndex = 6;
-           
             // 
             // ucSubject
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(cmbsection);
             Controls.Add(lblsection);
@@ -106,9 +110,8 @@ namespace WinFormsApp1.UserControls
             Controls.Add(lblProfessor);
             Controls.Add(dgvsubjects);
             Controls.Add(subjects);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "ucSubject";
-            Size = new Size(1131, 805);
+            Size = new Size(861, 604);
             ((System.ComponentModel.ISupportInitialize)dgvsubjects).EndInit();
             ResumeLayout(false);
             PerformLayout();

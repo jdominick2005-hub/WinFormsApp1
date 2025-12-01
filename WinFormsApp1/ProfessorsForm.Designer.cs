@@ -308,7 +308,7 @@ namespace WinFormsApp1
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(485, 85);
+            btnAdd.Location = new Point(490, 48);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(75, 23);
             btnAdd.TabIndex = 8;
@@ -318,7 +318,7 @@ namespace WinFormsApp1
             // 
             // btnSendEmail
             // 
-            btnSendEmail.Location = new Point(482, 43);
+            btnSendEmail.Location = new Point(536, 158);
             btnSendEmail.Name = "btnSendEmail";
             btnSendEmail.Size = new Size(75, 23);
             btnSendEmail.TabIndex = 7;
@@ -328,7 +328,7 @@ namespace WinFormsApp1
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(485, 172);
+            btnDelete.Location = new Point(490, 77);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(75, 23);
             btnDelete.TabIndex = 11;
@@ -337,7 +337,7 @@ namespace WinFormsApp1
             // 
             // btnShow
             // 
-            btnShow.Location = new Point(485, 201);
+            btnShow.Location = new Point(581, 108);
             btnShow.Name = "btnShow";
             btnShow.Size = new Size(75, 23);
             btnShow.TabIndex = 12;
@@ -374,16 +374,16 @@ namespace WinFormsApp1
             gbProfessorSectionRegistration.Controls.Add(lblEmail);
             gbProfessorSectionRegistration.Controls.Add(txtPassword);
             gbProfessorSectionRegistration.Controls.Add(lblLast);
-            gbProfessorSectionRegistration.Location = new Point(319, 173);
+            gbProfessorSectionRegistration.Location = new Point(268, 184);
             gbProfessorSectionRegistration.Name = "gbProfessorSectionRegistration";
-            gbProfessorSectionRegistration.Size = new Size(604, 444);
+            gbProfessorSectionRegistration.Size = new Size(711, 444);
             gbProfessorSectionRegistration.TabIndex = 99;
             gbProfessorSectionRegistration.TabStop = false;
             gbProfessorSectionRegistration.Text = "Professor Section Registration";
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(404, 172);
+            btnClear.Location = new Point(490, 108);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(75, 23);
             btnClear.TabIndex = 93;
@@ -409,7 +409,7 @@ namespace WinFormsApp1
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(485, 143);
+            btnUpdate.Location = new Point(581, 77);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(75, 23);
             btnUpdate.TabIndex = 10;
@@ -419,7 +419,7 @@ namespace WinFormsApp1
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(485, 114);
+            btnEdit.Location = new Point(581, 48);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(75, 23);
             btnEdit.TabIndex = 9;
@@ -431,9 +431,9 @@ namespace WinFormsApp1
             // 
             dgvTeachers.BackgroundColor = Color.Gainsboro;
             dgvTeachers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTeachers.Location = new Point(26, 232);
+            dgvTeachers.Location = new Point(77, 238);
             dgvTeachers.Name = "dgvTeachers";
-            dgvTeachers.Size = new Size(551, 179);
+            dgvTeachers.Size = new Size(590, 179);
             dgvTeachers.TabIndex = 13;
             // 
             // txtTeacherID

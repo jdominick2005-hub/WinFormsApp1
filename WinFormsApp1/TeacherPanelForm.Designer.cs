@@ -359,7 +359,9 @@
             Controls.Add(label5);
             Controls.Add(panel1);
             Controls.Add(panelTopDashboard);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "TeacherPanelForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "TeacherPanelForm";
             panel3.ResumeLayout(false);
             panel3.PerformLayout();

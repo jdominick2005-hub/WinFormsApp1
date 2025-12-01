@@ -6,6 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Mail;
+
 
 namespace WinFormsApp1
 {
@@ -405,25 +408,88 @@ namespace WinFormsApp1
         {
             string to = txtEmail.Text.Trim();
 
+            // Validate recipient email
             if (string.IsNullOrWhiteSpace(to) || !IsValidEmail(to))
             {
-                MessageBox.Show("Enter a valid email to send.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Enter a valid recipient email.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Ensure password field is filled
+            string password = txtPassword.Text.Trim();
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Cannot send email: password field is empty.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                var psi = new ProcessStartInfo
+                // Gmail sender credentials
+                string fromEmail = "ashlydavin436@gmail.com";       // Gmail
+                string appPassword = "dbirnjcvohejvtin";           // 16-character App Password
+
+                string fullName = txtFirstName.Text.Trim() + " " + txtLastName.Text.Trim();
+                string userName = txtUsername.Text.Trim();
+
+                // Build HTML email body
+                string htmlBody = $@"
+<html>
+<body style='font-family: Arial; padding: 15px;'>
+    <h2>Hello {fullName},</h2>
+    <p>Your account has been successfully created. Below are your login credentials:</p>
+    <table style='border-collapse: collapse; margin-top: 10px;'>
+        <tr>
+            <td style='padding: 8px; font-weight: bold;'>Username:</td>
+            <td style='padding: 8px;'>{userName}</td>
+        </tr>
+        <tr>
+            <td style='padding: 8px; font-weight: bold;'>Password:</td>
+            <td style='padding: 8px;'>{password}</td>
+        </tr>
+    </table>
+    <p style='margin-top: 20px;'>Please keep this information secure and do not share it with anyone.</p>
+    <p>Thank you!</p>
+</body>
+</html>";
+
+                // 5Create MailMessage
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(fromEmail, "School Admin");
+                mail.To.Add(to);
+                mail.Subject = "Your Account Credentials";
+                mail.Body = htmlBody;
+                mail.IsBodyHtml = true;
+
+                // Configure SMTP client
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
-                    FileName = $"mailto:{to}",
-                    UseShellExecute = true
-                };
-                Process.Start(psi);
+                    smtp.EnableSsl = true;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential(fromEmail, appPassword);
+
+                    // Optional: log SMTP errors
+                    smtp.SendCompleted += (s, eArgs) =>
+                    {
+                        if (eArgs.Error != null)
+                            MessageBox.Show("SMTP Error: " + eArgs.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    };
+
+                    // Send email
+                    smtp.Send(mail);
+                }
+
+                MessageBox.Show("Credentials sent successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (SmtpException smtpEx)
+            {
+                MessageBox.Show("SMTP Error:\n" + smtpEx.Message, "SMTP Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Cannot open mail client: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("General Error:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private bool ValidateProfessorInputs(bool requirePassword)
