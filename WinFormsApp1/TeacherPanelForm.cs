@@ -6,21 +6,26 @@ namespace WinFormsApp1
 {
     public partial class TeacherPanelForm : Form
     {
-        private string teacherName;
-        private int teacherID;
-
+        private readonly string teacherName;
+        private readonly int teacherID;
 
         public TeacherPanelForm(string name, int id)
         {
             InitializeComponent();
+
             teacherName = name;
             teacherID = id;
+
             lblUserName.Text = teacherName;
 
-            LoadControl(new UserControls.ucHome());
+            // Debug check – confirm TeacherID passed correctly
+            MessageBox.Show($"TeacherPanelForm started with TeacherID={teacherID}, Name={teacherName}");
 
-
+            // Automatically load the Subject user control on form load
+            LoadControl(new ucSubject(teacherName, teacherID));
         }
+
+        // Generic method to load UserControls into the main panel
         private void LoadControl(UserControl uc)
         {
             panelMain.Controls.Clear();
@@ -28,39 +33,15 @@ namespace WinFormsApp1
             panelMain.Controls.Add(uc);
         }
 
-        private void btnAttendance_Click(object sender, EventArgs e)
-        {
-            LoadControl(new ucAttendance(teacherID));
-        }
-
-        private void btnLogout_Click(object sender, EventArgs e)
-        {
-            // Ask for confirmation
-            DialogResult result = MessageBox.Show(
-                "Are you sure you want to logout?",
-                "Confirm Logout",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            // If user selects No, stop the logout process
-            if (result == DialogResult.No)
-                return;
-
-            // Hide TeacherPanelForm
-            this.Hide();
-
-            // Show login form
-            LoginForm login = new LoginForm();
-            login.Show();
-
-            // Close TeacherPanelForm when login closes (optional)
-            login.FormClosed += (s, args) => this.Close();
-        }
-
+        // Button click handlers to load different user controls
         private void btnHome_Click(object sender, EventArgs e)
         {
             LoadControl(new ucHome());
+        }
+
+        private void btnAttendance_Click(object sender, EventArgs e)
+        {
+            LoadControl(new ucAttendance(teacherID));
         }
 
         private void btnClass_Click(object sender, EventArgs e)
@@ -82,5 +63,26 @@ namespace WinFormsApp1
         {
             LoadControl(new ucReports());
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+                return;
+
+            this.Hide();
+
+            var loginForm = new LoginForm();
+            loginForm.Show();
+
+            // Close this form when login form closes
+            loginForm.FormClosed += (s, args) => this.Close();
+        }
     }
 }
+
