@@ -121,7 +121,7 @@ namespace WinFormsApp1.UserControls
 
         private void txtprofessor_TextChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void dgvsubjects_CellContentClick(object sender, DataGridViewCellEventArgs e)

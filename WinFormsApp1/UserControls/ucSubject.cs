@@ -16,6 +16,7 @@ namespace WinFormsApp1.UserControls
             InitializeComponent();
             professorId = profId;
 
+          
             txtprofessor.Text = professorname;
             LoadSections();
             cmbsection.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
@@ -127,6 +128,8 @@ namespace WinFormsApp1.UserControls
                 cmbsection.SelectedIndex = -1;
             }
         }
+
+
 
         private void cmbSections_SelectedIndexChanged(object sender, EventArgs e)
         {
