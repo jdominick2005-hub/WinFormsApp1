@@ -12,7 +12,7 @@ namespace WinFormsApp1
 {
     public partial class AdminForm : Form
     {
-        private readonly string connectionString = @"Data Source=GEMINI;Initial Catalog=AttendanceDB_v2;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Data Source=JAY\SQLEXPRESS;Initial Catalog=AttendanceDB_v2;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         private DateTime currentDate = DateTime.Today;
         private System.Windows.Forms.Timer refreshTimer;
 
@@ -29,76 +29,54 @@ namespace WinFormsApp1
 
         private void AdminForm_Load(object sender, EventArgs e)
         {
+            // set date picker if present
             if (Controls.ContainsKey("dateTimePicker1"))
             {
                 var dtp = Controls["dateTimePicker1"] as DateTimePicker;
                 if (dtp != null) dtp.Value = currentDate;
             }
 
+            // initial load
             LoadDate(currentDate);
 
-            refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 15000;
+            // start refresh timer
+            refreshTimer = new System.Windows.Forms.Timer
+            {
+                Interval = 15000
+            };
             refreshTimer.Tick += RefreshTimer_Tick;
             refreshTimer.Start();
 
+            // UI adjustments
             ApplyKpiLabelLayout();
             MakeRoundedPanelSafe(panel5, 30);
             MakeRoundedPanelSafe(panel6, 30);
             MakeRoundedPanelSafe(panel4, 30);
             MakeRoundedPanelSafe(panel2, 30);
+
+            // keep layout responsive
             Resize -= AdminForm_Resize;
             Resize += AdminForm_Resize;
         }
 
-        private void RefreshTimer_Tick(object sender, EventArgs e)
-        {
-            LoadKpis(currentDate);
-        }
+        private void RefreshTimer_Tick(object sender, EventArgs e) => LoadKpis(currentDate);
 
-        private void lblstudents_Click(object sender, EventArgs e)
-        {
-            ShowAllStudentsInGrid();
-        }
+        // ---------------------------
+        // KPI click handlers (drilldowns)
+        // ---------------------------
+        private void lblstudents_Click(object sender, EventArgs e) => ShowAllStudentsInGrid();
+        private void lblstudnum_Click(object sender, EventArgs e) => ShowAllStudentsInGrid();
 
-        private void lblabsent_Click(object sender, EventArgs e)
-        {
-            FilterGridByStatus("Absent");
-        }
+        private void lblprof_Click(object sender, EventArgs e) => ShowAllTeachersInGrid();
+        private void lblprofnum_Click(object sender, EventArgs e) => ShowAllTeachersInGrid();
 
-        private void lblpresent_Click(object sender, EventArgs e)
-        {
-            FilterGridByStatus("Present");
-        }
+        private void lblpresent_Click(object sender, EventArgs e) => ShowEnrollmentsInGrid();
+        private void lblpresentnum_Click(object sender, EventArgs e) => ShowEnrollmentsInGrid();
 
-        private void lblprof_Click(object sender, EventArgs e)
-        {
-            ShowAllTeachersInGrid();
-        }
+        private void lblabsent_Click(object sender, EventArgs e) => ShowStaffAccountsInGrid();
+        private void lblabsentnum_Click(object sender, EventArgs e) => ShowStaffAccountsInGrid();
 
-        private void lblstudnum_Click(object sender, EventArgs e)
-        {
-            ShowAllStudentsInGrid();
-        }
-
-        private void lblprofnum_Click(object sender, EventArgs e)
-        {
-            ShowAllTeachersInGrid();
-        }
-
-        private void lblpresentnum_Click(object sender, EventArgs e)
-        {
-            FilterGridByStatus("Present");
-        }
-
-        private void lblabsentnum_Click(object sender, EventArgs e)
-        {
-            FilterGridByStatus("Absent");
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
@@ -113,6 +91,9 @@ namespace WinFormsApp1
             MessageBox.Show("Chart clicked. You can implement drilldown here.", "Chart", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        // ---------------------------
+        // Main load functions
+        // ---------------------------
         private void LoadDate(DateTime date)
         {
             currentDate = date;
@@ -121,6 +102,7 @@ namespace WinFormsApp1
             UpdateAttendanceChart(date);
         }
 
+        // KPIs: Total Students, Total Professors, Total Enrollments, Staff Accounts
         private void LoadKpis(DateTime date)
         {
             try
@@ -133,17 +115,13 @@ namespace WinFormsApp1
                 if (lblprofnum != null) lblprofnum.Text = totalTeachers.ToString();
                 if (lblprof != null) lblprof.Text = "Total Professors";
 
-                int present = ExecuteScalarInt(
-                    "SELECT COUNT(*) FROM Attendance WHERE DateTaken = @date AND Status = 'Present'",
-                    new Dictionary<string, object> { { "@date", date } });
-                if (lblpresentnum != null) lblpresentnum.Text = present.ToString();
-                if (lblpresent != null) lblpresent.Text = "Present Today";
+                int totalEnrollments = ExecuteScalarInt("SELECT COUNT(*) FROM Enrollments");
+                if (lblpresentnum != null) lblpresentnum.Text = totalEnrollments.ToString();
+                if (lblpresent != null) lblpresent.Text = "Total Enrollments";
 
-                int absent = ExecuteScalarInt(
-                    "SELECT COUNT(*) FROM Attendance WHERE DateTaken = @date AND Status = 'Absent'",
-                    new Dictionary<string, object> { { "@date", date } });
-                if (lblabsentnum != null) lblabsentnum.Text = absent.ToString();
-                if (lblabsent != null) lblabsent.Text = "Absent Today";
+                int staffAccounts = ExecuteScalarInt("SELECT COUNT(*) FROM Logins WHERE Role IN ('Admin','Teacher')");
+                if (lblabsentnum != null) lblabsentnum.Text = staffAccounts.ToString();
+                if (lblabsent != null) lblabsent.Text = "Staff Accounts";
             }
             catch (Exception ex)
             {
@@ -151,6 +129,7 @@ namespace WinFormsApp1
             }
         }
 
+        // Attendance grid: entries for selected date
         private void LoadAttendanceGrid(DateTime date)
         {
             try
@@ -162,6 +141,7 @@ namespace WinFormsApp1
                     JOIN Subjects sub ON a.SubjectID = sub.SubjectID
                     WHERE a.DateTaken = @date
                     ORDER BY sub.SubjectName, s.LastName, s.FirstName";
+
                 DataTable dt = GetDataTable(sql, new Dictionary<string, object> { { "@date", date } });
 
                 dataGridView1.DataSource = dt;
@@ -181,91 +161,106 @@ namespace WinFormsApp1
             }
         }
 
+        // Line chart: 12 months on X, Y fixed 0..100, values normalized to the max month
         private void UpdateAttendanceChart(DateTime date)
         {
             try
             {
                 string sql = @"
-                    SELECT Status, COUNT(*) AS Total
-                    FROM Attendance
-                    WHERE DateTaken = @date
-                    GROUP BY Status";
-                DataTable dt = GetDataTable(sql, new Dictionary<string, object> { { "@date", date } });
+            SELECT MONTH(DateRegistered) AS Month, COUNT(*) AS Total
+            FROM Students
+            GROUP BY MONTH(DateRegistered)
+            ORDER BY MONTH(DateRegistered)";
 
-                var counts = new Dictionary<string, int> { { "Present", 0 }, { "Absent", 0 }, { "Late", 0 } };
-                foreach (DataRow r in dt.Rows)
+                DataTable dt = GetDataTable(sql);
+
+                int[] monthlyCounts = new int[12];
+
+                foreach (DataRow row in dt.Rows)
                 {
-                    string status = r["Status"].ToString();
-                    int total = Convert.ToInt32(r["Total"]);
-                    if (counts.ContainsKey(status)) counts[status] = total;
-                    else counts[status] = total;
+                    int month = Convert.ToInt32(row["Month"]);
+                    int total = Convert.ToInt32(row["Total"]);
+                    monthlyCounts[month - 1] = total;
                 }
-
-                int totalAll = counts.Values.Sum();
-                if (totalAll == 0) totalAll = 1;
 
                 chart1.Series.Clear();
                 chart1.ChartAreas.Clear();
                 chart1.Legends.Clear();
 
-                ChartArea area = new ChartArea("Main");
-                area.AxisX.Enabled = AxisEnabled.False;
-                area.AxisY.Enabled = AxisEnabled.False;
+                ChartArea area = new ChartArea("MainArea");
                 chart1.ChartAreas.Add(area);
 
-                Series series = new Series("Attendance")
+                // X-axis: Jan to Dec
+                string[] months =
                 {
-                    ChartType = SeriesChartType.Doughnut,
-                    IsValueShownAsLabel = true,
-                    Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+            "Jan","Feb","Mar","Apr","May","Jun",
+            "Jul","Aug","Sep","Oct","Nov","Dec"
+        };
+
+                area.AxisX.Interval = 1;
+                area.AxisX.CustomLabels.Clear();
+
+                for (int i = 1; i <= 12; i++)
+                    area.AxisX.CustomLabels.Add(i - 0.5, i + 0.5, months[i - 1]);
+
+                // Remove "Months" title
+                area.AxisX.Title = "";
+
+                // Y-axis fixed 0–100
+                area.AxisY.Minimum = 0;
+                area.AxisY.Maximum = 100;
+                area.AxisY.Interval = 10;
+                area.AxisY.Title = "Registered Students";
+
+                // Disable clicking
+                try { chart1.Click -= chart1_Click; } catch { }
+
+                // LINE SERIES
+                Series series = new Series("Monthly Average")
+                {
+                    ChartType = SeriesChartType.Line,
+                    BorderWidth = 3,
+                    MarkerStyle = MarkerStyle.Circle,
+                    MarkerSize = 7,
+                    Color = Color.RoyalBlue,
+                    IsValueShownAsLabel = true
                 };
 
-                series["DoughnutRadius"] = "60";
-                series["PieLabelStyle"] = "Outside";
-                series.BorderWidth = 2;
-                series.BorderColor = Color.White;
-
-                foreach (var kvp in counts)
+                // Add RAW counts (NOT percentage)
+                for (int i = 0; i < 12; i++)
                 {
-                    int idx = series.Points.AddY(kvp.Value);
-                    var pt = series.Points[idx];
-                    int value = kvp.Value;
-                    double percent = (double)value / totalAll * 100.0;
-                    pt.AxisLabel = kvp.Key;
-                    pt.Label = $"{value} ({Math.Round(percent)}%)";
-                    pt.LegendText = kvp.Key;
-                    pt.ToolTip = $"{kvp.Key}: {value} ({percent:F1}%)";
-                }
-
-                var colors = new[] { Color.FromArgb(72, 133, 199), Color.FromArgb(237, 125, 49), Color.FromArgb(165, 196, 61) };
-                for (int i = 0; i < series.Points.Count; i++)
-                {
-                    series.Points[i].Color = colors[i % colors.Length];
+                    int value = monthlyCounts[i];
+                    series.Points.AddXY(i + 1, value);
                 }
 
                 chart1.Series.Add(series);
 
-                var legend = new Legend("Legend");
+                // LEGEND: ONLY show "Monthly Average"
+                Legend legend = new Legend("Legend");
                 legend.Docking = Docking.Bottom;
                 legend.Alignment = StringAlignment.Center;
-                chart1.Legends.Add(legend);
 
-                chart1.ChartAreas[0].Position = new ElementPosition(10, 5, 80, 85);
-                chart1.ChartAreas[0].InnerPlotPosition = new ElementPosition(15, 10, 70, 70);
+                // Remove extra series label (no duplicates)
+                legend.IsTextAutoFit = true;
+
+                chart1.Legends.Add(legend);
 
                 chart1.Invalidate();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error updating chart: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error updating chart: " + ex.Message);
             }
         }
 
+        // ---------------------------
+        // Grid drilldowns
+        // ---------------------------
         private void ShowAllStudentsInGrid()
         {
             try
             {
-                string sql = "SELECT StudentID, FirstName, LastName, YearLevel, Course, Section FROM Students ORDER BY LastName, FirstName";
+                string sql = "SELECT StudentID, FirstName, LastName, YearLevel, Course, Section, DateRegistered FROM Students ORDER BY LastName, FirstName";
                 DataTable dt = GetDataTable(sql, null);
                 dataGridView1.DataSource = dt;
                 dataGridView1.AutoResizeColumns();
@@ -295,34 +290,68 @@ namespace WinFormsApp1
             }
         }
 
-        private void FilterGridByStatus(string status)
+        private void ShowEnrollmentsInGrid()
         {
             try
             {
-                if (dataGridView1.DataSource is DataTable dt)
-                {
-                    DataView dv = new DataView(dt) { RowFilter = $"Status = '{status.Replace("'", "''")}'" };
-                    dataGridView1.DataSource = dv;
-                }
-                else
-                {
-                    string sql = @"
-                        SELECT a.AttendanceID, s.StudentID, s.FirstName, s.LastName, sub.SubjectName, a.Status, a.Remarks
-                        FROM Attendance a
-                        JOIN Students s ON a.StudentID = s.StudentID
-                        JOIN Subjects sub ON a.SubjectID = sub.SubjectID
-                        WHERE a.DateTaken = @date AND a.Status = @status
-                        ORDER BY sub.SubjectName, s.LastName, s.FirstName";
-                    DataTable dt2 = GetDataTable(sql, new Dictionary<string, object> { { "@date", currentDate }, { "@status", status } });
-                    dataGridView1.DataSource = dt2;
-                }
+                string sql = @"
+                    SELECT e.EnrollmentID,
+                           s.StudentID,
+                           (s.LastName + ', ' + s.FirstName) AS StudentName,
+                           sub.SubjectID,
+                           sub.SubjectName,
+                           CAST(e.DateEnrolled AS DATE) AS DateEnrolled
+                    FROM Enrollments e
+                    JOIN Students s ON e.StudentID = s.StudentID
+                    JOIN Subjects sub ON e.SubjectID = sub.SubjectID
+                    ORDER BY e.DateEnrolled DESC, s.LastName, s.FirstName";
+                DataTable dt = GetDataTable(sql, null);
+                dataGridView1.DataSource = dt;
+
+                if (dataGridView1.Columns.Contains("EnrollmentID")) dataGridView1.Columns["EnrollmentID"].HeaderText = "Enroll ID";
+                if (dataGridView1.Columns.Contains("StudentID")) dataGridView1.Columns["StudentID"].HeaderText = "Student ID";
+                if (dataGridView1.Columns.Contains("StudentName")) dataGridView1.Columns["StudentName"].HeaderText = "Student";
+                if (dataGridView1.Columns.Contains("SubjectName")) dataGridView1.Columns["SubjectName"].HeaderText = "Subject";
+                if (dataGridView1.Columns.Contains("DateEnrolled")) dataGridView1.Columns["DateEnrolled"].HeaderText = "Date Enrolled";
+
+                dataGridView1.AutoResizeColumns();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error filtering grid: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading enrollments: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        private void ShowStaffAccountsInGrid()
+        {
+            try
+            {
+                string sql = @"
+                    SELECT UserID, Username, FirstName, LastName, Role, DateCreated
+                    FROM Logins
+                    WHERE Role IN ('Admin','Teacher')
+                    ORDER BY Role DESC, LastName, FirstName";
+                DataTable dt = GetDataTable(sql, null);
+                dataGridView1.DataSource = dt;
+
+                if (dataGridView1.Columns.Contains("UserID")) dataGridView1.Columns["UserID"].HeaderText = "User ID";
+                if (dataGridView1.Columns.Contains("Username")) dataGridView1.Columns["Username"].HeaderText = "Username";
+                if (dataGridView1.Columns.Contains("FirstName")) dataGridView1.Columns["FirstName"].HeaderText = "First Name";
+                if (dataGridView1.Columns.Contains("LastName")) dataGridView1.Columns["LastName"].HeaderText = "Last Name";
+                if (dataGridView1.Columns.Contains("Role")) dataGridView1.Columns["Role"].HeaderText = "Role";
+                if (dataGridView1.Columns.Contains("DateCreated")) dataGridView1.Columns["DateCreated"].HeaderText = "Created";
+
+                dataGridView1.AutoResizeColumns();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading staff accounts: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ---------------------------
+        // ADO.NET helpers
+        // ---------------------------
         private int ExecuteScalarInt(string sql, Dictionary<string, object> parameters = null)
         {
             using (var conn = new SqlConnection(connectionString))
@@ -358,6 +387,9 @@ namespace WinFormsApp1
             return dt;
         }
 
+        // ---------------------------
+        // Rounded panels & KPI layout
+        // ---------------------------
         private void MakeRoundedPanelSafe(Panel panel, int radius)
         {
             if (panel == null) return;
@@ -401,19 +433,43 @@ namespace WinFormsApp1
         private void LayoutKpiPanel(Panel panel, Label titleLabel, Label numberLabel, int titleHeight = 28)
         {
             if (panel == null || titleLabel == null || numberLabel == null) return;
+
+            // Ensure labels are children of the panel
             if (titleLabel.Parent != panel) panel.Controls.Add(titleLabel);
             if (numberLabel.Parent != panel) panel.Controls.Add(numberLabel);
+
+            // Disable designer auto sizing/anchoring that might override runtime layout
             titleLabel.AutoSize = false;
             numberLabel.AutoSize = false;
+
+            titleLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            numberLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+
+            // Title at the top
             titleLabel.Dock = DockStyle.Top;
             titleLabel.Height = titleHeight;
             titleLabel.TextAlign = ContentAlignment.MiddleCenter;
             titleLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            titleLabel.Margin = new Padding(0);
+
+            // Number fills remaining space BUT we add top padding so it sits LOWER
             numberLabel.Dock = DockStyle.Fill;
             numberLabel.TextAlign = ContentAlignment.MiddleCenter;
             numberLabel.Font = new Font("Segoe UI", 26F, FontStyle.Bold);
-            panel.Padding = new Padding(8);
+
+            // THE KEY: use Padding (top) to push the number down
+            // Increase the top padding to move the number lower: try 15, 20, 25 until it looks right
+            numberLabel.Padding = new Padding(0, 18, 0, 0);
+
+            // Also ensure panel has some internal spacing
+            panel.Padding = new Padding(6);
+
+            // If layout still seems off, force a re-layout
+            panel.PerformLayout();
+            numberLabel.Refresh();
+            titleLabel.Refresh();
         }
+
 
         private void AdminForm_Resize(object sender, EventArgs e)
         {
@@ -440,20 +496,15 @@ namespace WinFormsApp1
             catch { }
         }
 
+        // ---------------------------
+        // Navigation button handlers
+        // ---------------------------
         private void btnManage_Click(object sender, EventArgs e)
         {
             ManageForm manage = new ManageForm();
             manage.Show();
             this.Hide();
         }
-
-        private void btnUsers_Click(object sender, EventArgs e)
-        {
-            UsersForm form = new UsersForm();
-            form.Show();
-            this.Hide();
-        }
-
         private void btnLogout_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -482,7 +533,7 @@ namespace WinFormsApp1
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-
+            // optional home click behavior
         }
     }
 }

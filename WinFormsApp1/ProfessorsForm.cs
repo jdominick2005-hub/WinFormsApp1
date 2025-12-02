@@ -25,7 +25,6 @@ namespace WinFormsApp1
 
             btnManage.Click += btnManage_Click;
             btnProfessors.Click += btnProfessors_Click;
-            btnUsers.Click += btnUsers_Click;
             btnHome.Click += btnHome_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
             btnSendEmail.Click += btnSendEmail_Click;
@@ -68,11 +67,6 @@ namespace WinFormsApp1
         private void btnManage_Click(object sender, EventArgs e)
         {
             ShowOrCreateForm<ManageForm>();
-        }
-
-        private void btnUsers_Click(object sender, EventArgs e)
-        {
-            ShowOrCreateForm<UsersForm>();
         }
 
         private void btnProfessors_Click(object sender, EventArgs e)

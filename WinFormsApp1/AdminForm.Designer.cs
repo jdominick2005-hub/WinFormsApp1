@@ -29,13 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblUserName = new Label();
             btnManage = new Button();
             btnProfessors = new Button();
-            btnUsers = new Button();
             btnHome = new Button();
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
@@ -77,7 +76,7 @@
             // 
             lblUserName.AutoSize = true;
             lblUserName.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUserName.Location = new Point(864, 47);
+            lblUserName.Location = new Point(864, 58);
             lblUserName.Name = "lblUserName";
             lblUserName.Size = new Size(64, 21);
             lblUserName.TabIndex = 62;
@@ -89,7 +88,7 @@
             btnManage.FlatAppearance.BorderSize = 0;
             btnManage.FlatStyle = FlatStyle.Flat;
             btnManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnManage.Location = new Point(12, 90);
+            btnManage.Location = new Point(12, 92);
             btnManage.Name = "btnManage";
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
@@ -103,28 +102,13 @@
             btnProfessors.FlatAppearance.BorderSize = 0;
             btnProfessors.FlatStyle = FlatStyle.Flat;
             btnProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnProfessors.Location = new Point(12, 240);
+            btnProfessors.Location = new Point(13, 169);
             btnProfessors.Name = "btnProfessors";
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
             btnProfessors.Click += btnProfessors_Click;
-            // 
-            // btnUsers
-            // 
-            btnUsers.BackColor = Color.SteelBlue;
-            btnUsers.BackgroundImageLayout = ImageLayout.None;
-            btnUsers.FlatAppearance.BorderSize = 0;
-            btnUsers.FlatStyle = FlatStyle.Flat;
-            btnUsers.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnUsers.Location = new Point(12, 165);
-            btnUsers.Name = "btnUsers";
-            btnUsers.Size = new Size(223, 56);
-            btnUsers.TabIndex = 2;
-            btnUsers.Text = "USERS";
-            btnUsers.UseVisualStyleBackColor = false;
-            btnUsers.Click += btnUsers_Click;
             // 
             // btnHome
             // 
@@ -173,7 +157,6 @@
             panel3.Controls.Add(btnStudentRegistration);
             panel3.Controls.Add(btnManage);
             panel3.Controls.Add(btnProfessors);
-            panel3.Controls.Add(btnUsers);
             panel3.Controls.Add(btnHome);
             panel3.Location = new Point(-1, 183);
             panel3.Name = "panel3";
@@ -185,7 +168,7 @@
             btnStudentRegistration.FlatAppearance.BorderSize = 0;
             btnStudentRegistration.FlatStyle = FlatStyle.Flat;
             btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnStudentRegistration.Location = new Point(13, 315);
+            btnStudentRegistration.Location = new Point(14, 246);
             btnStudentRegistration.Name = "btnStudentRegistration";
             btnStudentRegistration.Size = new Size(223, 56);
             btnStudentRegistration.TabIndex = 73;
@@ -198,7 +181,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(267, 39);
+            label2.Location = new Point(267, 50);
             label2.Name = "label2";
             label2.Size = new Size(192, 40);
             label2.TabIndex = 63;
@@ -219,9 +202,9 @@
             panel2.BackColor = Color.SteelBlue;
             panel2.Controls.Add(lblstudnum);
             panel2.Controls.Add(lblstudents);
-            panel2.Location = new Point(814, 122);
+            panel2.Location = new Point(814, 142);
             panel2.Name = "panel2";
-            panel2.Size = new Size(160, 90);
+            panel2.Size = new Size(161, 80);
             panel2.TabIndex = 65;
             // 
             // lblstudnum
@@ -251,9 +234,9 @@
             panel4.BackColor = Color.SteelBlue;
             panel4.Controls.Add(lblprofnum);
             panel4.Controls.Add(lblprof);
-            panel4.Location = new Point(635, 122);
+            panel4.Location = new Point(635, 142);
             panel4.Name = "panel4";
-            panel4.Size = new Size(160, 90);
+            panel4.Size = new Size(161, 80);
             panel4.TabIndex = 66;
             // 
             // lblprofnum
@@ -283,9 +266,9 @@
             panel5.BackColor = Color.SteelBlue;
             panel5.Controls.Add(lblpresent);
             panel5.Controls.Add(lblpresentnum);
-            panel5.Location = new Point(277, 122);
+            panel5.Location = new Point(277, 142);
             panel5.Name = "panel5";
-            panel5.Size = new Size(160, 90);
+            panel5.Size = new Size(161, 80);
             panel5.TabIndex = 67;
             // 
             // lblpresent
@@ -319,9 +302,9 @@
             panel6.BackColor = Color.SteelBlue;
             panel6.Controls.Add(lblabsentnum);
             panel6.Controls.Add(lblabsent);
-            panel6.Location = new Point(456, 122);
+            panel6.Location = new Point(456, 142);
             panel6.Name = "panel6";
-            panel6.Size = new Size(160, 90);
+            panel6.Size = new Size(161, 80);
             panel6.TabIndex = 68;
             // 
             // lblabsentnum
@@ -353,7 +336,7 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(594, 237);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(392, 109);
+            dataGridView1.Size = new Size(334, 99);
             dataGridView1.TabIndex = 69;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -361,7 +344,7 @@
             // 
             btnLogout.FlatAppearance.BorderColor = Color.FromArgb(255, 128, 128);
             btnLogout.FlatAppearance.BorderSize = 8;
-            btnLogout.Location = new Point(920, 71);
+            btnLogout.Location = new Point(920, 82);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(66, 29);
             btnLogout.TabIndex = 64;
@@ -372,7 +355,7 @@
             // pictureBox2
             // 
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(934, 39);
+            pictureBox2.Location = new Point(934, 50);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(40, 40);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -383,7 +366,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(273, 79);
+            label1.Location = new Point(273, 90);
             label1.Name = "label1";
             label1.Size = new Size(215, 13);
             label1.TabIndex = 70;
@@ -392,7 +375,7 @@
             // dateTimePicker1
             // 
             dateTimePicker1.Enabled = false;
-            dateTimePicker1.Location = new Point(690, 365);
+            dateTimePicker1.Location = new Point(672, 57);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(173, 23);
             dateTimePicker1.TabIndex = 72;
@@ -401,17 +384,17 @@
             // chart1
             // 
             chart1.BackgroundImageLayout = ImageLayout.None;
-            chartArea2.Name = "ChartArea1";
-            chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            chart1.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chart1.Legends.Add(legend1);
             chart1.Location = new Point(277, 237);
             chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            chart1.Series.Add(series2);
-            chart1.Size = new Size(300, 300);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chart1.Series.Add(series1);
+            chart1.Size = new Size(300, 303);
             chart1.TabIndex = 73;
             chart1.Text = "chart1";
             chart1.Click += chart1_Click;
@@ -463,7 +446,6 @@
         private Button btnAttendanceReport;
         private Button btnManage;
         private Button btnProfessors;
-        private Button btnUsers;
         private Button btnHome;
         private PictureBox pictureBox1;
         private Panel panel1;

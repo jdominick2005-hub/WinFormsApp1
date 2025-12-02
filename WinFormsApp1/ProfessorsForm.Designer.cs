@@ -36,7 +36,6 @@ namespace WinFormsApp1
             button1 = new Button();
             btnManage = new Button();
             btnProfessors = new Button();
-            btnUsers = new Button();
             btnHome = new Button();
             panel1 = new Panel();
             pictureBox1 = new PictureBox();
@@ -88,7 +87,7 @@ namespace WinFormsApp1
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(303, 47);
+            label2.Location = new Point(267, 50);
             label2.Name = "label2";
             label2.Size = new Size(161, 32);
             label2.TabIndex = 81;
@@ -119,7 +118,7 @@ namespace WinFormsApp1
             btnManage.FlatAppearance.BorderSize = 0;
             btnManage.FlatStyle = FlatStyle.Flat;
             btnManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnManage.Location = new Point(12, 90);
+            btnManage.Location = new Point(12, 92);
             btnManage.Name = "btnManage";
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
@@ -133,28 +132,13 @@ namespace WinFormsApp1
             btnProfessors.FlatAppearance.BorderSize = 0;
             btnProfessors.FlatStyle = FlatStyle.System;
             btnProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnProfessors.Location = new Point(12, 240);
+            btnProfessors.Location = new Point(13, 169);
             btnProfessors.Name = "btnProfessors";
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
             btnProfessors.Click += btnProfessors_Click;
-            // 
-            // btnUsers
-            // 
-            btnUsers.BackColor = Color.SteelBlue;
-            btnUsers.BackgroundImageLayout = ImageLayout.None;
-            btnUsers.FlatAppearance.BorderSize = 0;
-            btnUsers.FlatStyle = FlatStyle.Flat;
-            btnUsers.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnUsers.Location = new Point(12, 165);
-            btnUsers.Name = "btnUsers";
-            btnUsers.Size = new Size(223, 56);
-            btnUsers.TabIndex = 2;
-            btnUsers.Text = "USERS";
-            btnUsers.UseVisualStyleBackColor = false;
-            btnUsers.Click += btnUsers_Click;
             // 
             // btnHome
             // 
@@ -203,7 +187,6 @@ namespace WinFormsApp1
             panel3.Controls.Add(btnStudentRegistration);
             panel3.Controls.Add(btnManage);
             panel3.Controls.Add(btnProfessors);
-            panel3.Controls.Add(btnUsers);
             panel3.Controls.Add(btnHome);
             panel3.Location = new Point(-1, 183);
             panel3.Name = "panel3";
@@ -215,7 +198,7 @@ namespace WinFormsApp1
             btnStudentRegistration.FlatAppearance.BorderSize = 0;
             btnStudentRegistration.FlatStyle = FlatStyle.Flat;
             btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnStudentRegistration.Location = new Point(12, 315);
+            btnStudentRegistration.Location = new Point(14, 246);
             btnStudentRegistration.Name = "btnStudentRegistration";
             btnStudentRegistration.Size = new Size(223, 56);
             btnStudentRegistration.TabIndex = 73;
@@ -227,7 +210,7 @@ namespace WinFormsApp1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(801, 53);
+            label1.Location = new Point(851, 57);
             label1.Name = "label1";
             label1.Size = new Size(78, 25);
             label1.TabIndex = 80;
@@ -236,7 +219,7 @@ namespace WinFormsApp1
             // lblLast
             // 
             lblLast.AutoSize = true;
-            lblLast.Location = new Point(77, 71);
+            lblLast.Location = new Point(58, 116);
             lblLast.Name = "lblLast";
             lblLast.Size = new Size(63, 15);
             lblLast.TabIndex = 84;
@@ -245,7 +228,7 @@ namespace WinFormsApp1
             // lblEmail
             // 
             lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(77, 100);
+            lblEmail.Location = new Point(58, 145);
             lblEmail.Name = "lblEmail";
             lblEmail.Size = new Size(84, 15);
             lblEmail.TabIndex = 85;
@@ -254,7 +237,7 @@ namespace WinFormsApp1
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(77, 158);
+            lblPassword.Location = new Point(58, 203);
             lblPassword.Name = "lblPassword";
             lblPassword.Size = new Size(60, 15);
             lblPassword.TabIndex = 86;
@@ -263,7 +246,7 @@ namespace WinFormsApp1
             // lblUsername
             // 
             lblUsername.AutoSize = true;
-            lblUsername.Location = new Point(77, 129);
+            lblUsername.Location = new Point(58, 174);
             lblUsername.Name = "lblUsername";
             lblUsername.Size = new Size(63, 15);
             lblUsername.TabIndex = 87;
@@ -272,7 +255,7 @@ namespace WinFormsApp1
             // lblDepartment
             // 
             lblDepartment.AutoSize = true;
-            lblDepartment.Location = new Point(77, 187);
+            lblDepartment.Location = new Point(58, 232);
             lblDepartment.Name = "lblDepartment";
             lblDepartment.Size = new Size(73, 15);
             lblDepartment.TabIndex = 88;
@@ -280,74 +263,86 @@ namespace WinFormsApp1
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(189, 92);
+            txtEmail.Location = new Point(170, 137);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(191, 23);
             txtEmail.TabIndex = 3;
             // 
             // txtLastName
             // 
-            txtLastName.Location = new Point(189, 63);
+            txtLastName.Location = new Point(170, 108);
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(191, 23);
             txtLastName.TabIndex = 2;
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(189, 150);
+            txtPassword.Location = new Point(170, 195);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(191, 23);
             txtPassword.TabIndex = 5;
             // 
             // txtUsername
             // 
-            txtUsername.Location = new Point(189, 121);
+            txtUsername.Location = new Point(170, 166);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(191, 23);
             txtUsername.TabIndex = 4;
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(490, 48);
+            btnAdd.BackColor = Color.SteelBlue;
+            btnAdd.FlatAppearance.BorderSize = 0;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Location = new Point(445, 100);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(75, 23);
             btnAdd.TabIndex = 8;
             btnAdd.Text = "  Add";
-            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += btnAdd_Click;
             // 
             // btnSendEmail
             // 
-            btnSendEmail.Location = new Point(536, 158);
+            btnSendEmail.BackColor = Color.SteelBlue;
+            btnSendEmail.FlatAppearance.BorderSize = 0;
+            btnSendEmail.FlatStyle = FlatStyle.Flat;
+            btnSendEmail.Location = new Point(489, 192);
             btnSendEmail.Name = "btnSendEmail";
             btnSendEmail.Size = new Size(75, 23);
             btnSendEmail.TabIndex = 7;
             btnSendEmail.Text = "Send Email";
-            btnSendEmail.UseVisualStyleBackColor = true;
+            btnSendEmail.UseVisualStyleBackColor = false;
             btnSendEmail.Click += btnSendEmail_Click;
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(490, 77);
+            btnDelete.BackColor = Color.SteelBlue;
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Location = new Point(445, 129);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(75, 23);
             btnDelete.TabIndex = 11;
             btnDelete.Text = "Delete";
-            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.UseVisualStyleBackColor = false;
             // 
             // btnShow
             // 
-            btnShow.Location = new Point(581, 108);
+            btnShow.BackColor = Color.SteelBlue;
+            btnShow.FlatAppearance.BorderSize = 0;
+            btnShow.FlatStyle = FlatStyle.Flat;
+            btnShow.Location = new Point(536, 160);
             btnShow.Name = "btnShow";
             btnShow.Size = new Size(75, 23);
             btnShow.TabIndex = 12;
             btnShow.Text = "Show";
-            btnShow.UseVisualStyleBackColor = true;
+            btnShow.UseVisualStyleBackColor = false;
             btnShow.Click += btnShow_Click;
             // 
             // txtDepartment
             // 
-            txtDepartment.Location = new Point(189, 179);
+            txtDepartment.Location = new Point(170, 224);
             txtDepartment.Name = "txtDepartment";
             txtDepartment.Size = new Size(191, 23);
             txtDepartment.TabIndex = 6;
@@ -374,27 +369,30 @@ namespace WinFormsApp1
             gbProfessorSectionRegistration.Controls.Add(lblEmail);
             gbProfessorSectionRegistration.Controls.Add(txtPassword);
             gbProfessorSectionRegistration.Controls.Add(lblLast);
-            gbProfessorSectionRegistration.Location = new Point(268, 184);
+            gbProfessorSectionRegistration.Location = new Point(267, 85);
             gbProfessorSectionRegistration.Name = "gbProfessorSectionRegistration";
-            gbProfessorSectionRegistration.Size = new Size(711, 444);
+            gbProfessorSectionRegistration.Size = new Size(711, 497);
             gbProfessorSectionRegistration.TabIndex = 99;
             gbProfessorSectionRegistration.TabStop = false;
             gbProfessorSectionRegistration.Text = "Professor Section Registration";
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(490, 108);
+            btnClear.BackColor = Color.SteelBlue;
+            btnClear.FlatAppearance.BorderSize = 0;
+            btnClear.FlatStyle = FlatStyle.Flat;
+            btnClear.Location = new Point(445, 160);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(75, 23);
             btnClear.TabIndex = 93;
             btnClear.Text = "Clear";
-            btnClear.UseVisualStyleBackColor = true;
+            btnClear.UseVisualStyleBackColor = false;
             btnClear.Click += btnClear_Click;
             // 
             // lblFirst
             // 
             lblFirst.AutoSize = true;
-            lblFirst.Location = new Point(77, 42);
+            lblFirst.Location = new Point(58, 87);
             lblFirst.Name = "lblFirst";
             lblFirst.Size = new Size(61, 15);
             lblFirst.TabIndex = 92;
@@ -402,36 +400,42 @@ namespace WinFormsApp1
             // 
             // txtFirstName
             // 
-            txtFirstName.Location = new Point(189, 34);
+            txtFirstName.Location = new Point(170, 79);
             txtFirstName.Name = "txtFirstName";
             txtFirstName.Size = new Size(191, 23);
             txtFirstName.TabIndex = 1;
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(581, 77);
+            btnUpdate.BackColor = Color.SteelBlue;
+            btnUpdate.FlatAppearance.BorderSize = 0;
+            btnUpdate.FlatStyle = FlatStyle.Flat;
+            btnUpdate.Location = new Point(536, 129);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(75, 23);
             btnUpdate.TabIndex = 10;
             btnUpdate.Text = "Update";
-            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.UseVisualStyleBackColor = false;
             btnUpdate.Click += btnUpdate_Click;
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(581, 48);
+            btnEdit.BackColor = Color.SteelBlue;
+            btnEdit.FlatAppearance.BorderSize = 0;
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.Location = new Point(536, 100);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(75, 23);
             btnEdit.TabIndex = 9;
             btnEdit.Text = "Edit";
-            btnEdit.UseVisualStyleBackColor = true;
+            btnEdit.UseVisualStyleBackColor = false;
             btnEdit.Click += btnEdit_Click;
             // 
             // dgvTeachers
             // 
             dgvTeachers.BackgroundColor = Color.Gainsboro;
             dgvTeachers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTeachers.Location = new Point(77, 238);
+            dgvTeachers.Location = new Point(58, 268);
             dgvTeachers.Name = "dgvTeachers";
             dgvTeachers.Size = new Size(590, 179);
             dgvTeachers.TabIndex = 13;
@@ -439,7 +443,7 @@ namespace WinFormsApp1
             // txtTeacherID
             // 
             txtTeacherID.Enabled = false;
-            txtTeacherID.Location = new Point(508, 111);
+            txtTeacherID.Location = new Point(536, 12);
             txtTeacherID.Name = "txtTeacherID";
             txtTeacherID.Size = new Size(191, 23);
             txtTeacherID.TabIndex = 100;
@@ -448,7 +452,7 @@ namespace WinFormsApp1
             // txtUserID
             // 
             txtUserID.Enabled = false;
-            txtUserID.Location = new Point(508, 140);
+            txtUserID.Location = new Point(536, 50);
             txtUserID.Name = "txtUserID";
             txtUserID.Size = new Size(191, 23);
             txtUserID.TabIndex = 101;
@@ -499,7 +503,6 @@ namespace WinFormsApp1
         private Button button1;
         private Button btnManage;
         private Button btnProfessors;
-        private Button btnUsers;
         private Button btnHome;
         private Panel panel1;
         private PictureBox pictureBox1;

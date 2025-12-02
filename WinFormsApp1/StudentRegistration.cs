@@ -318,13 +318,6 @@ namespace WinFormsApp1
             this.Hide();
         }
 
-        private void btnUsers_Click(object sender, EventArgs e)
-        {
-            UsersForm users = new UsersForm();
-            users.Show();
-            this.Hide();
-        }
-
         private void btnProfessors_Click(object sender, EventArgs e)
         {
             ProfessorsForm prof = new ProfessorsForm();

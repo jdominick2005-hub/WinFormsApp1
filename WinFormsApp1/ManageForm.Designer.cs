@@ -42,34 +42,33 @@ namespace WinFormsApp1
             btnStudentRegistration = new Button();
             btnManage = new Button();
             btnProfessors = new Button();
-            btnUsers = new Button();
             btnHome = new Button();
             panel1 = new Panel();
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             label1 = new Label();
-            lblSchedule = new Label();
-            lblSection = new Label();
-            txtSubjectName = new TextBox();
-            txtSchedule = new TextBox();
-            txtSection = new TextBox();
-            lblProfessor = new Label();
-            btnAdd = new Button();
-            btnDelete = new Button();
-            btnUpdate = new Button();
-            dgvProfessors = new DataGridView();
             gbProfessorSectionAssignment = new GroupBox();
             cmbProfessor = new ComboBox();
             lblSubjectName = new Label();
             lblYear = new Label();
             txtYearLevel = new TextBox();
             btnView = new Button();
+            dgvProfessors = new DataGridView();
+            lblProfessor = new Label();
+            btnDelete = new Button();
+            btnUpdate = new Button();
+            txtSchedule = new TextBox();
+            txtSubjectName = new TextBox();
+            lblSchedule = new Label();
+            btnAdd = new Button();
+            txtSection = new TextBox();
+            lblSection = new Label();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvProfessors).BeginInit();
             gbProfessorSectionAssignment.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProfessors).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -85,7 +84,7 @@ namespace WinFormsApp1
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(292, 47);
+            label2.Location = new Point(267, 50);
             label2.Name = "label2";
             label2.Size = new Size(120, 32);
             label2.TabIndex = 69;
@@ -108,7 +107,6 @@ namespace WinFormsApp1
             panel3.Controls.Add(btnStudentRegistration);
             panel3.Controls.Add(btnManage);
             panel3.Controls.Add(btnProfessors);
-            panel3.Controls.Add(btnUsers);
             panel3.Controls.Add(btnHome);
             panel3.Location = new Point(-1, 183);
             panel3.Name = "panel3";
@@ -120,7 +118,7 @@ namespace WinFormsApp1
             btnStudentRegistration.FlatAppearance.BorderSize = 0;
             btnStudentRegistration.FlatStyle = FlatStyle.Flat;
             btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnStudentRegistration.Location = new Point(12, 311);
+            btnStudentRegistration.Location = new Point(14, 246);
             btnStudentRegistration.Name = "btnStudentRegistration";
             btnStudentRegistration.Size = new Size(223, 56);
             btnStudentRegistration.TabIndex = 73;
@@ -134,7 +132,7 @@ namespace WinFormsApp1
             btnManage.FlatAppearance.BorderSize = 0;
             btnManage.FlatStyle = FlatStyle.System;
             btnManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnManage.Location = new Point(12, 89);
+            btnManage.Location = new Point(12, 92);
             btnManage.Name = "btnManage";
             btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
@@ -148,28 +146,13 @@ namespace WinFormsApp1
             btnProfessors.FlatAppearance.BorderSize = 0;
             btnProfessors.FlatStyle = FlatStyle.Flat;
             btnProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnProfessors.Location = new Point(12, 237);
+            btnProfessors.Location = new Point(13, 169);
             btnProfessors.Name = "btnProfessors";
             btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
             btnProfessors.Click += btnProfessors_Click;
-            // 
-            // btnUsers
-            // 
-            btnUsers.BackColor = Color.SteelBlue;
-            btnUsers.BackgroundImageLayout = ImageLayout.None;
-            btnUsers.FlatAppearance.BorderSize = 0;
-            btnUsers.FlatStyle = FlatStyle.Flat;
-            btnUsers.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnUsers.Location = new Point(12, 163);
-            btnUsers.Name = "btnUsers";
-            btnUsers.Size = new Size(223, 56);
-            btnUsers.TabIndex = 2;
-            btnUsers.Text = "USERS";
-            btnUsers.UseVisualStyleBackColor = false;
-            btnUsers.Click += btnUsers_Click;
             // 
             // btnHome
             // 
@@ -231,98 +214,6 @@ namespace WinFormsApp1
             label1.TabIndex = 68;
             label1.Text = "ADMIN";
             // 
-            // lblSchedule
-            // 
-            lblSchedule.AutoSize = true;
-            lblSchedule.Location = new Point(103, 135);
-            lblSchedule.Name = "lblSchedule";
-            lblSchedule.Size = new Size(58, 15);
-            lblSchedule.TabIndex = 72;
-            lblSchedule.Text = "Schedule:";
-            // 
-            // lblSection
-            // 
-            lblSection.AutoSize = true;
-            lblSection.Location = new Point(103, 194);
-            lblSection.Name = "lblSection";
-            lblSection.Size = new Size(49, 15);
-            lblSection.TabIndex = 73;
-            lblSection.Text = "Section:\r\n";
-            // 
-            // txtSubjectName
-            // 
-            txtSubjectName.Location = new Point(190, 99);
-            txtSubjectName.Name = "txtSubjectName";
-            txtSubjectName.Size = new Size(204, 23);
-            txtSubjectName.TabIndex = 74;
-            txtSubjectName.TextChanged += txtSubjectName_TextChanged;
-            // 
-            // txtSchedule
-            // 
-            txtSchedule.Location = new Point(190, 128);
-            txtSchedule.Name = "txtSchedule";
-            txtSchedule.Size = new Size(204, 23);
-            txtSchedule.TabIndex = 75;
-            // 
-            // txtSection
-            // 
-            txtSection.Location = new Point(190, 186);
-            txtSection.Name = "txtSection";
-            txtSection.Size = new Size(204, 23);
-            txtSection.TabIndex = 77;
-            // 
-            // lblProfessor
-            // 
-            lblProfessor.AutoSize = true;
-            lblProfessor.Location = new Point(30, 42);
-            lblProfessor.Name = "lblProfessor";
-            lblProfessor.Size = new Size(160, 15);
-            lblProfessor.TabIndex = 79;
-            lblProfessor.Text = "Please select a Professor first:";
-            // 
-            // btnAdd
-            // 
-            btnAdd.Location = new Point(340, 417);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(75, 27);
-            btnAdd.TabIndex = 81;
-            btnAdd.Text = "Add\r\n";
-            btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += btnAdd_Click;
-            // 
-            // btnDelete
-            // 
-            btnDelete.Location = new Point(589, 419);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(74, 27);
-            btnDelete.TabIndex = 90;
-            btnDelete.Text = "Delete";
-            btnDelete.UseVisualStyleBackColor = true;
-            btnDelete.Click += btnDelete_Click;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.Location = new Point(497, 419);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(76, 25);
-            btnUpdate.TabIndex = 91;
-            btnUpdate.Text = "Update";
-            btnUpdate.UseVisualStyleBackColor = true;
-            btnUpdate.Click += btnUpdate_Click;
-            // 
-            // dgvProfessors
-            // 
-            dgvProfessors.BackgroundColor = Color.Gainsboro;
-            dgvProfessors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProfessors.Location = new Point(34, 229);
-            dgvProfessors.MultiSelect = false;
-            dgvProfessors.Name = "dgvProfessors";
-            dgvProfessors.ReadOnly = true;
-            dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProfessors.Size = new Size(643, 156);
-            dgvProfessors.TabIndex = 94;
-            dgvProfessors.CellContentClick += dgvProfessors_CellClick;
-            // 
             // gbProfessorSectionAssignment
             // 
             gbProfessorSectionAssignment.BackColor = SystemColors.Control;
@@ -343,17 +234,18 @@ namespace WinFormsApp1
             gbProfessorSectionAssignment.Controls.Add(lblSection);
             gbProfessorSectionAssignment.FlatStyle = FlatStyle.Flat;
             gbProfessorSectionAssignment.ForeColor = Color.Black;
-            gbProfessorSectionAssignment.Location = new Point(271, 138);
+            gbProfessorSectionAssignment.Location = new Point(265, 81);
             gbProfessorSectionAssignment.Name = "gbProfessorSectionAssignment";
             gbProfessorSectionAssignment.Size = new Size(709, 457);
             gbProfessorSectionAssignment.TabIndex = 96;
             gbProfessorSectionAssignment.TabStop = false;
             gbProfessorSectionAssignment.Text = "Professor Section Assignment";
+            gbProfessorSectionAssignment.Enter += gbProfessorSectionAssignment_Enter;
             // 
             // cmbProfessor
             // 
             cmbProfessor.FormattingEnabled = true;
-            cmbProfessor.Location = new Point(190, 39);
+            cmbProfessor.Location = new Point(258, 73);
             cmbProfessor.Name = "cmbProfessor";
             cmbProfessor.Size = new Size(204, 23);
             cmbProfessor.TabIndex = 99;
@@ -361,7 +253,7 @@ namespace WinFormsApp1
             // lblSubjectName
             // 
             lblSubjectName.AutoSize = true;
-            lblSubjectName.Location = new Point(103, 107);
+            lblSubjectName.Location = new Point(102, 126);
             lblSubjectName.Name = "lblSubjectName";
             lblSubjectName.Size = new Size(81, 15);
             lblSubjectName.TabIndex = 97;
@@ -370,7 +262,7 @@ namespace WinFormsApp1
             // lblYear
             // 
             lblYear.AutoSize = true;
-            lblYear.Location = new Point(103, 165);
+            lblYear.Location = new Point(102, 184);
             lblYear.Name = "lblYear";
             lblYear.Size = new Size(62, 15);
             lblYear.TabIndex = 98;
@@ -378,20 +270,124 @@ namespace WinFormsApp1
             // 
             // txtYearLevel
             // 
-            txtYearLevel.Location = new Point(190, 157);
+            txtYearLevel.Location = new Point(189, 176);
             txtYearLevel.Name = "txtYearLevel";
             txtYearLevel.Size = new Size(204, 23);
             txtYearLevel.TabIndex = 97;
             // 
             // btnView
             // 
-            btnView.Location = new Point(424, 420);
+            btnView.BackColor = Color.SteelBlue;
+            btnView.FlatAppearance.BorderSize = 0;
+            btnView.FlatStyle = FlatStyle.Flat;
+            btnView.Location = new Point(484, 216);
             btnView.Name = "btnView";
-            btnView.Size = new Size(67, 23);
+            btnView.Size = new Size(75, 27);
             btnView.TabIndex = 95;
             btnView.Text = "View";
-            btnView.UseVisualStyleBackColor = true;
+            btnView.UseVisualStyleBackColor = false;
             btnView.Click += btnAdd_Click;
+            // 
+            // dgvProfessors
+            // 
+            dgvProfessors.BackgroundColor = Color.Gainsboro;
+            dgvProfessors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProfessors.Location = new Point(102, 249);
+            dgvProfessors.MultiSelect = false;
+            dgvProfessors.Name = "dgvProfessors";
+            dgvProfessors.ReadOnly = true;
+            dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProfessors.Size = new Size(457, 156);
+            dgvProfessors.TabIndex = 94;
+            dgvProfessors.CellContentClick += dgvProfessors_CellClick;
+            // 
+            // lblProfessor
+            // 
+            lblProfessor.AutoSize = true;
+            lblProfessor.Location = new Point(98, 76);
+            lblProfessor.Name = "lblProfessor";
+            lblProfessor.Size = new Size(160, 15);
+            lblProfessor.TabIndex = 79;
+            lblProfessor.Text = "Please select a Professor first:";
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.SteelBlue;
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Location = new Point(484, 182);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(75, 27);
+            btnDelete.TabIndex = 90;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.Click += btnDelete_Click;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.BackColor = Color.SteelBlue;
+            btnUpdate.FlatAppearance.BorderSize = 0;
+            btnUpdate.FlatStyle = FlatStyle.Flat;
+            btnUpdate.Location = new Point(484, 148);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(75, 27);
+            btnUpdate.TabIndex = 91;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = false;
+            btnUpdate.Click += btnUpdate_Click;
+            // 
+            // txtSchedule
+            // 
+            txtSchedule.Location = new Point(189, 147);
+            txtSchedule.Name = "txtSchedule";
+            txtSchedule.Size = new Size(204, 23);
+            txtSchedule.TabIndex = 75;
+            // 
+            // txtSubjectName
+            // 
+            txtSubjectName.Location = new Point(189, 118);
+            txtSubjectName.Name = "txtSubjectName";
+            txtSubjectName.Size = new Size(204, 23);
+            txtSubjectName.TabIndex = 74;
+            txtSubjectName.TextChanged += txtSubjectName_TextChanged;
+            // 
+            // lblSchedule
+            // 
+            lblSchedule.AutoSize = true;
+            lblSchedule.Location = new Point(102, 154);
+            lblSchedule.Name = "lblSchedule";
+            lblSchedule.Size = new Size(58, 15);
+            lblSchedule.TabIndex = 72;
+            lblSchedule.Text = "Schedule:";
+            // 
+            // btnAdd
+            // 
+            btnAdd.BackColor = Color.SteelBlue;
+            btnAdd.FlatAppearance.BorderSize = 0;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Location = new Point(484, 114);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(75, 27);
+            btnAdd.TabIndex = 81;
+            btnAdd.Text = "Add\r\n";
+            btnAdd.UseVisualStyleBackColor = false;
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // txtSection
+            // 
+            txtSection.Location = new Point(189, 205);
+            txtSection.Name = "txtSection";
+            txtSection.Size = new Size(204, 23);
+            txtSection.TabIndex = 77;
+            // 
+            // lblSection
+            // 
+            lblSection.AutoSize = true;
+            lblSection.Location = new Point(102, 213);
+            lblSection.Name = "lblSection";
+            lblSection.Size = new Size(49, 15);
+            lblSection.TabIndex = 73;
+            lblSection.Text = "Section:\r\n";
             // 
             // ManageForm
             // 
@@ -415,9 +411,9 @@ namespace WinFormsApp1
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvProfessors).EndInit();
             gbProfessorSectionAssignment.ResumeLayout(false);
             gbProfessorSectionAssignment.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProfessors).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -437,28 +433,27 @@ namespace WinFormsApp1
         private Panel panel3;
         private Button btnManage;
         private Button btnProfessors;
-        private Button btnUsers;
         private Button btnHome;
         private Panel panel1;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private Label label1;
-        private Label lblSchedule;
-        private Label lblSection;
-        private TextBox txtSubjectName;
-        private TextBox txtSchedule;
-        private TextBox txtSection;
-        private Label lblProfessor;
-        private Button btnAdd;
-        private Button btnDelete;
-        private Button btnUpdate;
-        private DataGridView dgvProfessors;
-        private GroupBox gbProfessorSectionAssignment;
-        private Button btnView;
         private Button btnStudentRegistration;
-        private TextBox txtYearLevel;
-        private Label lblYear;
+        private GroupBox gbProfessorSectionAssignment;
         private ComboBox cmbProfessor;
         private Label lblSubjectName;
+        private Label lblYear;
+        private TextBox txtYearLevel;
+        private Button btnView;
+        private DataGridView dgvProfessors;
+        private Label lblProfessor;
+        private Button btnDelete;
+        private Button btnUpdate;
+        private TextBox txtSchedule;
+        private TextBox txtSubjectName;
+        private Label lblSchedule;
+        private Button btnAdd;
+        private TextBox txtSection;
+        private Label lblSection;
     }
 }

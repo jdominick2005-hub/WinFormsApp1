@@ -260,13 +260,6 @@ VALUES (@name, @sched, @year, @section, @teacher)";
             this.Hide();
         }
 
-        private void btnUsers_Click(object sender, EventArgs e)
-        {
-            UsersForm form = new UsersForm();
-            form.Show();
-            this.Hide();
-        }
-
         private void btnProfessors_Click(object sender, EventArgs e)
         {
             ProfessorsForm form = new ProfessorsForm();
@@ -283,7 +276,7 @@ VALUES (@name, @sched, @year, @section, @teacher)";
 
         private void btnStudentRegistration_Click(object sender, EventArgs e)
         {
-            StudentRegistration form= new StudentRegistration();
+            StudentRegistration form = new StudentRegistration();
             form.Show();
             this.Hide();
         }
@@ -292,5 +285,12 @@ VALUES (@name, @sched, @year, @section, @teacher)";
         {
 
         }
+
+        private void gbProfessorSectionAssignment_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
