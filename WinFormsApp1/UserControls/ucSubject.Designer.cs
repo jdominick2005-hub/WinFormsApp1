@@ -1,141 +1,147 @@
-﻿
-namespace WinFormsApp1.UserControls
+﻿namespace WinFormsApp1.UserControls
 {
     partial class ucSubject
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
+
             base.Dispose(disposing);
         }
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            subjects = new Label();
-            dgvsubjects = new DataGridView();
+            lblTitle = new Label();
+            pnlFilters = new Panel();
+            cmbYearLevel = new ComboBox();
             lblProfessor = new Label();
-            txtprofessor = new TextBox();
-            lblsection = new Label();
-            cmbsection = new ComboBox();
-            ((System.ComponentModel.ISupportInitialize)dgvsubjects).BeginInit();
+            txtProfessor = new TextBox();
+            lblSection = new Label();
+            cmbSection = new ComboBox();
+            dgvSubjects = new DataGridView();
+            lblYearLevel = new Label();
+            pnlFilters.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvSubjects).BeginInit();
             SuspendLayout();
             // 
-            // subjects
+            // lblTitle
             // 
-            subjects.BackColor = SystemColors.ActiveCaption;
-            subjects.Dock = DockStyle.Top;
-            subjects.Font = new Font("Century", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            subjects.Location = new Point(0, 0);
-            subjects.Name = "subjects";
-            subjects.Size = new Size(861, 42);
-            subjects.TabIndex = 1;
-            subjects.Text = "SUBJECT";
-            subjects.TextAlign = ContentAlignment.MiddleCenter;
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitle.Location = new Point(20, 10);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(201, 25);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Subject Management";
             // 
-            // dgvsubjects
+            // pnlFilters
             // 
-            dgvsubjects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvsubjects.BackgroundColor = Color.Gainsboro;
-            dgvsubjects.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvsubjects.Location = new Point(56, 194);
-            dgvsubjects.Margin = new Padding(3, 2, 3, 2);
-            dgvsubjects.Name = "dgvsubjects";
-            dgvsubjects.RowHeadersWidth = 51;
-            dgvsubjects.Size = new Size(745, 324);
-            dgvsubjects.TabIndex = 2;
-            dgvsubjects.CellContentClick += dgvsubjects_CellContentClick;
+            pnlFilters.BorderStyle = BorderStyle.FixedSingle;
+            pnlFilters.Controls.Add(lblYearLevel);
+            pnlFilters.Controls.Add(cmbYearLevel);
+            pnlFilters.Controls.Add(lblProfessor);
+            pnlFilters.Controls.Add(txtProfessor);
+            pnlFilters.Controls.Add(lblSection);
+            pnlFilters.Controls.Add(cmbSection);
+            pnlFilters.Location = new Point(20, 50);
+            pnlFilters.Name = "pnlFilters";
+            pnlFilters.Size = new Size(740, 110);
+            pnlFilters.TabIndex = 1;
+            // 
+            // cmbYearLevel
+            // 
+            cmbYearLevel.FormattingEnabled = true;
+            cmbYearLevel.Location = new Point(96, 81);
+            cmbYearLevel.Name = "cmbYearLevel";
+            cmbYearLevel.Size = new Size(139, 23);
+            cmbYearLevel.TabIndex = 4;
             // 
             // lblProfessor
             // 
-            lblProfessor.AutoSize = true;
-            lblProfessor.Location = new Point(56, 114);
+            lblProfessor.Location = new Point(20, 20);
             lblProfessor.Name = "lblProfessor";
-            lblProfessor.Size = new Size(62, 15);
-            lblProfessor.TabIndex = 3;
-            lblProfessor.Text = "Professor: ";
+            lblProfessor.Size = new Size(70, 23);
+            lblProfessor.TabIndex = 0;
+            lblProfessor.Text = "Professor:";
+            lblProfessor.Click += lblProfessor_Click;
             // 
-            // txtprofessor
+            // txtProfessor
             // 
-            txtprofessor.Location = new Point(129, 114);
-            txtprofessor.Margin = new Padding(3, 2, 3, 2);
-            txtprofessor.Name = "txtprofessor";
-            txtprofessor.Size = new Size(213, 23);
-            txtprofessor.TabIndex = 4;
-            txtprofessor.TextChanged += txtprofessor_TextChanged;
+            txtProfessor.Location = new Point(96, 17);
+            txtProfessor.Name = "txtProfessor";
+            txtProfessor.Size = new Size(254, 23);
+            txtProfessor.TabIndex = 1;
             // 
-            // lblsection
+            // lblSection
             // 
-            lblsection.AutoSize = true;
-            lblsection.Location = new Point(56, 152);
-            lblsection.Name = "lblsection";
-            lblsection.Size = new Size(48, 15);
-            lblsection.TabIndex = 5;
-            lblsection.Text = "section:";
+            lblSection.Location = new Point(20, 55);
+            lblSection.Name = "lblSection";
+            lblSection.Size = new Size(70, 23);
+            lblSection.TabIndex = 2;
+            lblSection.Text = "Section:";
+            lblSection.Click += lblSection_Click;
             // 
-            // cmbsection
+            // cmbSection
             // 
-            cmbsection.FormattingEnabled = true;
-            cmbsection.Items.AddRange(new object[] { "BSIT-1A", "BSCS-2A", "BSIS-3B" });
-            cmbsection.Location = new Point(129, 152);
-            cmbsection.Margin = new Padding(3, 2, 3, 2);
-            cmbsection.Name = "cmbsection";
-            cmbsection.Size = new Size(197, 23);
-            cmbsection.TabIndex = 6;
+            cmbSection.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSection.Items.AddRange(new object[] { "BSIT-1A", "BSCS-2A", "BSIS-3B" });
+            cmbSection.Location = new Point(96, 52);
+            cmbSection.Name = "cmbSection";
+            cmbSection.Size = new Size(174, 23);
+            cmbSection.TabIndex = 3;
+            // 
+            // dgvSubjects
+            // 
+            dgvSubjects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvSubjects.BackgroundColor = Color.White;
+            dgvSubjects.Location = new Point(20, 180);
+            dgvSubjects.Name = "dgvSubjects";
+            dgvSubjects.RowHeadersVisible = false;
+            dgvSubjects.RowTemplate.Height = 28;
+            dgvSubjects.Size = new Size(740, 300);
+            dgvSubjects.TabIndex = 2;
+            // 
+            // lblYearLevel
+            // 
+            lblYearLevel.Location = new Point(20, 86);
+            lblYearLevel.Name = "lblYearLevel";
+            lblYearLevel.Size = new Size(70, 23);
+            lblYearLevel.TabIndex = 5;
+            lblYearLevel.Text = "YearLevel:";
             // 
             // ucSubject
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(cmbsection);
-            Controls.Add(lblsection);
-            Controls.Add(txtprofessor);
-            Controls.Add(lblProfessor);
-            Controls.Add(dgvsubjects);
-            Controls.Add(subjects);
+            BackColor = Color.White;
+            Controls.Add(lblTitle);
+            Controls.Add(pnlFilters);
+            Controls.Add(dgvSubjects);
             Name = "ucSubject";
-            Size = new Size(861, 604);
-            ((System.ComponentModel.ISupportInitialize)dgvsubjects).EndInit();
+            Size = new Size(800, 510);
+            pnlFilters.ResumeLayout(false);
+            pnlFilters.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvSubjects).EndInit();
             ResumeLayout(false);
             PerformLayout();
-
-
-        }
-
-        private void txtprofessor_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void dgvsubjects_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
 
-        private Label subjects;
-        private DataGridView dgvsubjects;
+        private Label lblTitle;
+        private Panel pnlFilters;
+
         private Label lblProfessor;
-        private TextBox txtprofessor;
-        private Label lblsection;
-        private ComboBox cmbsection;
+        private TextBox txtProfessor;
+
+        private Label lblSection;
+        private ComboBox cmbSection;
+
+        private DataGridView dgvSubjects;
+        private ComboBox cmbYearLevel;
+        private Label lblYearLevel;
     }
 }

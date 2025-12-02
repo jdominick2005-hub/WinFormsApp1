@@ -214,17 +214,18 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.BackColor = Color.White;
+            label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.Location = new Point(95, 36);
             label3.Name = "label3";
             label3.Size = new Size(47, 17);
             label3.TabIndex = 65;
             label3.Text = "HOME";
+            label3.Click += label3_Click;
             // 
             // pictureBox3
             // 
-            pictureBox3.BackColor = Color.White;
+            pictureBox3.BackColor = Color.Transparent;
             pictureBox3.BackgroundImage = (Image)resources.GetObject("pictureBox3.BackgroundImage");
             pictureBox3.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox3.Location = new Point(55, 35);
@@ -278,7 +279,7 @@
             btnHome.BackColor = Color.SteelBlue;
             btnHome.BackgroundImageLayout = ImageLayout.None;
             btnHome.FlatAppearance.BorderSize = 0;
-            btnHome.FlatStyle = FlatStyle.System;
+            btnHome.FlatStyle = FlatStyle.Flat;
             btnHome.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             btnHome.Location = new Point(12, 15);
             btnHome.Name = "btnHome";

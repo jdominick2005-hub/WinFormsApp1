@@ -20,13 +20,13 @@ namespace WinFormsApp1.UserControls
             professorId = profId;
             professorName = teacherName;
 
-            txtprofessor.Text = professorName;
+            txtProfessor.Text = professorName;
 
             // Developer-only debug log (no popup for users)
             Debug.WriteLine($"ucSubject initialized with TeacherID={professorId}, Name={professorName}");
 
             // Subscribe event handler once
-            cmbsection.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
+            cmbSection.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
 
             // Load sections and subjects
             LoadSections();
@@ -68,17 +68,17 @@ namespace WinFormsApp1.UserControls
                         DataTable dt = new DataTable();
                         da.Fill(dt);
 
-                        dgvsubjects.DataSource = dt;
-                        dgvsubjects.AutoGenerateColumns = true;
-                        dgvsubjects.ReadOnly = true;
-                        dgvsubjects.AllowUserToAddRows = false;
-                        dgvsubjects.AllowUserToDeleteRows = false;
-                        dgvsubjects.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                        dgvsubjects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dgvSubjects.DataSource = dt;
+                        dgvSubjects.AutoGenerateColumns = true;
+                        dgvSubjects.ReadOnly = true;
+                        dgvSubjects.AllowUserToAddRows = false;
+                        dgvSubjects.AllowUserToDeleteRows = false;
+                        dgvSubjects.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgvSubjects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-                        if (dgvsubjects.Columns.Contains("SubjectID"))
+                        if (dgvSubjects.Columns.Contains("SubjectID"))
                         {
-                            dgvsubjects.Columns["SubjectID"].Visible = false;
+                            dgvSubjects.Columns["SubjectID"].Visible = false;
                         }
 
                         if (showDebug)
@@ -120,17 +120,17 @@ namespace WinFormsApp1.UserControls
                         da.Fill(dt);
 
                         // Prevent event firing during DataSource assignment
-                        cmbsection.SelectedIndexChanged -= cmbSections_SelectedIndexChanged;
+                        cmbSection.SelectedIndexChanged -= cmbSections_SelectedIndexChanged;
 
-                        cmbsection.DataSource = dt;
-                        cmbsection.DisplayMember = "Section";
-                        cmbsection.ValueMember = "Section";
+                        cmbSection.DataSource = dt;
+                        cmbSection.DisplayMember = "Section";
+                        cmbSection.ValueMember = "Section";
 
                         // No initial selection
-                        cmbsection.SelectedIndex = -1;
+                        cmbSection.SelectedIndex = -1;
 
                         // Re-subscribe event after assignment
-                        cmbsection.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
+                        cmbSection.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
                     }
                 }
             }
@@ -145,15 +145,25 @@ namespace WinFormsApp1.UserControls
         /// </summary>
         private void cmbSections_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbsection.SelectedIndex != -1)
+            if (cmbSection.SelectedIndex != -1)
             {
-                string selectedSection = cmbsection.Text;
+                string selectedSection = cmbSection.Text;
                 LoadSubjectsForProfessor(professorId, selectedSection, showDebug: false);
             }
             else
             {
                 LoadSubjectsForProfessor(professorId, showDebug: false);
             }
+        }
+
+        private void lblProfessor_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSection_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

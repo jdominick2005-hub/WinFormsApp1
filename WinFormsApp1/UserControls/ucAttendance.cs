@@ -352,5 +352,36 @@ namespace WinFormsApp1
         // legacy stub events (if wired from designer)
         private void dtpDate_ValueChanged(object sender, EventArgs e) { /* handled above */ }
         private void lblYearLevel_Click(object sender, EventArgs e) { /* nothing */ }
+
+        private void dvgStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        private void dvgStudents_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dvgStudents.Columns[e.ColumnIndex].Name == "Status")
+            {
+                string status = e.Value?.ToString() ?? "";
+
+                if (status == "Present")
+                    dvgStudents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                else if (status == "Absent")
+                    dvgStudents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
+                else if (status == "Late")
+                    dvgStudents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightYellow;
+                else
+                    dvgStudents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
+            }
+        }
+
+        private void ucAttendance_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbSubjects_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

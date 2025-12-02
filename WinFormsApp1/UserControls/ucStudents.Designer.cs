@@ -2,157 +2,164 @@
 {
     partial class ucStudents
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
+
             base.Dispose(disposing);
         }
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            lblStudents = new Label();
-            dgvstudents = new DataGridView();
-            lblsection = new Label();
+            lblTitle = new Label();
+            pnlFilters = new Panel();
+            lblSection = new Label();
             cmbSections = new ComboBox();
-            lblyearlevel = new Label();
-            cmbyearlevel = new ComboBox();
-            btnadd = new Button();
-            btndelete = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvstudents).BeginInit();
+            lblYearLevel = new Label();
+            cmbYearLevel = new ComboBox();
+            btnAdd = new Button();
+            btnDelete = new Button();
+            dgvStudents = new DataGridView();
+            pnlFilters.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvStudents).BeginInit();
             SuspendLayout();
             // 
-            // lblStudents
+            // lblTitle
             // 
-            lblStudents.BackColor = SystemColors.ActiveCaption;
-            lblStudents.Dock = DockStyle.Top;
-            lblStudents.Font = new Font("Century", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblStudents.Location = new Point(0, 0);
-            lblStudents.Name = "lblStudents";
-            lblStudents.Size = new Size(958, 35);
-            lblStudents.TabIndex = 1;
-            lblStudents.Text = "Students";
-            lblStudents.TextAlign = ContentAlignment.MiddleCenter;
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitle.Location = new Point(20, 10);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(206, 25);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Student Management";
             // 
-            // dgvstudents
+            // pnlFilters
             // 
-            dgvstudents.BackgroundColor = Color.Gainsboro;
-            dgvstudents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvstudents.Location = new Point(49, 182);
-            dgvstudents.Margin = new Padding(3, 2, 3, 2);
-            dgvstudents.Name = "dgvstudents";
-            dgvstudents.RowHeadersWidth = 51;
-            dgvstudents.Size = new Size(702, 338);
-            dgvstudents.TabIndex = 2;
-            dgvstudents.CellContentClick += dgvstudents_CellContentClick;
+            pnlFilters.BorderStyle = BorderStyle.FixedSingle;
+            pnlFilters.Controls.Add(lblSection);
+            pnlFilters.Controls.Add(cmbSections);
+            pnlFilters.Controls.Add(lblYearLevel);
+            pnlFilters.Controls.Add(cmbYearLevel);
+            pnlFilters.Controls.Add(btnAdd);
+            pnlFilters.Controls.Add(btnDelete);
+            pnlFilters.Location = new Point(20, 50);
+            pnlFilters.Name = "pnlFilters";
+            pnlFilters.Size = new Size(740, 95);
+            pnlFilters.TabIndex = 1;
             // 
-            // lblsection
+            // lblSection
             // 
-            lblsection.AutoSize = true;
-            lblsection.Location = new Point(49, 106);
-            lblsection.Name = "lblsection";
-            lblsection.Size = new Size(49, 15);
-            lblsection.TabIndex = 3;
-            lblsection.Text = "Section:";
+            lblSection.Location = new Point(20, 15);
+            lblSection.Name = "lblSection";
+            lblSection.Size = new Size(71, 23);
+            lblSection.TabIndex = 0;
+            lblSection.Text = "Section:";
             // 
             // cmbSections
             // 
-            cmbSections.FormattingEnabled = true;
+            cmbSections.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSections.Items.AddRange(new object[] { "BSIT-1A", "BSCS-2A", "BSIS-3B" });
-            cmbSections.Location = new Point(108, 106);
-            cmbSections.Margin = new Padding(3, 2, 3, 2);
+            cmbSections.Location = new Point(97, 12);
             cmbSections.Name = "cmbSections";
-            cmbSections.Size = new Size(133, 23);
-            cmbSections.TabIndex = 4;
+            cmbSections.Size = new Size(160, 23);
+            cmbSections.TabIndex = 1;
             cmbSections.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
             // 
-            // lblyearlevel
+            // lblYearLevel
             // 
-            lblyearlevel.AutoSize = true;
-            lblyearlevel.Location = new Point(49, 142);
-            lblyearlevel.Name = "lblyearlevel";
-            lblyearlevel.Size = new Size(65, 15);
-            lblyearlevel.TabIndex = 5;
-            lblyearlevel.Text = "Year Level: ";
+            lblYearLevel.Location = new Point(20, 50);
+            lblYearLevel.Name = "lblYearLevel";
+            lblYearLevel.Size = new Size(71, 23);
+            lblYearLevel.TabIndex = 2;
+            lblYearLevel.Text = "Year Level:";
+            lblYearLevel.Click += lblYearLevel_Click;
             // 
-            // cmbyearlevel
+            // cmbYearLevel
             // 
-            cmbyearlevel.FormattingEnabled = true;
-            cmbyearlevel.Items.AddRange(new object[] { "1st Year", "2nd Year", "3rd Year" });
-            cmbyearlevel.Location = new Point(126, 142);
-            cmbyearlevel.Margin = new Padding(3, 2, 3, 2);
-            cmbyearlevel.Name = "cmbyearlevel";
-            cmbyearlevel.Size = new Size(133, 23);
-            cmbyearlevel.TabIndex = 6;
-            cmbyearlevel.SelectedIndexChanged += cmbyearlevel_SelectedIndexChanged;
+            cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbYearLevel.Items.AddRange(new object[] { "1st Year", "2nd Year", "3rd Year" });
+            cmbYearLevel.Location = new Point(97, 47);
+            cmbYearLevel.Name = "cmbYearLevel";
+            cmbYearLevel.Size = new Size(160, 23);
+            cmbYearLevel.TabIndex = 3;
+            cmbYearLevel.SelectedIndexChanged += cmbyearlevel_SelectedIndexChanged;
             // 
-            // btnadd
+            // btnAdd
             // 
-            btnadd.Location = new Point(424, 135);
-            btnadd.Margin = new Padding(3, 2, 3, 2);
-            btnadd.Name = "btnadd";
-            btnadd.Size = new Size(101, 22);
-            btnadd.TabIndex = 7;
-            btnadd.Text = "Add Student";
-            btnadd.UseVisualStyleBackColor = true;
-            btnadd.Click += btnadd_Click;
+            btnAdd.BackColor = Color.FromArgb(0, 120, 215);
+            btnAdd.FlatAppearance.BorderSize = 0;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(350, 20);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(130, 30);
+            btnAdd.TabIndex = 4;
+            btnAdd.Text = "Add Student";
+            btnAdd.UseVisualStyleBackColor = false;
+            btnAdd.Click += btnadd_Click;
             // 
-            // btndelete
+            // btnDelete
             // 
-            btndelete.Location = new Point(531, 135);
-            btndelete.Margin = new Padding(3, 2, 3, 2);
-            btndelete.Name = "btndelete";
-            btndelete.Size = new Size(101, 22);
-            btndelete.TabIndex = 8;
-            btndelete.Text = "Delete";
-            btndelete.UseVisualStyleBackColor = true;
-            btndelete.Click += btndelete_Click;
+            btnDelete.BackColor = Color.Firebrick;
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(490, 20);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(130, 30);
+            btnDelete.TabIndex = 5;
+            btnDelete.Text = "Delete Selected";
+            btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.Click += btndelete_Click;
+            // 
+            // dgvStudents
+            // 
+            dgvStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvStudents.BackgroundColor = Color.White;
+            dgvStudents.Location = new Point(20, 160);
+            dgvStudents.Name = "dgvStudents";
+            dgvStudents.RowHeadersVisible = false;
+            dgvStudents.RowTemplate.Height = 28;
+            dgvStudents.Size = new Size(740, 320);
+            dgvStudents.TabIndex = 2;
+            dgvStudents.CellContentClick += dgvstudents_CellContentClick;
             // 
             // ucStudents
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(btndelete);
-            Controls.Add(btnadd);
-            Controls.Add(cmbyearlevel);
-            Controls.Add(lblyearlevel);
-            Controls.Add(cmbSections);
-            Controls.Add(lblsection);
-            Controls.Add(dgvstudents);
-            Controls.Add(lblStudents);
+            BackColor = Color.White;
+            Controls.Add(lblTitle);
+            Controls.Add(pnlFilters);
+            Controls.Add(dgvStudents);
             Name = "ucStudents";
-            Size = new Size(958, 572);
-            ((System.ComponentModel.ISupportInitialize)dgvstudents).EndInit();
+            Size = new Size(800, 510);
+            pnlFilters.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvStudents).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label lblStudents;
-        private DataGridView dgvstudents;
-        private Label lblsection;
+        private Label lblTitle;
+        private Panel pnlFilters;
+
+        private Label lblSection;
         private ComboBox cmbSections;
-        private Label lblyearlevel;
-        private ComboBox cmbyearlevel;
-        private Button btnadd;
-        private Button btndelete;
+
+        private Label lblYearLevel;
+        private ComboBox cmbYearLevel;
+
+        private Button btnAdd;
+        private Button btnDelete;
+
+        private DataGridView dgvStudents;
     }
 }

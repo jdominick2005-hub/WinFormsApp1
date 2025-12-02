@@ -18,11 +18,11 @@ namespace WinFormsApp1
 
             lblUserName.Text = teacherName;
 
-            // Debug check – confirm TeacherID passed correctly
-            MessageBox.Show($"TeacherPanelForm started with TeacherID={teacherID}, Name={teacherName}");
+
+
 
             // Automatically load the Subject user control on form load
-            LoadControl(new ucSubject(teacherName, teacherID));
+            LoadControl(new ucHome());
         }
 
         // Generic method to load UserControls into the main panel
@@ -82,6 +82,11 @@ namespace WinFormsApp1
 
             // Close this form when login form closes
             loginForm.FormClosed += (s, args) => this.Close();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -34,7 +34,7 @@ namespace WinFormsApp1.UserControls
         private void FilterStudents()
         {
             string section = cmbSections.SelectedItem?.ToString();
-            string yearLevel = cmbyearlevel.SelectedItem?.ToString();
+            string yearLevel = cmbYearLevel.SelectedItem?.ToString();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -49,24 +49,24 @@ namespace WinFormsApp1.UserControls
 
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                dgvstudents.DataSource = dt;
+                dgvStudents.DataSource = dt;
 
-                if (dgvstudents.Columns.Contains("StudentID"))
-                    dgvstudents.Columns["StudentID"].Visible = false;
+                if (dgvStudents.Columns.Contains("StudentID"))
+                    dgvStudents.Columns["StudentID"].Visible = false;
             }
         }
 
 
         private void btnadd_Click(object sender, EventArgs e)
         {
-            
+
             if (string.IsNullOrWhiteSpace(Text) || string.IsNullOrWhiteSpace(Text))
             {
                 MessageBox.Show("Please enter First Name and Last Name.");
                 return;
             }
 
-            if (cmbyearlevel.SelectedItem == null || cmbSections.SelectedItem == null)
+            if (cmbYearLevel.SelectedItem == null || cmbSections.SelectedItem == null)
             {
                 MessageBox.Show("Please select Year Level and Section.");
                 return;
@@ -89,7 +89,7 @@ namespace WinFormsApp1.UserControls
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@FirstName", Text.Trim());
                 cmd.Parameters.AddWithValue("@LastName", Text.Trim());
-                cmd.Parameters.AddWithValue("@YearLevel", cmbyearlevel.SelectedItem.ToString());
+                cmd.Parameters.AddWithValue("@YearLevel", cmbYearLevel.SelectedItem.ToString());
                 cmd.Parameters.AddWithValue("@Course", Text.Trim());
                 cmd.Parameters.AddWithValue("@Section", cmbSections.SelectedItem.ToString());
                 cmd.Parameters.AddWithValue("@Units", units);
@@ -107,13 +107,13 @@ namespace WinFormsApp1.UserControls
 
         private void btndelete_Click(object sender, EventArgs e)
         {
-            if (dgvstudents.SelectedRows.Count == 0)
+            if (dgvStudents.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select a student to delete.");
                 return;
             }
 
-            int studentID = Convert.ToInt32(dgvstudents.SelectedRows[0].Cells["StudentID"].Value);
+            int studentID = Convert.ToInt32(dgvStudents.SelectedRows[0].Cells["StudentID"].Value);
 
             DialogResult confirm = MessageBox.Show("Are you sure you want to delete this student?",
                                                    "Confirm Delete", MessageBoxButtons.YesNo);
@@ -138,9 +138,9 @@ namespace WinFormsApp1.UserControls
 
         private void dgvstudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvstudents.Rows[e.RowIndex].IsNewRow) return;
+            if (dgvStudents.Rows[e.RowIndex].IsNewRow) return;
 
-            DataGridViewRow row = dgvstudents.Rows[e.RowIndex];
+            DataGridViewRow row = dgvStudents.Rows[e.RowIndex];
 
             int studentID;
             bool isNew = !int.TryParse(Convert.ToString(row.Cells["StudentID"].Value), out studentID);
@@ -149,7 +149,7 @@ namespace WinFormsApp1.UserControls
             {
                 conn.Open();
 
-                if (isNew) 
+                if (isNew)
                 {
                     string insertQuery = @"INSERT INTO Students (FirstName, LastName, YearLevel, Course, Section, Units, Classification, DateEnlist)
                                    VALUES (@FirstName, @LastName, @YearLevel, @Course, @Section, @Units, @Classification, @DateEnlist)";
@@ -164,7 +164,7 @@ namespace WinFormsApp1.UserControls
                     cmd.Parameters.AddWithValue("@DateEnlist", DateTime.Now);
                     cmd.ExecuteNonQuery();
                 }
-                else 
+                else
                 {
                     string updateQuery = @"UPDATE Students SET FirstName=@FirstName, LastName=@LastName, YearLevel=@YearLevel,
                                    Course=@Course, Section=@Section, Units=@Units, Classification=@Classification
@@ -180,18 +180,26 @@ namespace WinFormsApp1.UserControls
                     cmd.Parameters.AddWithValue("@Classification", Convert.ToString(row.Cells["Classification"].Value));
                     cmd.ExecuteNonQuery();
 
-                    if (dgvstudents.Columns.Contains("StudentID"))
+                    if (dgvStudents.Columns.Contains("StudentID"))
                     {
-                        dgvstudents.Columns["StudentID"].Visible = false;
+                        dgvStudents.Columns["StudentID"].Visible = false;
                     }
-                    dgvstudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                    dgvstudents.ReadOnly = true;
-                    dgvstudents.AllowUserToAddRows = false;
+                    dgvStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    dgvStudents.ReadOnly = true;
+                    dgvStudents.AllowUserToAddRows = false;
                 }
             }
 
         }
 
-   
+        private void ucStudents_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblYearLevel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

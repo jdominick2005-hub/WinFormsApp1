@@ -26,22 +26,22 @@ namespace WinFormsApp1.UserControls
                 daSection.SelectCommand.Parameters.AddWithValue("@TeacherID", loggedInTeacherID);
                 DataTable dtSection = new DataTable();
                 daSection.Fill(dtSection);
-                cmbsections.DataSource = dtSection;
-                cmbsections.DisplayMember = "Section";
+                cmbSections.DataSource = dtSection;
+                cmbSections.DisplayMember = "Section";
 
                 // Load Year Levels
                 SqlDataAdapter daYear = new SqlDataAdapter("SELECT DISTINCT YearLevel FROM Subjects WHERE TeacherID = @TeacherID", con);
                 daYear.SelectCommand.Parameters.AddWithValue("@TeacherID", loggedInTeacherID);
                 DataTable dtYear = new DataTable();
                 daYear.Fill(dtYear);
-                cmbYearlevel.DataSource = dtYear;
-                cmbYearlevel.DisplayMember = "YearLevel";
+                cmbYearLevel.DataSource = dtYear;
+                cmbYearLevel.DisplayMember = "YearLevel";
             }
         }
 
         private void cmbsections_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(cmbsections.Text) && !string.IsNullOrEmpty(cmbYearlevel.Text))
+            if (!string.IsNullOrEmpty(cmbSections.Text) && !string.IsNullOrEmpty(cmbYearLevel.Text))
             {
                 LoadSchedule();
                 LoadTotalStudents();
@@ -51,7 +51,7 @@ namespace WinFormsApp1.UserControls
 
         private void cmbYearlevel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(cmbsections.Text) && !string.IsNullOrEmpty(cmbYearlevel.Text))
+            if (!string.IsNullOrEmpty(cmbSections.Text) && !string.IsNullOrEmpty(cmbYearLevel.Text))
             {
                 LoadSchedule();
                 LoadTotalStudents();
@@ -65,13 +65,13 @@ namespace WinFormsApp1.UserControls
             {
                 string query = "SELECT Schedule FROM Subjects WHERE Section = @Section AND YearLevel = @YearLevel AND TeacherID = @TeacherID";
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Section", cmbsections.Text);
-                cmd.Parameters.AddWithValue("@YearLevel", cmbYearlevel.Text);
+                cmd.Parameters.AddWithValue("@Section", cmbSections.Text);
+                cmd.Parameters.AddWithValue("@YearLevel", cmbYearLevel.Text);
                 cmd.Parameters.AddWithValue("@TeacherID", loggedInTeacherID);
 
                 con.Open();
                 object result = cmd.ExecuteScalar();
-                txtschedule.Text = result != null ? result.ToString() : "No schedule found";
+                txtSchedule.Text = result != null ? result.ToString() : "No schedule found";
             }
         }
 
@@ -81,12 +81,12 @@ namespace WinFormsApp1.UserControls
             {
                 string query = "SELECT COUNT(*) FROM Students WHERE Section = @Section AND YearLevel = @YearLevel";
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Section", cmbsections.Text);
-                cmd.Parameters.AddWithValue("@YearLevel", cmbYearlevel.Text);
+                cmd.Parameters.AddWithValue("@Section", cmbSections.Text);
+                cmd.Parameters.AddWithValue("@YearLevel",   cmbYearLevel.Text);
 
                 con.Open();
                 int count = (int)cmd.ExecuteScalar();
-                txttotal.Text = count.ToString();
+                txtTotal.Text = count.ToString();
             }
         }
 
@@ -100,16 +100,16 @@ namespace WinFormsApp1.UserControls
                                 WHERE Section = @Section AND YearLevel = @YearLevel";
 
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Section", cmbsections.Text);
-                cmd.Parameters.AddWithValue("@YearLevel", cmbYearlevel.Text);
+                cmd.Parameters.AddWithValue("@Section", cmbSections.Text);
+                cmd.Parameters.AddWithValue("@YearLevel", cmbYearLevel.Text);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                dgvclass.DataSource = dt;
-                dgvclass.Columns["StudentID"].Visible = false;
-                dgvclass.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dgvClass.DataSource = dt;
+                dgvClass.Columns["StudentID"].Visible = false;
+                dgvClass.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
         }
 
