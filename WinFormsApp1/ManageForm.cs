@@ -122,73 +122,6 @@ VALUES (@name, @sched, @year, @section, @teacher)";
             }
         }
 
-        //  UPDATE SUBJECT
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-            if (dgvProfessors.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Select a subject to update.");
-                return;
-            }
-
-            int subjectId = Convert.ToInt32(dgvProfessors.SelectedRows[0].Cells["SubjectID"].Value);
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                List<string> updates = new List<string>();
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = conn;
-
-                // Only add fields that have been changed or have value
-                if (!string.IsNullOrWhiteSpace(txtSubjectName.Text))
-                {
-                    updates.Add("SubjectName=@name");
-                    cmd.Parameters.AddWithValue("@name", txtSubjectName.Text.Trim());
-                }
-
-                if (!string.IsNullOrWhiteSpace(txtSchedule.Text))
-                {
-                    updates.Add("Schedule=@sched");
-                    cmd.Parameters.AddWithValue("@sched", txtSchedule.Text.Trim());
-                }
-
-                if (!string.IsNullOrWhiteSpace(txtYearLevel.Text))
-                {
-                    updates.Add("YearLevel=@year");
-                    cmd.Parameters.AddWithValue("@year", txtYearLevel.Text.Trim());
-                }
-
-                if (!string.IsNullOrWhiteSpace(txtSection.Text))
-                {
-                    updates.Add("Section=@section");
-                    cmd.Parameters.AddWithValue("@section", txtSection.Text.Trim());
-                }
-
-                if (cmbProfessor.SelectedValue != null)
-                {
-                    updates.Add("TeacherID=@teacher");
-                    cmd.Parameters.AddWithValue("@teacher", cmbProfessor.SelectedValue);
-                }
-
-                if (updates.Count == 0)
-                {
-                    MessageBox.Show("No changes detected to update.");
-                    return;
-                }
-
-                string sql = "UPDATE Subjects SET " + string.Join(", ", updates) + " WHERE SubjectID=@id";
-                cmd.Parameters.AddWithValue("@id", subjectId);
-                cmd.CommandText = sql;
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show("Subject updated.");
-                LoadSubjects();
-                ClearFields();
-            }
-
-        }
 
         //  DELETE SUBJECT
         private void btnDelete_Click(object sender, EventArgs e)
@@ -280,17 +213,5 @@ VALUES (@name, @sched, @year, @section, @teacher)";
             form.Show();
             this.Hide();
         }
-
-        private void txtSubjectName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void gbProfessorSectionAssignment_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }

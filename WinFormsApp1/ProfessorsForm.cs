@@ -2,19 +2,21 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Mail;
 
-
 namespace WinFormsApp1
 {
     public partial class ProfessorsForm : Form
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
+
+        // Private variables to hold selected IDs instead of hidden TextBoxes
+        private int selectedTeacherId = 0;
+        private int selectedUserId = 0;
 
         public ProfessorsForm()
         {
@@ -27,13 +29,11 @@ namespace WinFormsApp1
             btnProfessors.Click += btnProfessors_Click;
             btnHome.Click += btnHome_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
-            btnSendEmail.Click += btnSendEmail_Click;
 
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnUpdate.Click += btnUpdate_Click;
             btnDelete.Click += btnDelete_Click;
-            btnShow.Click += btnShow_Click;
 
             dgvTeachers.CellClick += dgvTeachers_CellClick;
 
@@ -59,40 +59,14 @@ namespace WinFormsApp1
             this.Close();
         }
 
-        private void btnHome_Click(object sender, EventArgs e)
-        {
-            ShowOrCreateForm<AdminForm>();
-        }
-
-        private void btnManage_Click(object sender, EventArgs e)
-        {
-            ShowOrCreateForm<ManageForm>();
-        }
-
+        private void btnHome_Click(object sender, EventArgs e) => ShowOrCreateForm<AdminForm>();
+        private void btnManage_Click(object sender, EventArgs e) => ShowOrCreateForm<ManageForm>();
         private void btnProfessors_Click(object sender, EventArgs e)
         {
             this.BringToFront();
             this.WindowState = FormWindowState.Normal;
         }
-
-        private void btnStudentRegistration_Click(object sender, EventArgs e)
-        {
-            ShowOrCreateForm<StudentRegistration>();
-        }
-
-        private void btnShow_Click(object sender, EventArgs e)
-        {
-            if (txtPassword.UseSystemPasswordChar)
-            {
-                txtPassword.UseSystemPasswordChar = false;
-                btnShow.Text = "Hide";
-            }
-            else
-            {
-                txtPassword.UseSystemPasswordChar = true;
-                btnShow.Text = "Show";
-            }
-        }
+        private void btnStudentRegistration_Click(object sender, EventArgs e) => ShowOrCreateForm<StudentRegistration>();
 
         private void LoadTeachers()
         {
@@ -120,6 +94,9 @@ namespace WinFormsApp1
 
                     if (dgvTeachers.Columns.Contains("TeacherID"))
                         dgvTeachers.Columns["TeacherID"].Visible = false;
+
+                    if (dgvTeachers.Columns.Contains("UserID"))
+                        dgvTeachers.Columns["UserID"].Visible = false;
 
                     dgvTeachers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                     dgvTeachers.ReadOnly = true;
@@ -158,7 +135,63 @@ namespace WinFormsApp1
             }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private async Task SendCredentialsEmailAsync(string to, string firstName, string lastName, string username, string password)
+        {
+            try
+            {
+                string fromEmail = "ashlydavin436@gmail.com";
+                string appPassword = "dbirnjcvohejvtin";
+
+                string fullName = $"{firstName} {lastName}";
+
+                string htmlBody = $@"
+<html>
+<body style='font-family: Arial; padding: 15px;'>
+    <h2>Hello {fullName},</h2>
+    <p>Your teacher account has been created. Here are your login credentials:</p>
+
+    <p><b>Username:</b> {username}</p>
+    <p><b>Password:</b> {password}</p>
+
+    <p style='color:red; font-weight:bold; margin-top:20px;'>
+        This password is TEMPORARY.  
+        Please change it immediately after logging in.
+    </p>
+
+    <p>Thank you!<br>School Administration</p>
+</body>
+</html>";
+
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress(fromEmail, "School Admin");
+                    mail.To.Add(to);
+                    mail.Subject = "Your Teacher Account Login Credentials";
+                    mail.Body = htmlBody;
+                    mail.IsBodyHtml = true;
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.EnableSsl = true;
+                        smtp.UseDefaultCredentials = false;
+                        smtp.Credentials = new NetworkCredential(fromEmail, appPassword);
+
+                        await smtp.SendMailAsync(mail); // <-- async
+                    }
+                }
+
+                MessageBox.Show("Email sent to teacher successfully.", "Email Sent",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Email sending failed:\n" + ex.Message, "Email Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
             if (!ValidateProfessorInputs(requirePassword: true)) return;
 
@@ -178,13 +211,12 @@ namespace WinFormsApp1
                     try
                     {
                         string insertLogin = @"
-                            INSERT INTO Logins (Username, Password, FirstName, LastName, Role)
-                            VALUES (@username, @password, @fn, @ln, 'Teacher');
-                            SELECT CAST(SCOPE_IDENTITY() AS INT);
-                        ";
+                    INSERT INTO Logins (Username, Password, FirstName, LastName, Role)
+                    VALUES (@username, @password, @fn, @ln, 'Teacher');
+                    SELECT CAST(SCOPE_IDENTITY() AS INT);
+                ";
 
                         int newUserId;
-
                         using (SqlCommand cmd = new SqlCommand(insertLogin, conn, trx))
                         {
                             cmd.Parameters.AddWithValue("@username", username);
@@ -195,9 +227,9 @@ namespace WinFormsApp1
                         }
 
                         string insertTeacher = @"
-                            INSERT INTO Teachers (UserID, Department, Email)
-                            VALUES (@userid, @dept, @mail);
-                        ";
+                    INSERT INTO Teachers (UserID, Department, Email)
+                    VALUES (@userid, @dept, @mail);
+                ";
 
                         using (SqlCommand cmd2 = new SqlCommand(insertTeacher, conn, trx))
                         {
@@ -208,14 +240,27 @@ namespace WinFormsApp1
                         }
 
                         trx.Commit();
-                        MessageBox.Show("Teacher added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        MessageBox.Show("Teacher added successfully.", "Success",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        await SendCredentialsEmailAsync
+                             (
+                            txtEmail.Text.Trim(),
+                            txtFirstName.Text.Trim(),
+                            txtLastName.Text.Trim(),
+                            txtUsername.Text.Trim(),
+                            txtPassword.Text.Trim()
+                               );
+
                         LoadTeachers();
                         ClearFields();
                     }
                     catch (Exception ex)
                     {
                         try { trx.Rollback(); } catch { }
-                        MessageBox.Show($"Add failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Add failed: {ex.Message}", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -228,10 +273,10 @@ namespace WinFormsApp1
             DataGridViewRow row = dgvTeachers.Rows[e.RowIndex];
 
             if (dgvTeachers.Columns.Contains("TeacherID"))
-                txtTeacherID.Text = row.Cells["TeacherID"].Value?.ToString() ?? "";
+                selectedTeacherId = Convert.ToInt32(row.Cells["TeacherID"].Value);
 
             if (dgvTeachers.Columns.Contains("UserID"))
-                txtUserID.Text = row.Cells["UserID"].Value?.ToString() ?? "";
+                selectedUserId = Convert.ToInt32(row.Cells["UserID"].Value);
 
             txtUsername.Text = row.Cells["Username"].Value?.ToString() ?? "";
             txtPassword.Text = "";
@@ -275,7 +320,7 @@ namespace WinFormsApp1
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtUserID.Text) || string.IsNullOrEmpty(txtTeacherID.Text))
+            if (selectedUserId == 0 || selectedTeacherId == 0)
             {
                 MessageBox.Show("Select a teacher to update.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -283,8 +328,8 @@ namespace WinFormsApp1
 
             if (!ValidateProfessorInputs(requirePassword: false)) return;
 
-            int userId = int.Parse(txtUserID.Text);
-            int teacherId = int.Parse(txtTeacherID.Text);
+            int userId = selectedUserId;
+            int teacherId = selectedTeacherId;
 
             if (UsernameExists(txtUsername.Text.Trim(), excludeUserId: userId))
             {
@@ -365,9 +410,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            int teacherId = Convert.ToInt32(
-                dgvTeachers.SelectedRows[0].Cells["TeacherID"].Value
-            );
+            int teacherId = selectedTeacherId;
 
             DialogResult confirm = MessageBox.Show("Delete this teacher?",
                 "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -396,94 +439,6 @@ namespace WinFormsApp1
                 MessageBox.Show("Teacher deleted successfully.");
                 LoadTeachers();
             }
-        }
-
-        private void btnSendEmail_Click(object sender, EventArgs e)
-        {
-            string to = txtEmail.Text.Trim();
-
-            // Validate recipient email
-            if (string.IsNullOrWhiteSpace(to) || !IsValidEmail(to))
-            {
-                MessageBox.Show("Enter a valid recipient email.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Ensure password field is filled
-            string password = txtPassword.Text.Trim();
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                MessageBox.Show("Cannot send email: password field is empty.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                // Gmail sender credentials
-                string fromEmail = "ashlydavin436@gmail.com";       // Gmail
-                string appPassword = "dbirnjcvohejvtin";           // 16-character App Password
-
-                string fullName = txtFirstName.Text.Trim() + " " + txtLastName.Text.Trim();
-                string userName = txtUsername.Text.Trim();
-
-                // Build HTML email body
-                string htmlBody = $@"
-<html>
-<body style='font-family: Arial; padding: 15px;'>
-    <h2>Hello {fullName},</h2>
-    <p>Your account has been successfully created. Below are your login credentials:</p>
-    <table style='border-collapse: collapse; margin-top: 10px;'>
-        <tr>
-            <td style='padding: 8px; font-weight: bold;'>Username:</td>
-            <td style='padding: 8px;'>{userName}</td>
-        </tr>
-        <tr>
-            <td style='padding: 8px; font-weight: bold;'>Password:</td>
-            <td style='padding: 8px;'>{password}</td>
-        </tr>
-    </table>
-    <p style='margin-top: 20px;'>Please keep this information secure and do not share it with anyone.</p>
-    <p>Thank you!</p>
-</body>
-</html>";
-
-                // 5Create MailMessage
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress(fromEmail, "School Admin");
-                mail.To.Add(to);
-                mail.Subject = "Your Account Credentials";
-                mail.Body = htmlBody;
-                mail.IsBodyHtml = true;
-
-                // Configure SMTP client
-                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
-                {
-                    smtp.EnableSsl = true;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential(fromEmail, appPassword);
-
-                    // Optional: log SMTP errors
-                    smtp.SendCompleted += (s, eArgs) =>
-                    {
-                        if (eArgs.Error != null)
-                            MessageBox.Show("SMTP Error: " + eArgs.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    };
-
-                    // Send email
-                    smtp.Send(mail);
-                }
-
-                MessageBox.Show("Credentials sent successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (SmtpException smtpEx)
-            {
-                MessageBox.Show("SMTP Error:\n" + smtpEx.Message, "SMTP Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("General Error:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
         }
 
         private bool ValidateProfessorInputs(bool requirePassword)
@@ -529,22 +484,6 @@ namespace WinFormsApp1
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            txtFirstName.Clear();
-            txtLastName.Clear();
-            txtEmail.Clear();
-            txtUsername.Clear();
-            txtPassword.Clear();
-            txtDepartment.Clear();
-
-            dgvTeachers.ClearSelection();
-
-            btnAdd.Enabled = true;
-            btnUpdate.Enabled = false;
-            btnDelete.Enabled = false;
-        }
-
         private void ClearFields()
         {
             txtFirstName.Clear();
@@ -553,6 +492,9 @@ namespace WinFormsApp1
             txtUsername.Clear();
             txtPassword.Clear();
             txtDepartment.Clear();
+
+            selectedTeacherId = 0;
+            selectedUserId = 0;
 
             dgvTeachers.ClearSelection();
 
