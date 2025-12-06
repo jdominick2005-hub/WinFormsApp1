@@ -39,7 +39,7 @@
             lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblTitle.Location = new Point(20, 10);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(229, 32);
+            lblTitle.Size = new Size(178, 25);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Class Management";
             // 
@@ -66,7 +66,7 @@
             cmbsubjects.FormattingEnabled = true;
             cmbsubjects.Location = new Point(80, 83);
             cmbsubjects.Name = "cmbsubjects";
-            cmbsubjects.Size = new Size(229, 28);
+            cmbsubjects.Size = new Size(229, 23);
             cmbsubjects.TabIndex = 9;
             cmbsubjects.SelectedIndexChanged += cmbsubjects_SelectedIndexChanged;
             // 
@@ -75,7 +75,7 @@
             lblsubjects.AutoSize = true;
             lblsubjects.Location = new Point(14, 86);
             lblsubjects.Name = "lblsubjects";
-            lblsubjects.Size = new Size(67, 20);
+            lblsubjects.Size = new Size(54, 15);
             lblsubjects.TabIndex = 8;
             lblsubjects.Text = "Subjects:";
             // 
@@ -93,7 +93,7 @@
             cmbYearLevel.Items.AddRange(new object[] { "1st Year", "2nd Year", "3rd Year" });
             cmbYearLevel.Location = new Point(80, 49);
             cmbYearLevel.Name = "cmbYearLevel";
-            cmbYearLevel.Size = new Size(170, 28);
+            cmbYearLevel.Size = new Size(170, 23);
             cmbYearLevel.TabIndex = 1;
             cmbYearLevel.SelectedIndexChanged += cmbYearLevel_SelectedIndexChanged;
             // 
@@ -111,7 +111,7 @@
             cmbSections.Items.AddRange(new object[] { "BSIT-1A", "BSCS-2A", "BSIS-3B" });
             cmbSections.Location = new Point(80, 9);
             cmbSections.Name = "cmbSections";
-            cmbSections.Size = new Size(87, 28);
+            cmbSections.Size = new Size(87, 23);
             cmbSections.TabIndex = 3;
             cmbSections.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
             // 
@@ -127,7 +127,7 @@
             // 
             txtSchedule.Location = new Point(535, 41);
             txtSchedule.Name = "txtSchedule";
-            txtSchedule.Size = new Size(200, 27);
+            txtSchedule.Size = new Size(200, 23);
             txtSchedule.TabIndex = 5;
             // 
             // lblTotal
@@ -142,7 +142,7 @@
             // 
             txtTotal.Location = new Point(667, 83);
             txtTotal.Name = "txtTotal";
-            txtTotal.Size = new Size(68, 27);
+            txtTotal.Size = new Size(68, 23);
             txtTotal.TabIndex = 7;
             // 
             // dgvClass
@@ -165,7 +165,7 @@
             Controls.Add(pnlFilters);
             Controls.Add(dgvClass);
             Name = "ucClass";
-            Size = new Size(800, 510);
+            Size = new Size(775, 508);
             pnlFilters.ResumeLayout(false);
             pnlFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClass).EndInit();

@@ -109,7 +109,7 @@ namespace WinFormsApp1
             btnManage.TabIndex = 5;
             btnManage.Text = "MANAGE";
             btnManage.UseVisualStyleBackColor = false;
-            btnManage.Click += btnManage_Click;
+            
             // 
             // btnProfessors
             // 
@@ -123,7 +123,6 @@ namespace WinFormsApp1
             btnProfessors.TabIndex = 4;
             btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
-            btnProfessors.Click += btnProfessors_Click;
             // 
             // btnHome
             // 
@@ -138,7 +137,7 @@ namespace WinFormsApp1
             btnHome.TabIndex = 0;
             btnHome.Text = "HOME";
             btnHome.UseVisualStyleBackColor = false;
-            btnHome.Click += btnHome_Click;
+           
             // 
             // panel1
             // 
@@ -189,7 +188,7 @@ namespace WinFormsApp1
             btnStudentRegistration.TabIndex = 73;
             btnStudentRegistration.Text = "REGISTER";
             btnStudentRegistration.UseVisualStyleBackColor = true;
-            btnStudentRegistration.Click += btnStudentRegistration_Click;
+            
             // 
             // label1
             // 

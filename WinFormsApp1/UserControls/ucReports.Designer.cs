@@ -218,7 +218,7 @@
             Controls.Add(lblTotals);
             Controls.Add(btnExportPDF);
             Name = "ucReports";
-            Size = new Size(800, 510);
+            Size = new Size(775, 508);
             pnlFilters.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dvgSummary).EndInit();

@@ -23,74 +23,71 @@ namespace WinFormsApp1.UserControls
             LoadSections(currentTeacherId);
             LoadYearLevels(currentTeacherId);
         }
-
         private void LoadSections(int teacherId)
         {
-            string query = @"SELECT DISTINCT s.SectionID, s.SectionName
-                     FROM Subjects subj
-                     JOIN Sections s ON subj.SectionID = s.SectionID
-                     WHERE subj.TeacherID = @TeacherID";
+            string query = @"SELECT DISTINCT Section
+                     FROM Subjects
+                     WHERE TeacherID = @TeacherID";
 
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@TeacherID", teacherId);
+                    cmd.Parameters.AddWithValue("@TeacherID", teacherId);
 
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
 
-                        cmbSections.DataSource = dt;
-                        cmbSections.DisplayMember = "SectionName";
-                        cmbSections.ValueMember = "SectionID";
-                    }
+                    cmbSections.DataSource = dt;
+                    cmbSections.DisplayMember = "Section";
+                    cmbSections.ValueMember = "Section";
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading sections: " + ex.Message);
-            }
         }
+
 
 
 
         private void LoadYearLevels(int teacherId)
         {
-            string query = @"SELECT DISTINCT yl.YearLevelID, yl.YearLevelName
-                             FROM Subjects subj
-                             JOIN YearLevels yl ON subj.YearLevelID = yl.YearLevelID
-                             WHERE subj.TeacherID = @TeacherID";
+            string query = @"SELECT DISTINCT YearLevel
+                     FROM Subjects
+                     WHERE TeacherID = @TeacherID";
 
-            using (SqlCommand cmd = new SqlCommand(query, con))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                cmd.Parameters.AddWithValue("@TeacherID", teacherId);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@TeacherID", teacherId);
 
-                cmbYearLevel.DataSource = dt;
-                cmbYearLevel.DisplayMember = "YearLevelName";
-                cmbYearLevel.ValueMember = "YearLevelID";
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    cmbYearLevel.DataSource = dt;
+                    cmbYearLevel.DisplayMember = "YearLevel";
+                    cmbYearLevel.ValueMember = "YearLevel";
+                }
             }
         }
 
-        private void LoadSubjects(int teacherId, int sectionId, int yearLevelId)
+
+        private void LoadSubjects(int teacherId, string section, string yearLevel)
         {
-            string query = @"SELECT subj.SubjectID, subj.SubjectName
-                             FROM Subjects subj
-                             WHERE subj.TeacherID = @TeacherID 
-                               AND subj.SectionID = @SectionID 
-                               AND subj.YearLevelID = @YearLevelID";
+            string query = @"SELECT SubjectID, SubjectName
+                     FROM Subjects
+                     WHERE TeacherID = @TeacherID
+                       AND Section = @Section
+                       AND YearLevel = @YearLevel";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@TeacherID", teacherId);
-                cmd.Parameters.AddWithValue("@SectionID", sectionId);
-                cmd.Parameters.AddWithValue("@YearLevelID", yearLevelId);
+                cmd.Parameters.AddWithValue("@Section", section);
+                cmd.Parameters.AddWithValue("@YearLevel", yearLevel);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -102,17 +99,17 @@ namespace WinFormsApp1.UserControls
             }
         }
 
-        private void LoadStudents(int subjectId, int sectionId)
+
+        private void LoadStudents(int subjectId)
         {
-            string query = @"SELECT sr.StudentID, sr.StudentName
-                             FROM StudentRegistered sr
-                             WHERE sr.SubjectID = @SubjectID 
-                               AND sr.SectionID = @SectionID";
+            string query = @"SELECT s.StudentID, s.FirstName + ' ' + s.LastName AS StudentName
+                     FROM Enrollments e
+                     JOIN Students s ON e.StudentID = s.StudentID
+                     WHERE e.SubjectID = @SubjectID";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@SubjectID", subjectId);
-                cmd.Parameters.AddWithValue("@SectionID", sectionId);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -121,6 +118,7 @@ namespace WinFormsApp1.UserControls
                 dgvClass.DataSource = dt;
             }
         }
+
 
         private void LoadStudentsByYearLevel(string yearLevel)
         {
@@ -148,17 +146,21 @@ namespace WinFormsApp1.UserControls
         {
             if (cmbSections.SelectedValue != null && cmbYearLevel.SelectedValue != null)
             {
-                LoadSubjects(currentTeacherId, Convert.ToInt32(cmbSections.SelectedValue), Convert.ToInt32(cmbYearLevel.SelectedValue));
+                LoadSubjects(currentTeacherId,
+                             cmbSections.SelectedValue.ToString(),
+                             cmbYearLevel.SelectedValue.ToString());
             }
         }
 
+
         private void cmbsubjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbsubjects.SelectedValue != null && cmbSections.SelectedValue != null)
+            if (cmbsubjects.SelectedValue != null)
             {
-                LoadStudents(Convert.ToInt32(cmbsubjects.SelectedValue), Convert.ToInt32(cmbSections.SelectedValue));
+                LoadStudents(Convert.ToInt32(cmbsubjects.SelectedValue));
             }
         }
+
 
         private void cmbYearLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -167,5 +169,6 @@ namespace WinFormsApp1.UserControls
                 LoadStudentsByYearLevel(cmbYearLevel.SelectedValue.ToString());
             }
         }
+
     }
 }

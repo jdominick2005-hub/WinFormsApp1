@@ -8,11 +8,31 @@ namespace WinFormsApp1
 {
     public partial class ManageForm : Form
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
+        private readonly string connectionString =
+            ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
+
+        private int selectedSubjectID = 0;
 
         public ManageForm()
         {
             InitializeComponent();
+            this.Load += ManageFormLoad;
+
+            // Table selection
+            dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProfessors.MultiSelect = false;
+
+            dgvProfessors.CellClick += dgvProfessors_CellClick;
+
+            // Buttons
+            btnAdd.Click += btnAdd_Click;
+            btnDelete.Click += btnDelete_Click;
+
+            // Navigation buttons
+            btnHome.Click += btnHome_Click;
+            btnProfessors.Click += btnProfessors_Click;
+            btnManage.Click += btnManage_Click;
+            btnStudentRegistration.Click += btnStudentRegistration_Click;
         }
 
         private void ManageFormLoad(object sender, EventArgs e)
@@ -21,93 +41,129 @@ namespace WinFormsApp1
             LoadSubjects();
         }
 
-        //  LOAD PROFESSORS INTO COMBOBOX
-        private void LoadProfessors()
+        //
+        // NAVIGATION BUTTONS (RESTORED)
+        // 
+
+        private void btnHome_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string sql = @"
-                SELECT 
-                    T.TeacherID,
-                    CONCAT(L.FirstName, ' ', L.LastName) AS FullName
-                FROM Teachers T
-                JOIN Logins L ON T.UserID = L.UserID";
-
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    cmbProfessor.DataSource = dt;
-                    cmbProfessor.DisplayMember = "FullName";
-                    cmbProfessor.ValueMember = "TeacherID";
-                    cmbProfessor.SelectedIndex = -1;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load professors: {ex.Message}");
-            }
+            AdminForm home = new AdminForm();
+            home.Show();
+            this.Hide();
         }
 
+        private void btnProfessors_Click(object sender, EventArgs e)
+        {
+            ProfessorsForm f = new ProfessorsForm();
+            f.Show();
+            this.Hide();
+        }
 
-        //  LOAD SUBJECTS GRID
+        private void btnManage_Click(object sender, EventArgs e)
+        {
+            // You are already in Manage, so refresh only
+            LoadSubjects();
+        }
+
+        private void btnStudentRegistration_Click(object sender, EventArgs e)
+        {
+            StudentRegistration f = new StudentRegistration();
+            f.Show();
+            this.Hide();
+        }
+
+        //
+        // DATA LOADING
+        // 
+
+        private void LoadProfessors()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+                SELECT 
+                    T.TeacherID,
+                    CONCAT(L.FirstName, ' ', L.LastName, ' - ', T.Program) AS DisplayName
+                FROM Teachers T
+                JOIN Logins L ON T.UserID = L.UserID
+                ORDER BY L.LastName";
+
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                cmbProfessor.DataSource = dt;
+                cmbProfessor.DisplayMember = "DisplayName";
+                cmbProfessor.ValueMember = "TeacherID";
+
+                cmbProfessor.SelectedIndex = -1;
+            }
+        }
 
         private void LoadSubjects()
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string sql = @"
-SELECT 
-    S.SubjectID,
-    S.SubjectName,
-    S.Schedule,
-    S.YearLevel,
-    S.Section,
-    T.Program AS Program,      -- SHOW PROGRAM INSTEAD OF PROFESSOR
-    S.TeacherID                -- Needed for selecting professor in combo
-FROM Subjects S
-LEFT JOIN Teachers T ON S.TeacherID = T.TeacherID
-LEFT JOIN Logins L ON T.UserID = L.UserID";
+                string sql = @"
+                SELECT 
+                    S.SubjectID,
+                    S.SubjectName,
+                    S.Schedule,
+                    S.YearLevel,
+                    S.Section,
+                    T.Program,
+                    CONCAT(L.FirstName, ' ', L.LastName) AS ProfessorName
+                FROM Subjects S
+                LEFT JOIN Teachers T ON S.TeacherID = T.TeacherID
+                LEFT JOIN Logins L ON T.UserID = L.UserID
+                ORDER BY S.SubjectName";
 
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
 
-                    dgvProfessors.DataSource = dt;
+                dgvProfessors.DataSource = dt;
 
-                    dgvProfessors.Columns["SubjectID"].Visible = false;
-                    dgvProfessors.Columns["TeacherID"].Visible = false; // hide teacher id
+                dgvProfessors.Columns["SubjectID"].Visible = false;
 
-                    dgvProfessors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                    dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                    dgvProfessors.ReadOnly = true;
-                    dgvProfessors.AllowUserToAddRows = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading subjects: {ex.Message}");
+                dgvProfessors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dgvProfessors.ReadOnly = true;
+                dgvProfessors.AllowUserToAddRows = false;
             }
         }
 
-        //  ADD SUBJECT
+        //
+        // SUBJECT SELECTION
+        // 
+
+        private void dgvProfessors_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow row = dgvProfessors.Rows[e.RowIndex];
+            selectedSubjectID = Convert.ToInt32(row.Cells["SubjectID"].Value);
+        }
+
+        //
+        // ADD SUBJECT
+        //
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (cmbProfessor.SelectedIndex == -1)
+            if (!ValidateInputs()) return;
+
+            if (SubjectExists(txtSubjectName.Text, cmbsection.Text))
             {
-                MessageBox.Show("Please select a professor.");
+                MessageBox.Show("This subject already exists for this section.",
+                                "Duplicate", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string sql = @"
-INSERT INTO Subjects (SubjectName, Schedule, YearLevel, Section, TeacherID)
-VALUES (@name, @sched, @year, @section, @teacher)";
+                INSERT INTO Subjects (SubjectName, Schedule, YearLevel, Section, TeacherID)
+                VALUES (@name, @sched, @year, @section, @teacher)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@name", txtSubjectName.Text.Trim());
@@ -118,109 +174,86 @@ VALUES (@name, @sched, @year, @section, @teacher)";
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
-
-                MessageBox.Show("Subject added successfully.");
-                LoadSubjects();
-                ClearFields();
             }
+
+            MessageBox.Show("Subject added successfully!");
+            LoadSubjects();
+            ClearInputs();
         }
 
+        //
+        // DELETE SUBJECT
+        //
 
-        //  DELETE SUBJECT
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvProfessors.SelectedRows.Count == 0)
+            if (selectedSubjectID == 0)
             {
-                MessageBox.Show("Select a subject to delete.");
+                MessageBox.Show("Please select a subject to delete.",
+                    "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            int subjectId = Convert.ToInt32(dgvProfessors.SelectedRows[0].Cells["SubjectID"].Value);
-
-            DialogResult confirm = MessageBox.Show(
-                "Are you sure?",
-                "Delete Subject",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-            );
-
-            if (confirm != DialogResult.Yes) return;
+            if (MessageBox.Show("Are you sure you want to delete this subject?",
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string sql = "DELETE FROM Subjects WHERE SubjectID=@id";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@id", subjectId);
+                SqlCommand cmd = new SqlCommand("DELETE FROM Subjects WHERE SubjectID=@id", conn);
+                cmd.Parameters.AddWithValue("@id", selectedSubjectID);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
+            }
 
-                MessageBox.Show("Subject deleted.");
-                LoadSubjects();
-                ClearFields();
+            MessageBox.Show("Subject deleted successfully.");
+            LoadSubjects();
+            selectedSubjectID = 0;
+        }
+
+        //
+        // HELPER FUNCTIONS
+        //
+
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(txtSubjectName.Text) ||
+                string.IsNullOrWhiteSpace(txtSchedule.Text) ||
+                string.IsNullOrWhiteSpace(cmbyearlevel.Text) ||
+                string.IsNullOrWhiteSpace(cmbsection.Text) ||
+                cmbProfessor.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please complete all fields before saving.",
+                                "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool SubjectExists(string subject, string section)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+                SELECT COUNT(*) FROM Subjects
+                WHERE SubjectName=@name AND Section=@section", conn))
+            {
+                cmd.Parameters.AddWithValue("@name", subject.Trim());
+                cmd.Parameters.AddWithValue("@section", section.Trim());
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
             }
         }
 
-
-        //  WHEN USER CLICKS A ROW
-        private void dgvProfessors_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            txtSubjectName.Text = dgvProfessors.Rows[e.RowIndex].Cells["SubjectName"].Value.ToString();
-            txtSchedule.Text = dgvProfessors.Rows[e.RowIndex].Cells["Schedule"].Value.ToString();
-            cmbyearlevel.Text = dgvProfessors.Rows[e.RowIndex].Cells["YearLevel"].Value.ToString();
-            cmbsection.Text = dgvProfessors.Rows[e.RowIndex].Cells["Section"].Value.ToString();
-
-            // Set combobox using TeacherID (not name)
-            cmbProfessor.SelectedValue =
-                dgvProfessors.Rows[e.RowIndex].Cells["TeacherID"].Value;
-        }
-
-
-        //  CLEAR FIELDS
-
-        private void ClearFields()
+        private void ClearInputs()
         {
             txtSubjectName.Clear();
             txtSchedule.Clear();
-
-            // For ComboBoxes, use SelectedIndex = -1
             cmbyearlevel.SelectedIndex = -1;
             cmbsection.SelectedIndex = -1;
-
             cmbProfessor.SelectedIndex = -1;
-        }
-
-
-
-        //  SIDE NAVIGATION BUTTONS (UNCHANGED)
-        private void btnHome_Click(object sender, EventArgs e)
-        {
-            AdminForm home = new AdminForm();
-            home.Show();
-            this.Hide();
-        }
-
-        private void btnProfessors_Click(object sender, EventArgs e)
-        {
-            ProfessorsForm form = new ProfessorsForm();
-            form.Show();
-            this.Hide();
-        }
-
-        private void btnManage_Click(object sender, EventArgs e)
-        {
-            ManageForm form = new ManageForm();
-            form.Show();
-            this.Hide();
-        }
-
-        private void btnStudentRegistration_Click(object sender, EventArgs e)
-        {
-            StudentRegistration form = new StudentRegistration();
-            form.Show();
-            this.Hide();
         }
     }
 }
