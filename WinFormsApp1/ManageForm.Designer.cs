@@ -35,7 +35,6 @@ namespace WinFormsApp1
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageForm));
-            button1 = new Button();
             label2 = new Label();
             label5 = new Label();
             panel3 = new Panel();
@@ -69,22 +68,13 @@ namespace WinFormsApp1
             ((System.ComponentModel.ISupportInitialize)dgvProfessors).BeginInit();
             SuspendLayout();
             // 
-            // button1
-            // 
-            button1.Location = new Point(928, 85);
-            button1.Name = "button1";
-            button1.Size = new Size(66, 29);
-            button1.TabIndex = 70;
-            button1.Text = "Log out";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(267, 50);
+            label2.Location = new Point(305, 67);
             label2.Name = "label2";
-            label2.Size = new Size(120, 32);
+            label2.Size = new Size(150, 41);
             label2.TabIndex = 69;
             label2.Text = "MANAGE";
             // 
@@ -93,9 +83,9 @@ namespace WinFormsApp1
             label5.AutoSize = true;
             label5.BackColor = Color.Silver;
             label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label5.Location = new Point(72, 205);
+            label5.Location = new Point(82, 273);
             label5.Name = "label5";
-            label5.Size = new Size(0, 20);
+            label5.Size = new Size(0, 25);
             label5.TabIndex = 65;
             // 
             // panel3
@@ -106,9 +96,10 @@ namespace WinFormsApp1
             panel3.Controls.Add(btnManage);
             panel3.Controls.Add(btnProfessors);
             panel3.Controls.Add(btnHome);
-            panel3.Location = new Point(-1, 183);
+            panel3.Location = new Point(-1, 244);
+            panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(235, 460);
+            panel3.Size = new Size(269, 613);
             panel3.TabIndex = 1;
             // 
             // btnStudentRegistration
@@ -116,9 +107,10 @@ namespace WinFormsApp1
             btnStudentRegistration.FlatAppearance.BorderSize = 0;
             btnStudentRegistration.FlatStyle = FlatStyle.Flat;
             btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnStudentRegistration.Location = new Point(14, 246);
+            btnStudentRegistration.Location = new Point(16, 328);
+            btnStudentRegistration.Margin = new Padding(3, 4, 3, 4);
             btnStudentRegistration.Name = "btnStudentRegistration";
-            btnStudentRegistration.Size = new Size(223, 56);
+            btnStudentRegistration.Size = new Size(255, 75);
             btnStudentRegistration.TabIndex = 73;
             btnStudentRegistration.Text = "REGISTER";
             btnStudentRegistration.UseVisualStyleBackColor = true;
@@ -130,9 +122,10 @@ namespace WinFormsApp1
             btnManage.FlatAppearance.BorderSize = 0;
             btnManage.FlatStyle = FlatStyle.System;
             btnManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnManage.Location = new Point(12, 92);
+            btnManage.Location = new Point(14, 123);
+            btnManage.Margin = new Padding(3, 4, 3, 4);
             btnManage.Name = "btnManage";
-            btnManage.Size = new Size(223, 56);
+            btnManage.Size = new Size(255, 75);
             btnManage.TabIndex = 5;
             btnManage.Text = "MANAGE";
             btnManage.UseVisualStyleBackColor = false;
@@ -144,9 +137,10 @@ namespace WinFormsApp1
             btnProfessors.FlatAppearance.BorderSize = 0;
             btnProfessors.FlatStyle = FlatStyle.Flat;
             btnProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnProfessors.Location = new Point(13, 169);
+            btnProfessors.Location = new Point(15, 225);
+            btnProfessors.Margin = new Padding(3, 4, 3, 4);
             btnProfessors.Name = "btnProfessors";
-            btnProfessors.Size = new Size(223, 56);
+            btnProfessors.Size = new Size(255, 75);
             btnProfessors.TabIndex = 4;
             btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
@@ -159,9 +153,10 @@ namespace WinFormsApp1
             btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatStyle = FlatStyle.Flat;
             btnHome.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnHome.Location = new Point(12, 15);
+            btnHome.Location = new Point(14, 20);
+            btnHome.Margin = new Padding(3, 4, 3, 4);
             btnHome.Name = "btnHome";
-            btnHome.Size = new Size(224, 56);
+            btnHome.Size = new Size(256, 75);
             btnHome.TabIndex = 0;
             btnHome.Text = "HOME";
             btnHome.UseVisualStyleBackColor = false;
@@ -176,8 +171,9 @@ namespace WinFormsApp1
             panel1.Controls.Add(panel3);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(235, 644);
+            panel1.Size = new Size(268, 859);
             panel1.TabIndex = 66;
             // 
             // pictureBox1
@@ -186,8 +182,9 @@ namespace WinFormsApp1
             pictureBox1.BackgroundImageLayout = ImageLayout.None;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(-1, -1);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(235, 187);
+            pictureBox1.Size = new Size(269, 249);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -195,9 +192,10 @@ namespace WinFormsApp1
             // pictureBox2
             // 
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(940, 49);
+            pictureBox2.Location = new Point(1074, 65);
+            pictureBox2.Margin = new Padding(3, 4, 3, 4);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(40, 40);
+            pictureBox2.Size = new Size(46, 53);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 67;
             pictureBox2.TabStop = false;
@@ -206,9 +204,9 @@ namespace WinFormsApp1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(860, 56);
+            label1.Location = new Point(983, 75);
             label1.Name = "label1";
-            label1.Size = new Size(78, 25);
+            label1.Size = new Size(99, 32);
             label1.TabIndex = 68;
             label1.Text = "ADMIN";
             // 
@@ -230,9 +228,11 @@ namespace WinFormsApp1
             gbProfessorSectionAssignment.Controls.Add(lblSection);
             gbProfessorSectionAssignment.FlatStyle = FlatStyle.Flat;
             gbProfessorSectionAssignment.ForeColor = Color.Black;
-            gbProfessorSectionAssignment.Location = new Point(267, 142);
+            gbProfessorSectionAssignment.Location = new Point(305, 189);
+            gbProfessorSectionAssignment.Margin = new Padding(3, 4, 3, 4);
             gbProfessorSectionAssignment.Name = "gbProfessorSectionAssignment";
-            gbProfessorSectionAssignment.Size = new Size(671, 441);
+            gbProfessorSectionAssignment.Padding = new Padding(3, 4, 3, 4);
+            gbProfessorSectionAssignment.Size = new Size(767, 588);
             gbProfessorSectionAssignment.TabIndex = 96;
             gbProfessorSectionAssignment.TabStop = false;
             gbProfessorSectionAssignment.Text = "Professor Section Assignment";
@@ -241,55 +241,59 @@ namespace WinFormsApp1
             // cmbProfessor
             // 
             cmbProfessor.FormattingEnabled = true;
-            cmbProfessor.Location = new Point(258, 54);
+            cmbProfessor.Location = new Point(295, 72);
+            cmbProfessor.Margin = new Padding(3, 4, 3, 4);
             cmbProfessor.Name = "cmbProfessor";
-            cmbProfessor.Size = new Size(204, 23);
+            cmbProfessor.Size = new Size(233, 28);
             cmbProfessor.TabIndex = 99;
             // 
             // lblSubjectName
             // 
             lblSubjectName.AutoSize = true;
-            lblSubjectName.Location = new Point(102, 115);
+            lblSubjectName.Location = new Point(117, 153);
             lblSubjectName.Name = "lblSubjectName";
-            lblSubjectName.Size = new Size(81, 15);
+            lblSubjectName.Size = new Size(101, 20);
             lblSubjectName.TabIndex = 97;
             lblSubjectName.Text = "SubjectName:";
             // 
             // lblYear
             // 
             lblYear.AutoSize = true;
-            lblYear.Location = new Point(102, 173);
+            lblYear.Location = new Point(117, 231);
             lblYear.Name = "lblYear";
-            lblYear.Size = new Size(62, 15);
+            lblYear.Size = new Size(78, 20);
             lblYear.TabIndex = 98;
             lblYear.Text = "Year Level:";
             // 
             // txtYearLevel
             // 
-            txtYearLevel.Location = new Point(189, 165);
+            txtYearLevel.Location = new Point(216, 220);
+            txtYearLevel.Margin = new Padding(3, 4, 3, 4);
             txtYearLevel.Name = "txtYearLevel";
-            txtYearLevel.Size = new Size(204, 23);
+            txtYearLevel.Size = new Size(233, 27);
             txtYearLevel.TabIndex = 97;
             // 
             // dgvProfessors
             // 
             dgvProfessors.BackgroundColor = Color.Gainsboro;
             dgvProfessors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProfessors.Location = new Point(102, 234);
+            dgvProfessors.Location = new Point(117, 312);
+            dgvProfessors.Margin = new Padding(3, 4, 3, 4);
             dgvProfessors.MultiSelect = false;
             dgvProfessors.Name = "dgvProfessors";
             dgvProfessors.ReadOnly = true;
+            dgvProfessors.RowHeadersWidth = 51;
             dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProfessors.Size = new Size(523, 156);
+            dgvProfessors.Size = new Size(598, 208);
             dgvProfessors.TabIndex = 94;
             dgvProfessors.CellContentClick += dgvProfessors_CellClick;
             // 
             // lblProfessor
             // 
             lblProfessor.AutoSize = true;
-            lblProfessor.Location = new Point(92, 57);
+            lblProfessor.Location = new Point(105, 76);
             lblProfessor.Name = "lblProfessor";
-            lblProfessor.Size = new Size(160, 15);
+            lblProfessor.Size = new Size(202, 20);
             lblProfessor.TabIndex = 79;
             lblProfessor.Text = "Please select a Professor first:";
             // 
@@ -298,9 +302,10 @@ namespace WinFormsApp1
             btnDelete.BackColor = Color.SteelBlue;
             btnDelete.FlatAppearance.BorderSize = 0;
             btnDelete.FlatStyle = FlatStyle.Flat;
-            btnDelete.Location = new Point(540, 161);
+            btnDelete.Location = new Point(617, 215);
+            btnDelete.Margin = new Padding(3, 4, 3, 4);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(75, 30);
+            btnDelete.Size = new Size(86, 40);
             btnDelete.TabIndex = 90;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
@@ -308,24 +313,26 @@ namespace WinFormsApp1
             // 
             // txtSchedule
             // 
-            txtSchedule.Location = new Point(189, 136);
+            txtSchedule.Location = new Point(216, 181);
+            txtSchedule.Margin = new Padding(3, 4, 3, 4);
             txtSchedule.Name = "txtSchedule";
-            txtSchedule.Size = new Size(204, 23);
+            txtSchedule.Size = new Size(233, 27);
             txtSchedule.TabIndex = 75;
             // 
             // txtSubjectName
             // 
-            txtSubjectName.Location = new Point(189, 107);
+            txtSubjectName.Location = new Point(216, 143);
+            txtSubjectName.Margin = new Padding(3, 4, 3, 4);
             txtSubjectName.Name = "txtSubjectName";
-            txtSubjectName.Size = new Size(204, 23);
+            txtSubjectName.Size = new Size(233, 27);
             txtSubjectName.TabIndex = 74;
             // 
             // lblSchedule
             // 
             lblSchedule.AutoSize = true;
-            lblSchedule.Location = new Point(102, 144);
+            lblSchedule.Location = new Point(117, 192);
             lblSchedule.Name = "lblSchedule";
-            lblSchedule.Size = new Size(58, 15);
+            lblSchedule.Size = new Size(72, 20);
             lblSchedule.TabIndex = 72;
             lblSchedule.Text = "Schedule:";
             // 
@@ -334,9 +341,10 @@ namespace WinFormsApp1
             btnAdd.BackColor = Color.SteelBlue;
             btnAdd.FlatAppearance.BorderSize = 0;
             btnAdd.FlatStyle = FlatStyle.Flat;
-            btnAdd.Location = new Point(459, 160);
+            btnAdd.Location = new Point(525, 213);
+            btnAdd.Margin = new Padding(3, 4, 3, 4);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(75, 30);
+            btnAdd.Size = new Size(86, 40);
             btnAdd.TabIndex = 81;
             btnAdd.Text = "Add\r\n";
             btnAdd.UseVisualStyleBackColor = false;
@@ -344,26 +352,26 @@ namespace WinFormsApp1
             // 
             // txtSection
             // 
-            txtSection.Location = new Point(189, 194);
+            txtSection.Location = new Point(216, 259);
+            txtSection.Margin = new Padding(3, 4, 3, 4);
             txtSection.Name = "txtSection";
-            txtSection.Size = new Size(204, 23);
+            txtSection.Size = new Size(233, 27);
             txtSection.TabIndex = 77;
             // 
             // lblSection
             // 
             lblSection.AutoSize = true;
-            lblSection.Location = new Point(102, 202);
+            lblSection.Location = new Point(117, 269);
             lblSection.Name = "lblSection";
-            lblSection.Size = new Size(49, 15);
+            lblSection.Size = new Size(61, 20);
             lblSection.TabIndex = 73;
             lblSection.Text = "Section:\r\n";
             // 
             // ManageForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1008, 644);
-            Controls.Add(button1);
+            ClientSize = new Size(1152, 859);
             Controls.Add(label2);
             Controls.Add(label5);
             Controls.Add(panel1);
@@ -371,6 +379,7 @@ namespace WinFormsApp1
             Controls.Add(label1);
             Controls.Add(gbProfessorSectionAssignment);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             Name = "ManageForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -392,16 +401,7 @@ namespace WinFormsApp1
             
         }
 
-
-
-
-
-
-
-
         #endregion
-
-        private Button button1;
         private Label label2;
         private Label label5;
         private Panel panel3;

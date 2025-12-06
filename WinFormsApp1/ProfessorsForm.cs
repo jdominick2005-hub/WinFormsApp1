@@ -80,7 +80,7 @@ namespace WinFormsApp1
                             CONCAT(L.FirstName, ' ', L.LastName) AS FullName,
                             L.Username,
                             T.Email,
-                            T.Department,
+                            T.Program,
                             L.UserID
                         FROM Teachers T
                         JOIN Logins L ON T.UserID = L.UserID
@@ -227,14 +227,14 @@ namespace WinFormsApp1
                         }
 
                         string insertTeacher = @"
-                    INSERT INTO Teachers (UserID, Department, Email)
-                    VALUES (@userid, @dept, @mail);
+                    INSERT INTO Teachers (UserID, Program, Email)
+                    VALUES (@userid, @program, @mail);
                 ";
 
                         using (SqlCommand cmd2 = new SqlCommand(insertTeacher, conn, trx))
                         {
                             cmd2.Parameters.AddWithValue("@userid", newUserId);
-                            cmd2.Parameters.AddWithValue("@dept", txtDepartment.Text.Trim());
+
                             cmd2.Parameters.AddWithValue("@mail", txtEmail.Text.Trim());
                             cmd2.ExecuteNonQuery();
                         }
@@ -284,7 +284,7 @@ namespace WinFormsApp1
             string full = row.Cells["FullName"].Value?.ToString() ?? "";
             SplitFullNameToFields(full);
 
-            txtDepartment.Text = row.Cells["Department"].Value?.ToString() ?? "";
+            txtprogram.Text = row.Cells["Program"].Value?.ToString() ?? "";
             txtEmail.Text = row.Cells["Email"].Value?.ToString() ?? "";
 
             btnAdd.Enabled = false;
@@ -373,18 +373,20 @@ namespace WinFormsApp1
                             }
                         }
 
+                        // UPDATE TEACHER TABLE
                         string updateTeacher = @"
-                            UPDATE Teachers
-                            SET Department = @dept,
-                                Email = @mail
-                            WHERE TeacherID = @tid;
-                        ";
+    UPDATE Teachers
+    SET Program = @program,
+        Email = @mail
+    WHERE TeacherID = @tid;
+";
 
                         using (SqlCommand cmd2 = new SqlCommand(updateTeacher, conn, trx))
                         {
-                            cmd2.Parameters.AddWithValue("@dept", txtDepartment.Text.Trim());
+                            cmd2.Parameters.AddWithValue("@program", txtprogram.Text.Trim());  // REQUIRED - This was missing
                             cmd2.Parameters.AddWithValue("@mail", txtEmail.Text.Trim());
                             cmd2.Parameters.AddWithValue("@tid", teacherId);
+
                             cmd2.ExecuteNonQuery();
                         }
 
@@ -446,10 +448,11 @@ namespace WinFormsApp1
             if (string.IsNullOrWhiteSpace(txtFirstName.Text) ||
                 string.IsNullOrWhiteSpace(txtLastName.Text) ||
                 string.IsNullOrWhiteSpace(txtUsername.Text) ||
-                string.IsNullOrWhiteSpace(txtDepartment.Text) ||
+                string.IsNullOrWhiteSpace(txtprogram.Text)  ||
+
                 string.IsNullOrWhiteSpace(txtEmail.Text))
             {
-                MessageBox.Show("Please fill First Name, Last Name, Username, Department and Email.",
+                MessageBox.Show("Please fill First Name, Last Name, Username, Program and Email.",
                     "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
@@ -491,7 +494,8 @@ namespace WinFormsApp1
             txtEmail.Clear();
             txtUsername.Clear();
             txtPassword.Clear();
-            txtDepartment.Clear();
+            txtprogram.Clear();
+
 
             selectedTeacherId = 0;
             selectedUserId = 0;
@@ -501,6 +505,11 @@ namespace WinFormsApp1
             btnAdd.Enabled = true;
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -31,10 +31,17 @@ namespace WinFormsApp1
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentRegistration));
             gbStudentRegistration = new GroupBox();
+            btnEnroll = new Button();
             lblEnroll = new Label();
+            btnEdit = new Button();
             cmbEnrollSubject = new ComboBox();
+            btnDelete = new Button();
             lblLastName = new Label();
+            dgvStudentRegistration = new DataGridView();
+            btnUpdate = new Button();
             txtLastName = new TextBox();
+            btnShow = new Button();
+            btnRegister = new Button();
             lblSection = new Label();
             txtSection = new TextBox();
             txtClassification = new TextBox();
@@ -49,17 +56,9 @@ namespace WinFormsApp1
             lblYearLevel = new Label();
             lblFirstName = new Label();
             lblStudentId = new Label();
-            btnEnroll = new Button();
-            btnRegister = new Button();
-            btnEdit = new Button();
-            btnDelete = new Button();
-            btnUpdate = new Button();
-            btnShow = new Button();
-            dgvStudentRegistration = new DataGridView();
             pictureBox2 = new PictureBox();
             label2 = new Label();
             label5 = new Label();
-            button1 = new Button();
             btnStudentRegistration = new Button();
             btnManage = new Button();
             btnProfessors = new Button();
@@ -104,248 +103,269 @@ namespace WinFormsApp1
             gbStudentRegistration.Controls.Add(lblYearLevel);
             gbStudentRegistration.Controls.Add(lblFirstName);
             gbStudentRegistration.Controls.Add(lblStudentId);
-            gbStudentRegistration.Location = new Point(267, 85);
+            gbStudentRegistration.Location = new Point(305, 113);
+            gbStudentRegistration.Margin = new Padding(3, 4, 3, 4);
             gbStudentRegistration.Name = "gbStudentRegistration";
-            gbStudentRegistration.Size = new Size(711, 526);
+            gbStudentRegistration.Padding = new Padding(3, 4, 3, 4);
+            gbStudentRegistration.Size = new Size(813, 701);
             gbStudentRegistration.TabIndex = 1;
             gbStudentRegistration.TabStop = false;
             gbStudentRegistration.Text = "Student Registration";
             gbStudentRegistration.Enter += gbStudentRegistration_Enter;
             // 
+            // btnEnroll
+            // 
+            btnEnroll.BackColor = Color.SteelBlue;
+            btnEnroll.FlatStyle = FlatStyle.Flat;
+            btnEnroll.Location = new Point(638, 328);
+            btnEnroll.Margin = new Padding(3, 4, 3, 4);
+            btnEnroll.Name = "btnEnroll";
+            btnEnroll.Size = new Size(86, 37);
+            btnEnroll.TabIndex = 16;
+            btnEnroll.Text = "Enroll";
+            btnEnroll.UseVisualStyleBackColor = false;
+            btnEnroll.Click += btnEnroll_Click;
+            // 
             // lblEnroll
             // 
             lblEnroll.AutoSize = true;
-            lblEnroll.Location = new Point(83, 278);
+            lblEnroll.Location = new Point(95, 371);
             lblEnroll.Name = "lblEnroll";
-            lblEnroll.Size = new Size(83, 15);
+            lblEnroll.Size = new Size(105, 20);
             lblEnroll.TabIndex = 15;
             lblEnroll.Text = "Select Subject:";
             lblEnroll.Click += lblEnroll_Click;
             // 
+            // btnEdit
+            // 
+            btnEdit.BackColor = Color.SteelBlue;
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.Location = new Point(638, 168);
+            btnEdit.Margin = new Padding(3, 4, 3, 4);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(86, 37);
+            btnEdit.TabIndex = 2;
+            btnEdit.Text = "Edit";
+            btnEdit.UseVisualStyleBackColor = false;
+            btnEdit.Click += btnEdit_Click;
+            // 
             // cmbEnrollSubject
             // 
             cmbEnrollSubject.FormattingEnabled = true;
-            cmbEnrollSubject.Location = new Point(83, 299);
+            cmbEnrollSubject.Location = new Point(95, 399);
+            cmbEnrollSubject.Margin = new Padding(3, 4, 3, 4);
             cmbEnrollSubject.Name = "cmbEnrollSubject";
-            cmbEnrollSubject.Size = new Size(177, 23);
+            cmbEnrollSubject.Size = new Size(202, 28);
             cmbEnrollSubject.TabIndex = 14;
+            cmbEnrollSubject.SelectedIndexChanged += cmbEnrollSubject_SelectedIndexChanged;
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.SteelBlue;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Location = new Point(638, 275);
+            btnDelete.Margin = new Padding(3, 4, 3, 4);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(86, 37);
+            btnDelete.TabIndex = 4;
+            btnDelete.Text = "Delete All";
+            btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.Click += btnDelete_Click;
             // 
             // lblLastName
             // 
             lblLastName.AutoSize = true;
-            lblLastName.Location = new Point(83, 104);
+            lblLastName.Location = new Point(95, 139);
             lblLastName.Name = "lblLastName";
-            lblLastName.Size = new Size(63, 15);
+            lblLastName.Size = new Size(78, 20);
             lblLastName.TabIndex = 7;
             lblLastName.Text = "LastName:";
             // 
+            // dgvStudentRegistration
+            // 
+            dgvStudentRegistration.BackgroundColor = Color.Gainsboro;
+            dgvStudentRegistration.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvStudentRegistration.Location = new Point(95, 445);
+            dgvStudentRegistration.Margin = new Padding(3, 4, 3, 4);
+            dgvStudentRegistration.Name = "dgvStudentRegistration";
+            dgvStudentRegistration.RowHeadersWidth = 51;
+            dgvStudentRegistration.Size = new Size(629, 227);
+            dgvStudentRegistration.TabIndex = 3;
+            dgvStudentRegistration.CellClick += dgvStudentRegistration_CellClick;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.BackColor = Color.SteelBlue;
+            btnUpdate.FlatStyle = FlatStyle.Flat;
+            btnUpdate.Location = new Point(638, 221);
+            btnUpdate.Margin = new Padding(3, 4, 3, 4);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(86, 37);
+            btnUpdate.TabIndex = 3;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = false;
+            btnUpdate.Click += btnUpdate_Click;
+            // 
             // txtLastName
             // 
-            txtLastName.Location = new Point(170, 96);
+            txtLastName.Location = new Point(194, 128);
+            txtLastName.Margin = new Padding(3, 4, 3, 4);
             txtLastName.Name = "txtLastName";
-            txtLastName.Size = new Size(196, 23);
+            txtLastName.Size = new Size(223, 27);
             txtLastName.TabIndex = 8;
+            // 
+            // btnShow
+            // 
+            btnShow.BackColor = Color.SteelBlue;
+            btnShow.FlatStyle = FlatStyle.Flat;
+            btnShow.Location = new Point(638, 115);
+            btnShow.Margin = new Padding(3, 4, 3, 4);
+            btnShow.Name = "btnShow";
+            btnShow.Size = new Size(86, 37);
+            btnShow.TabIndex = 1;
+            btnShow.Text = "Show";
+            btnShow.UseVisualStyleBackColor = false;
+            btnShow.Click += btnShow_Click;
+            // 
+            // btnRegister
+            // 
+            btnRegister.BackColor = Color.SteelBlue;
+            btnRegister.FlatStyle = FlatStyle.Flat;
+            btnRegister.Location = new Point(638, 61);
+            btnRegister.Margin = new Padding(3, 4, 3, 4);
+            btnRegister.Name = "btnRegister";
+            btnRegister.Size = new Size(86, 37);
+            btnRegister.TabIndex = 0;
+            btnRegister.Text = "Register";
+            btnRegister.UseVisualStyleBackColor = false;
+            btnRegister.Click += btnRegister_Click;
             // 
             // lblSection
             // 
             lblSection.AutoSize = true;
-            lblSection.Location = new Point(83, 191);
+            lblSection.Location = new Point(95, 255);
             lblSection.Name = "lblSection";
-            lblSection.Size = new Size(49, 15);
+            lblSection.Size = new Size(61, 20);
             lblSection.TabIndex = 10;
             lblSection.Text = "Section:";
             // 
             // txtSection
             // 
-            txtSection.Location = new Point(171, 183);
+            txtSection.Location = new Point(195, 244);
+            txtSection.Margin = new Padding(3, 4, 3, 4);
             txtSection.Name = "txtSection";
-            txtSection.Size = new Size(195, 23);
+            txtSection.Size = new Size(222, 27);
             txtSection.TabIndex = 11;
             // 
             // txtClassification
             // 
-            txtClassification.Location = new Point(170, 241);
+            txtClassification.Location = new Point(194, 321);
+            txtClassification.Margin = new Padding(3, 4, 3, 4);
             txtClassification.Name = "txtClassification";
-            txtClassification.Size = new Size(196, 23);
+            txtClassification.Size = new Size(223, 27);
             txtClassification.TabIndex = 13;
             // 
             // txtUnits
             // 
-            txtUnits.Location = new Point(170, 212);
+            txtUnits.Location = new Point(194, 283);
+            txtUnits.Margin = new Padding(3, 4, 3, 4);
             txtUnits.Name = "txtUnits";
-            txtUnits.Size = new Size(196, 23);
+            txtUnits.Size = new Size(223, 27);
             txtUnits.TabIndex = 12;
             // 
             // txtCourse
             // 
-            txtCourse.Location = new Point(170, 154);
+            txtCourse.Location = new Point(194, 205);
+            txtCourse.Margin = new Padding(3, 4, 3, 4);
             txtCourse.Name = "txtCourse";
-            txtCourse.Size = new Size(196, 23);
+            txtCourse.Size = new Size(223, 27);
             txtCourse.TabIndex = 10;
             // 
             // txtYearLevel
             // 
-            txtYearLevel.Location = new Point(170, 125);
+            txtYearLevel.Location = new Point(194, 167);
+            txtYearLevel.Margin = new Padding(3, 4, 3, 4);
             txtYearLevel.Name = "txtYearLevel";
-            txtYearLevel.Size = new Size(196, 23);
+            txtYearLevel.Size = new Size(223, 27);
             txtYearLevel.TabIndex = 9;
             // 
             // txtFirstName
             // 
-            txtFirstName.Location = new Point(170, 67);
+            txtFirstName.Location = new Point(194, 89);
+            txtFirstName.Margin = new Padding(3, 4, 3, 4);
             txtFirstName.Name = "txtFirstName";
-            txtFirstName.Size = new Size(196, 23);
+            txtFirstName.Size = new Size(223, 27);
             txtFirstName.TabIndex = 7;
             // 
             // txtStudentID
             // 
-            txtStudentID.Location = new Point(170, 38);
+            txtStudentID.Location = new Point(194, 51);
+            txtStudentID.Margin = new Padding(3, 4, 3, 4);
             txtStudentID.Name = "txtStudentID";
-            txtStudentID.Size = new Size(196, 23);
+            txtStudentID.Size = new Size(223, 27);
             txtStudentID.TabIndex = 6;
             // 
             // lblClassification
             // 
             lblClassification.AutoSize = true;
-            lblClassification.Location = new Point(83, 249);
+            lblClassification.Location = new Point(95, 332);
             lblClassification.Name = "lblClassification";
-            lblClassification.Size = new Size(80, 15);
+            lblClassification.Size = new Size(99, 20);
             lblClassification.TabIndex = 12;
             lblClassification.Text = "Classification:";
             // 
             // lblUnits
             // 
             lblUnits.AutoSize = true;
-            lblUnits.Location = new Point(83, 220);
+            lblUnits.Location = new Point(95, 293);
             lblUnits.Name = "lblUnits";
-            lblUnits.Size = new Size(37, 15);
+            lblUnits.Size = new Size(45, 20);
             lblUnits.TabIndex = 11;
             lblUnits.Text = "Units:";
             // 
             // lblCourse
             // 
             lblCourse.AutoSize = true;
-            lblCourse.Location = new Point(83, 162);
+            lblCourse.Location = new Point(95, 216);
             lblCourse.Name = "lblCourse";
-            lblCourse.Size = new Size(47, 15);
+            lblCourse.Size = new Size(57, 20);
             lblCourse.TabIndex = 9;
             lblCourse.Text = "Course:";
             // 
             // lblYearLevel
             // 
             lblYearLevel.AutoSize = true;
-            lblYearLevel.Location = new Point(83, 133);
+            lblYearLevel.Location = new Point(95, 177);
             lblYearLevel.Name = "lblYearLevel";
-            lblYearLevel.Size = new Size(62, 15);
+            lblYearLevel.Size = new Size(78, 20);
             lblYearLevel.TabIndex = 8;
             lblYearLevel.Text = "Year Level:";
             // 
             // lblFirstName
             // 
             lblFirstName.AutoSize = true;
-            lblFirstName.Location = new Point(83, 75);
+            lblFirstName.Location = new Point(95, 100);
             lblFirstName.Name = "lblFirstName";
-            lblFirstName.Size = new Size(64, 15);
+            lblFirstName.Size = new Size(79, 20);
             lblFirstName.TabIndex = 6;
             lblFirstName.Text = "FirstName:";
             // 
             // lblStudentId
             // 
             lblStudentId.AutoSize = true;
-            lblStudentId.Location = new Point(83, 46);
+            lblStudentId.Location = new Point(95, 61);
             lblStudentId.Name = "lblStudentId";
-            lblStudentId.Size = new Size(61, 15);
+            lblStudentId.Size = new Size(76, 20);
             lblStudentId.TabIndex = 5;
             lblStudentId.Text = "StudentId:";
-            // 
-            // btnEnroll
-            // 
-            btnEnroll.BackColor = Color.SteelBlue;
-            btnEnroll.FlatStyle = FlatStyle.Flat;
-            btnEnroll.Location = new Point(558, 246);
-            btnEnroll.Name = "btnEnroll";
-            btnEnroll.Size = new Size(75, 28);
-            btnEnroll.TabIndex = 16;
-            btnEnroll.Text = "Enroll";
-            btnEnroll.UseVisualStyleBackColor = false;
-            btnEnroll.Click += btnEnroll_Click;
-            // 
-            // btnRegister
-            // 
-            btnRegister.BackColor = Color.SteelBlue;
-            btnRegister.FlatStyle = FlatStyle.Flat;
-            btnRegister.Location = new Point(558, 46);
-            btnRegister.Name = "btnRegister";
-            btnRegister.Size = new Size(75, 28);
-            btnRegister.TabIndex = 0;
-            btnRegister.Text = "Register";
-            btnRegister.UseVisualStyleBackColor = false;
-            btnRegister.Click += btnRegister_Click;
-            // 
-            // btnEdit
-            // 
-            btnEdit.BackColor = Color.SteelBlue;
-            btnEdit.FlatStyle = FlatStyle.Flat;
-            btnEdit.Location = new Point(558, 126);
-            btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(75, 28);
-            btnEdit.TabIndex = 2;
-            btnEdit.Text = "Edit";
-            btnEdit.UseVisualStyleBackColor = false;
-            btnEdit.Click += btnEdit_Click;
-            // 
-            // btnDelete
-            // 
-            btnDelete.BackColor = Color.SteelBlue;
-            btnDelete.FlatStyle = FlatStyle.Flat;
-            btnDelete.Location = new Point(558, 206);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(75, 28);
-            btnDelete.TabIndex = 4;
-            btnDelete.Text = "Delete All";
-            btnDelete.UseVisualStyleBackColor = false;
-            btnDelete.Click += btnDelete_Click;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.BackColor = Color.SteelBlue;
-            btnUpdate.FlatStyle = FlatStyle.Flat;
-            btnUpdate.Location = new Point(558, 166);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(75, 28);
-            btnUpdate.TabIndex = 3;
-            btnUpdate.Text = "Update";
-            btnUpdate.UseVisualStyleBackColor = false;
-            btnUpdate.Click += btnUpdate_Click;
-            // 
-            // btnShow
-            // 
-            btnShow.BackColor = Color.SteelBlue;
-            btnShow.FlatStyle = FlatStyle.Flat;
-            btnShow.Location = new Point(558, 86);
-            btnShow.Name = "btnShow";
-            btnShow.Size = new Size(75, 28);
-            btnShow.TabIndex = 1;
-            btnShow.Text = "Show";
-            btnShow.UseVisualStyleBackColor = false;
-            btnShow.Click += btnShow_Click;
-            // 
-            // dgvStudentRegistration
-            // 
-            dgvStudentRegistration.BackgroundColor = Color.Gainsboro;
-            dgvStudentRegistration.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudentRegistration.Location = new Point(83, 334);
-            dgvStudentRegistration.Name = "dgvStudentRegistration";
-            dgvStudentRegistration.Size = new Size(550, 170);
-            dgvStudentRegistration.TabIndex = 3;
-            dgvStudentRegistration.CellClick += dgvStudentRegistration_CellClick;
             // 
             // pictureBox2
             // 
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(951, 49);
+            pictureBox2.Location = new Point(1087, 65);
+            pictureBox2.Margin = new Padding(3, 4, 3, 4);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(40, 40);
+            pictureBox2.Size = new Size(46, 53);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 79;
             pictureBox2.TabStop = false;
@@ -354,9 +374,9 @@ namespace WinFormsApp1
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(267, 50);
+            label2.Location = new Point(305, 67);
             label2.Name = "label2";
-            label2.Size = new Size(300, 32);
+            label2.Size = new Size(379, 41);
             label2.TabIndex = 81;
             label2.Text = "STUDENT REGISTRATION";
             // 
@@ -365,26 +385,18 @@ namespace WinFormsApp1
             label5.AutoSize = true;
             label5.BackColor = Color.Silver;
             label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label5.Location = new Point(83, 205);
+            label5.Location = new Point(95, 273);
             label5.Name = "label5";
-            label5.Size = new Size(0, 20);
+            label5.Size = new Size(0, 25);
             label5.TabIndex = 77;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(939, 85);
-            button1.Name = "button1";
-            button1.Size = new Size(66, 29);
-            button1.TabIndex = 82;
-            button1.Text = "Log out";
-            button1.UseVisualStyleBackColor = true;
             // 
             // btnStudentRegistration
             // 
             btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnStudentRegistration.Location = new Point(14, 246);
+            btnStudentRegistration.Location = new Point(16, 328);
+            btnStudentRegistration.Margin = new Padding(3, 4, 3, 4);
             btnStudentRegistration.Name = "btnStudentRegistration";
-            btnStudentRegistration.Size = new Size(223, 56);
+            btnStudentRegistration.Size = new Size(255, 75);
             btnStudentRegistration.TabIndex = 73;
             btnStudentRegistration.Text = "REGISTER";
             btnStudentRegistration.UseVisualStyleBackColor = true;
@@ -395,9 +407,10 @@ namespace WinFormsApp1
             btnManage.FlatAppearance.BorderSize = 0;
             btnManage.FlatStyle = FlatStyle.Flat;
             btnManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnManage.Location = new Point(12, 92);
+            btnManage.Location = new Point(14, 123);
+            btnManage.Margin = new Padding(3, 4, 3, 4);
             btnManage.Name = "btnManage";
-            btnManage.Size = new Size(223, 56);
+            btnManage.Size = new Size(255, 75);
             btnManage.TabIndex = 5;
             btnManage.Text = "MANAGE";
             btnManage.UseVisualStyleBackColor = false;
@@ -409,9 +422,10 @@ namespace WinFormsApp1
             btnProfessors.FlatAppearance.BorderSize = 0;
             btnProfessors.FlatStyle = FlatStyle.Flat;
             btnProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnProfessors.Location = new Point(13, 169);
+            btnProfessors.Location = new Point(15, 225);
+            btnProfessors.Margin = new Padding(3, 4, 3, 4);
             btnProfessors.Name = "btnProfessors";
-            btnProfessors.Size = new Size(223, 56);
+            btnProfessors.Size = new Size(255, 75);
             btnProfessors.TabIndex = 4;
             btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
@@ -424,9 +438,10 @@ namespace WinFormsApp1
             btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatStyle = FlatStyle.Flat;
             btnHome.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnHome.Location = new Point(12, 15);
+            btnHome.Location = new Point(14, 20);
+            btnHome.Margin = new Padding(3, 4, 3, 4);
             btnHome.Name = "btnHome";
-            btnHome.Size = new Size(224, 56);
+            btnHome.Size = new Size(256, 75);
             btnHome.TabIndex = 0;
             btnHome.Text = "HOME";
             btnHome.UseVisualStyleBackColor = false;
@@ -441,8 +456,9 @@ namespace WinFormsApp1
             panel1.Controls.Add(panel3);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(235, 644);
+            panel1.Size = new Size(268, 859);
             panel1.TabIndex = 78;
             // 
             // pictureBox1
@@ -451,8 +467,9 @@ namespace WinFormsApp1
             pictureBox1.BackgroundImageLayout = ImageLayout.None;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(-1, -1);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(235, 187);
+            pictureBox1.Size = new Size(269, 249);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -465,33 +482,34 @@ namespace WinFormsApp1
             panel3.Controls.Add(btnManage);
             panel3.Controls.Add(btnProfessors);
             panel3.Controls.Add(btnHome);
-            panel3.Location = new Point(-1, 183);
+            panel3.Location = new Point(-1, 244);
+            panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(235, 460);
+            panel3.Size = new Size(269, 613);
             panel3.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(871, 56);
+            label1.Location = new Point(995, 75);
             label1.Name = "label1";
-            label1.Size = new Size(78, 25);
+            label1.Size = new Size(99, 32);
             label1.TabIndex = 80;
             label1.Text = "ADMIN";
             // 
             // StudentRegistration
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1008, 644);
+            ClientSize = new Size(1152, 859);
             Controls.Add(pictureBox2);
             Controls.Add(label2);
             Controls.Add(label5);
-            Controls.Add(button1);
             Controls.Add(panel1);
             Controls.Add(label1);
             Controls.Add(gbStudentRegistration);
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             Name = "StudentRegistration";
             StartPosition = FormStartPosition.CenterScreen;
@@ -540,7 +558,6 @@ namespace WinFormsApp1
         private PictureBox pictureBox2;
         private Label label2;
         private Label label5;
-        private Button button1;
         private Button btnStudentRegistration;
         private Button btnManage;
         private Button btnProfessors;

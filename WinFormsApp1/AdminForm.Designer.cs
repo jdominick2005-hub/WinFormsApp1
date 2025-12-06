@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblUserName = new Label();
             btnManage = new Button();
             btnProfessors = new Button();
@@ -75,7 +75,7 @@
             // 
             lblUserName.AutoSize = true;
             lblUserName.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUserName.Location = new Point(436, 80);
+            lblUserName.Location = new Point(1036, 93);
             lblUserName.Name = "lblUserName";
             lblUserName.Size = new Size(78, 28);
             lblUserName.TabIndex = 62;
@@ -389,27 +389,27 @@
             // 
             dateTimePicker1.CalendarMonthBackground = Color.White;
             dateTimePicker1.Enabled = false;
-            dateTimePicker1.Location = new Point(849, 82);
+            dateTimePicker1.Location = new Point(833, 125);
             dateTimePicker1.Margin = new Padding(3, 4, 3, 4);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(291, 27);
+            dateTimePicker1.Size = new Size(281, 27);
             dateTimePicker1.TabIndex = 72;
             dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // chart1
             // 
             chart1.BackgroundImageLayout = ImageLayout.None;
-            chartArea2.Name = "ChartArea1";
-            chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            chart1.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chart1.Legends.Add(legend1);
             chart1.Location = new Point(317, 321);
             chart1.Margin = new Padding(3, 4, 3, 4);
             chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chart1.Series.Add(series1);
             chart1.Size = new Size(797, 275);
             chart1.TabIndex = 73;
             chart1.Text = "chart1";
@@ -419,7 +419,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(314, 80);
+            label3.Location = new Point(914, 93);
             label3.Name = "label3";
             label3.Size = new Size(116, 28);
             label3.TabIndex = 74;

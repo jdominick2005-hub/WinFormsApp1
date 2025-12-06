@@ -383,5 +383,10 @@ namespace WinFormsApp1
         {
 
         }
+
+        private void cmbSection_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

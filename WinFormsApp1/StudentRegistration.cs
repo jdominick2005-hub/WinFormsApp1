@@ -324,5 +324,10 @@ namespace WinFormsApp1
             prof.Show();
             this.Hide();
         }
+
+        private void cmbEnrollSubject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

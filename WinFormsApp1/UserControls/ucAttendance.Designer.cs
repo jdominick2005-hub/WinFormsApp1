@@ -40,7 +40,7 @@
             lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblTitle.Location = new Point(20, 10);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(222, 25);
+            lblTitle.Size = new Size(283, 32);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Attendance Monitoring";
             // 
@@ -65,23 +65,24 @@
             lblSelectSection.AutoSize = true;
             lblSelectSection.Location = new Point(20, 20);
             lblSelectSection.Name = "lblSelectSection";
-            lblSelectSection.Size = new Size(83, 15);
+            lblSelectSection.Size = new Size(105, 20);
             lblSelectSection.TabIndex = 0;
             lblSelectSection.Text = "Select Section:";
             // 
             // cmbSection
             // 
-            cmbSection.Location = new Point(120, 17);
+            cmbSection.Location = new Point(148, 18);
             cmbSection.Name = "cmbSection";
-            cmbSection.Size = new Size(140, 23);
+            cmbSection.Size = new Size(140, 28);
             cmbSection.TabIndex = 1;
+            cmbSection.SelectedIndexChanged += cmbSection_SelectedIndexChanged_1;
             // 
             // lblDate
             // 
             lblDate.AutoSize = true;
             lblDate.Location = new Point(300, 20);
             lblDate.Name = "lblDate";
-            lblDate.Size = new Size(34, 15);
+            lblDate.Size = new Size(44, 20);
             lblDate.TabIndex = 2;
             lblDate.Text = "Date:";
             // 
@@ -89,7 +90,7 @@
             // 
             dtpDate.Location = new Point(350, 17);
             dtpDate.Name = "dtpDate";
-            dtpDate.Size = new Size(230, 23);
+            dtpDate.Size = new Size(230, 27);
             dtpDate.TabIndex = 3;
             // 
             // lblSelectSubject
@@ -97,15 +98,15 @@
             lblSelectSubject.AutoSize = true;
             lblSelectSubject.Location = new Point(20, 55);
             lblSelectSubject.Name = "lblSelectSubject";
-            lblSelectSubject.Size = new Size(83, 15);
+            lblSelectSubject.Size = new Size(105, 20);
             lblSelectSubject.TabIndex = 4;
             lblSelectSubject.Text = "Select Subject:";
             // 
             // cmbSubjects
             // 
-            cmbSubjects.Location = new Point(120, 52);
+            cmbSubjects.Location = new Point(148, 52);
             cmbSubjects.Name = "cmbSubjects";
-            cmbSubjects.Size = new Size(186, 23);
+            cmbSubjects.Size = new Size(186, 28);
             cmbSubjects.TabIndex = 5;
             cmbSubjects.SelectedIndexChanged += cmbSubjects_SelectedIndexChanged_1;
             // 
@@ -114,15 +115,15 @@
             lblYearLevel.AutoSize = true;
             lblYearLevel.Location = new Point(20, 88);
             lblYearLevel.Name = "lblYearLevel";
-            lblYearLevel.Size = new Size(96, 15);
+            lblYearLevel.Size = new Size(122, 20);
             lblYearLevel.TabIndex = 6;
             lblYearLevel.Text = "Select Year Level:";
             // 
             // cmbYearLevel
             // 
-            cmbYearLevel.Location = new Point(120, 85);
+            cmbYearLevel.Location = new Point(148, 85);
             cmbYearLevel.Name = "cmbYearLevel";
-            cmbYearLevel.Size = new Size(140, 23);
+            cmbYearLevel.Size = new Size(140, 28);
             cmbYearLevel.TabIndex = 7;
             // 
             // dvgStudents
@@ -131,6 +132,7 @@
             dvgStudents.ColumnHeadersHeight = 32;
             dvgStudents.Location = new Point(20, 180);
             dvgStudents.Name = "dvgStudents";
+            dvgStudents.RowHeadersWidth = 51;
             dvgStudents.RowTemplate.Height = 28;
             dvgStudents.Size = new Size(720, 260);
             dvgStudents.TabIndex = 2;

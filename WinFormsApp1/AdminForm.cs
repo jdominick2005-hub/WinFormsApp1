@@ -325,7 +325,7 @@ namespace WinFormsApp1
                    l.Username AS [Username],
                    l.FirstName AS [First Name],
                    l.LastName AS [Last Name],
-                   t.Department,
+                   t.Program,
                    t.Email
             FROM Teachers t
             JOIN Logins l ON t.UserID = l.UserID
