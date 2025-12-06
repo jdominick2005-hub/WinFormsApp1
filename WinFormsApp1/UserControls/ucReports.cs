@@ -157,6 +157,9 @@ namespace WinFormsApp1.UserControls
                 if (!string.IsNullOrEmpty(course))
                     cmd.Parameters.AddWithValue("@Course", course);
 
+                if (dvgSummary.Columns.Contains("StudentID"))
+                    dvgSummary.Columns["StudentID"].Visible = false;
+
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
             }

@@ -11,7 +11,7 @@ namespace WinFormsApp1
 {
     public partial class AdminForm : Form
     {
-        private readonly string connectionString = @"Data Source=LAPTOP-LL0PIN7E\SQLEXPRESS;Initial Catalog=AttendanceDB_v2;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Data Source=GEMINI;Initial Catalog=AttendanceDB_v2;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         private DateTime currentDate = DateTime.Today;
         private System.Windows.Forms.Timer refreshTimer;
 
@@ -390,8 +390,8 @@ namespace WinFormsApp1
                    Role,
                    DateCreated AS [Created]
             FROM Logins
-            WHERE Role IN ('Admin','Teacher')
-            ORDER BY Role DESC, LastName, FirstName";
+            WHERE Role = 'Teacher'
+            ORDER BY LastName, FirstName";
 
                 dataGridView1.DataSource = GetDataTable(sql);
 
@@ -406,6 +406,7 @@ namespace WinFormsApp1
                 MessageBox.Show("Error loading staff accounts: " + ex.Message);
             }
         }
+
 
         // ---------------------------
         // ADO.NET helpers
@@ -620,6 +621,11 @@ namespace WinFormsApp1
         }
 
         private void lblUserName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
         {
 
         }

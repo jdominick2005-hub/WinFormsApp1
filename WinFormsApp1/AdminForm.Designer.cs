@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblUserName = new Label();
             btnManage = new Button();
             btnProfessors = new Button();
@@ -75,9 +75,9 @@
             // 
             lblUserName.AutoSize = true;
             lblUserName.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUserName.Location = new Point(1036, 93);
+            lblUserName.Location = new Point(906, 70);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(78, 28);
+            lblUserName.Size = new Size(64, 21);
             lblUserName.TabIndex = 62;
             lblUserName.Text = "ADMIN";
             lblUserName.Click += lblUserName_Click;
@@ -88,10 +88,9 @@
             btnManage.FlatAppearance.BorderSize = 0;
             btnManage.FlatStyle = FlatStyle.Flat;
             btnManage.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnManage.Location = new Point(14, 123);
-            btnManage.Margin = new Padding(3, 4, 3, 4);
+            btnManage.Location = new Point(12, 92);
             btnManage.Name = "btnManage";
-            btnManage.Size = new Size(255, 75);
+            btnManage.Size = new Size(223, 56);
             btnManage.TabIndex = 5;
             btnManage.Text = "MANAGE";
             btnManage.UseVisualStyleBackColor = false;
@@ -103,10 +102,9 @@
             btnProfessors.FlatAppearance.BorderSize = 0;
             btnProfessors.FlatStyle = FlatStyle.Flat;
             btnProfessors.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnProfessors.Location = new Point(15, 225);
-            btnProfessors.Margin = new Padding(3, 4, 3, 4);
+            btnProfessors.Location = new Point(13, 169);
             btnProfessors.Name = "btnProfessors";
-            btnProfessors.Size = new Size(255, 75);
+            btnProfessors.Size = new Size(223, 56);
             btnProfessors.TabIndex = 4;
             btnProfessors.Text = "PROFESSORS";
             btnProfessors.UseVisualStyleBackColor = false;
@@ -119,10 +117,9 @@
             btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatStyle = FlatStyle.System;
             btnHome.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnHome.Location = new Point(14, 20);
-            btnHome.Margin = new Padding(3, 4, 3, 4);
+            btnHome.Location = new Point(12, 15);
             btnHome.Name = "btnHome";
-            btnHome.Size = new Size(256, 75);
+            btnHome.Size = new Size(224, 56);
             btnHome.TabIndex = 0;
             btnHome.Text = "HOME";
             btnHome.UseVisualStyleBackColor = false;
@@ -134,9 +131,8 @@
             pictureBox1.BackgroundImageLayout = ImageLayout.None;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(-1, -1);
-            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(269, 249);
+            pictureBox1.Size = new Size(235, 187);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -150,9 +146,8 @@
             panel1.Controls.Add(panel3);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(268, 859);
+            panel1.Size = new Size(235, 562);
             panel1.TabIndex = 60;
             // 
             // panel3
@@ -164,21 +159,20 @@
             panel3.Controls.Add(btnProfessors);
             panel3.Controls.Add(btnHome);
             panel3.Controls.Add(btnLogout);
-            panel3.Location = new Point(-1, 244);
-            panel3.Margin = new Padding(3, 4, 3, 4);
+            panel3.Location = new Point(3, 192);
             panel3.Name = "panel3";
-            panel3.Size = new Size(269, 613);
+            panel3.Size = new Size(227, 365);
             panel3.TabIndex = 1;
+            panel3.Paint += panel3_Paint;
             // 
             // btnStudentRegistration
             // 
             btnStudentRegistration.FlatAppearance.BorderSize = 0;
             btnStudentRegistration.FlatStyle = FlatStyle.Flat;
             btnStudentRegistration.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnStudentRegistration.Location = new Point(16, 328);
-            btnStudentRegistration.Margin = new Padding(3, 4, 3, 4);
+            btnStudentRegistration.Location = new Point(14, 246);
             btnStudentRegistration.Name = "btnStudentRegistration";
-            btnStudentRegistration.Size = new Size(255, 75);
+            btnStudentRegistration.Size = new Size(223, 56);
             btnStudentRegistration.TabIndex = 73;
             btnStudentRegistration.Text = "REGISTER";
             btnStudentRegistration.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -191,10 +185,9 @@
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnLogout.Location = new Point(16, 526);
-            btnLogout.Margin = new Padding(3, 4, 3, 4);
+            btnLogout.Location = new Point(3, 321);
             btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(255, 75);
+            btnLogout.Size = new Size(223, 56);
             btnLogout.TabIndex = 64;
             btnLogout.Text = "LOG OUT";
             btnLogout.UseVisualStyleBackColor = true;
@@ -204,9 +197,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(306, 125);
+            label2.Location = new Point(277, 41);
             label2.Name = "label2";
-            label2.Size = new Size(244, 50);
+            label2.Size = new Size(192, 40);
             label2.TabIndex = 63;
             label2.Text = "DASHBOARD";
             // 
@@ -215,9 +208,9 @@
             label5.AutoSize = true;
             label5.BackColor = Color.Silver;
             label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label5.Location = new Point(65, 273);
+            label5.Location = new Point(57, 205);
             label5.Name = "label5";
-            label5.Size = new Size(0, 25);
+            label5.Size = new Size(0, 20);
             label5.TabIndex = 59;
             // 
             // panel2
@@ -225,10 +218,9 @@
             panel2.BackColor = Color.SteelBlue;
             panel2.Controls.Add(lblstudnum);
             panel2.Controls.Add(lblstudents);
-            panel2.Location = new Point(930, 206);
-            panel2.Margin = new Padding(3, 4, 3, 4);
+            panel2.Location = new Point(814, 154);
             panel2.Name = "panel2";
-            panel2.Size = new Size(184, 107);
+            panel2.Size = new Size(161, 80);
             panel2.TabIndex = 65;
             // 
             // lblstudnum
@@ -236,9 +228,9 @@
             lblstudnum.AutoSize = true;
             lblstudnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             lblstudnum.ForeColor = Color.White;
-            lblstudnum.Location = new Point(63, 52);
+            lblstudnum.Location = new Point(55, 39);
             lblstudnum.Name = "lblstudnum";
-            lblstudnum.Size = new Size(52, 41);
+            lblstudnum.Size = new Size(42, 32);
             lblstudnum.TabIndex = 71;
             lblstudnum.Text = "50";
             lblstudnum.Click += lblstudnum_Click;
@@ -248,9 +240,9 @@
             lblstudents.AutoSize = true;
             lblstudents.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblstudents.ForeColor = Color.White;
-            lblstudents.Location = new Point(14, 24);
+            lblstudents.Location = new Point(12, 18);
             lblstudents.Name = "lblstudents";
-            lblstudents.Size = new Size(180, 28);
+            lblstudents.Size = new Size(142, 21);
             lblstudents.TabIndex = 70;
             lblstudents.Text = "TOTAL STUDENTS";
             lblstudents.Click += lblstudents_Click;
@@ -260,10 +252,9 @@
             panel4.BackColor = Color.SteelBlue;
             panel4.Controls.Add(lblprofnum);
             panel4.Controls.Add(lblprof);
-            panel4.Location = new Point(726, 206);
-            panel4.Margin = new Padding(3, 4, 3, 4);
+            panel4.Location = new Point(635, 154);
             panel4.Name = "panel4";
-            panel4.Size = new Size(184, 107);
+            panel4.Size = new Size(161, 80);
             panel4.TabIndex = 66;
             // 
             // lblprofnum
@@ -271,9 +262,9 @@
             lblprofnum.AutoSize = true;
             lblprofnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             lblprofnum.ForeColor = Color.White;
-            lblprofnum.Location = new Point(63, 52);
+            lblprofnum.Location = new Point(55, 39);
             lblprofnum.Name = "lblprofnum";
-            lblprofnum.Size = new Size(52, 41);
+            lblprofnum.Size = new Size(42, 32);
             lblprofnum.TabIndex = 72;
             lblprofnum.Text = "50";
             lblprofnum.Click += lblprofnum_Click;
@@ -283,9 +274,9 @@
             lblprof.AutoSize = true;
             lblprof.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblprof.ForeColor = Color.White;
-            lblprof.Location = new Point(3, 24);
+            lblprof.Location = new Point(3, 18);
             lblprof.Name = "lblprof";
-            lblprof.Size = new Size(200, 28);
+            lblprof.Size = new Size(158, 21);
             lblprof.TabIndex = 72;
             lblprof.Text = "TOTAL PROFESSORS";
             lblprof.Click += lblprof_Click;
@@ -295,10 +286,9 @@
             panel5.BackColor = Color.SteelBlue;
             panel5.Controls.Add(lblpresent);
             panel5.Controls.Add(lblpresentnum);
-            panel5.Location = new Point(317, 206);
-            panel5.Margin = new Padding(3, 4, 3, 4);
+            panel5.Location = new Point(277, 154);
             panel5.Name = "panel5";
-            panel5.Size = new Size(184, 107);
+            panel5.Size = new Size(161, 80);
             panel5.TabIndex = 67;
             // 
             // lblpresent
@@ -306,9 +296,9 @@
             lblpresent.AutoSize = true;
             lblpresent.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblpresent.ForeColor = Color.White;
-            lblpresent.Location = new Point(14, 24);
+            lblpresent.Location = new Point(12, 18);
             lblpresent.Name = "lblpresent";
-            lblpresent.Size = new Size(169, 28);
+            lblpresent.Size = new Size(135, 21);
             lblpresent.TabIndex = 73;
             lblpresent.Text = "PRESENT TODAY";
             lblpresent.TextAlign = ContentAlignment.MiddleCenter;
@@ -319,9 +309,9 @@
             lblpresentnum.AutoSize = true;
             lblpresentnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblpresentnum.ForeColor = Color.White;
-            lblpresentnum.Location = new Point(64, 60);
+            lblpresentnum.Location = new Point(56, 45);
             lblpresentnum.Name = "lblpresentnum";
-            lblpresentnum.Size = new Size(52, 41);
+            lblpresentnum.Size = new Size(42, 32);
             lblpresentnum.TabIndex = 73;
             lblpresentnum.Text = "50";
             lblpresentnum.TextAlign = ContentAlignment.MiddleCenter;
@@ -332,10 +322,9 @@
             panel6.BackColor = Color.SteelBlue;
             panel6.Controls.Add(lblabsentnum);
             panel6.Controls.Add(lblabsent);
-            panel6.Location = new Point(521, 206);
-            panel6.Margin = new Padding(3, 4, 3, 4);
+            panel6.Location = new Point(456, 154);
             panel6.Name = "panel6";
-            panel6.Size = new Size(184, 107);
+            panel6.Size = new Size(161, 80);
             panel6.TabIndex = 68;
             // 
             // lblabsentnum
@@ -343,9 +332,9 @@
             lblabsentnum.AutoSize = true;
             lblabsentnum.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             lblabsentnum.ForeColor = Color.White;
-            lblabsentnum.Location = new Point(67, 52);
+            lblabsentnum.Location = new Point(59, 39);
             lblabsentnum.Name = "lblabsentnum";
-            lblabsentnum.Size = new Size(52, 41);
+            lblabsentnum.Size = new Size(42, 32);
             lblabsentnum.TabIndex = 74;
             lblabsentnum.Text = "50";
             lblabsentnum.Click += lblabsentnum_Click;
@@ -355,9 +344,9 @@
             lblabsent.AutoSize = true;
             lblabsent.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblabsent.ForeColor = Color.White;
-            lblabsent.Location = new Point(22, 24);
+            lblabsent.Location = new Point(19, 18);
             lblabsent.Name = "lblabsent";
-            lblabsent.Size = new Size(160, 28);
+            lblabsent.Size = new Size(127, 21);
             lblabsent.TabIndex = 74;
             lblabsent.Text = "ABSENT TODAY";
             lblabsent.Click += lblabsent_Click;
@@ -367,11 +356,10 @@
             dataGridView1.BackgroundColor = Color.SteelBlue;
             dataGridView1.BorderStyle = BorderStyle.Fixed3D;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(317, 617);
-            dataGridView1.Margin = new Padding(3, 4, 3, 4);
+            dataGridView1.Location = new Point(277, 412);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(797, 184);
+            dataGridView1.Size = new Size(697, 138);
             dataGridView1.TabIndex = 69;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -379,9 +367,9 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(313, 175);
+            label1.Location = new Point(277, 81);
             label1.Name = "label1";
-            label1.Size = new Size(279, 19);
+            label1.Size = new Size(215, 13);
             label1.TabIndex = 70;
             label1.Text = "WELCOME TO COLLEGE OF INFORMATICS";
             // 
@@ -389,28 +377,26 @@
             // 
             dateTimePicker1.CalendarMonthBackground = Color.White;
             dateTimePicker1.Enabled = false;
-            dateTimePicker1.Location = new Point(833, 125);
-            dateTimePicker1.Margin = new Padding(3, 4, 3, 4);
+            dateTimePicker1.Location = new Point(729, 94);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(281, 27);
+            dateTimePicker1.Size = new Size(246, 23);
             dateTimePicker1.TabIndex = 72;
             dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // chart1
             // 
             chart1.BackgroundImageLayout = ImageLayout.None;
-            chartArea1.Name = "ChartArea1";
-            chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            chart1.Legends.Add(legend1);
-            chart1.Location = new Point(317, 321);
-            chart1.Margin = new Padding(3, 4, 3, 4);
+            chartArea3.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            chart1.Legends.Add(legend3);
+            chart1.Location = new Point(278, 240);
             chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            chart1.Series.Add(series1);
-            chart1.Size = new Size(797, 275);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            chart1.Series.Add(series3);
+            chart1.Size = new Size(697, 166);
             chart1.TabIndex = 73;
             chart1.Text = "chart1";
             chart1.Click += chart1_Click;
@@ -419,18 +405,18 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(914, 93);
+            label3.Location = new Point(800, 70);
             label3.Name = "label3";
-            label3.Size = new Size(116, 28);
+            label3.Size = new Size(94, 21);
             label3.TabIndex = 74;
             label3.Text = "WELCOME: ";
             // 
             // AdminForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1152, 859);
+            ClientSize = new Size(1008, 562);
             Controls.Add(label3);
             Controls.Add(panel5);
             Controls.Add(chart1);
@@ -445,7 +431,6 @@
             Controls.Add(panel1);
             Controls.Add(label5);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             Name = "AdminForm";
             StartPosition = FormStartPosition.CenterScreen;

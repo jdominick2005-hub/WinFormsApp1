@@ -353,10 +353,6 @@ namespace WinFormsApp1
         private void dtpDate_ValueChanged(object sender, EventArgs e) { /* handled above */ }
         private void lblYearLevel_Click(object sender, EventArgs e) { /* nothing */ }
 
-        private void dvgStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
         private void dvgStudents_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (dvgStudents.Columns[e.ColumnIndex].Name == "Status")
@@ -371,6 +367,9 @@ namespace WinFormsApp1
                     dvgStudents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightYellow;
                 else
                     dvgStudents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
+
+                dvgStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dvgStudents.ReadOnly = true;
             }
         }
 

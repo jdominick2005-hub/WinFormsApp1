@@ -67,7 +67,8 @@ SELECT
     S.Schedule,
     S.YearLevel,
     S.Section,
-    CONCAT(L.FirstName, ' ', L.LastName) AS Professor
+    T.Program AS Program,      -- SHOW PROGRAM INSTEAD OF PROFESSOR
+    S.TeacherID                -- Needed for selecting professor in combo
 FROM Subjects S
 LEFT JOIN Teachers T ON S.TeacherID = T.TeacherID
 LEFT JOIN Logins L ON T.UserID = L.UserID";
@@ -77,7 +78,9 @@ LEFT JOIN Logins L ON T.UserID = L.UserID";
                     da.Fill(dt);
 
                     dgvProfessors.DataSource = dt;
+
                     dgvProfessors.Columns["SubjectID"].Visible = false;
+                    dgvProfessors.Columns["TeacherID"].Visible = false; // hide teacher id
 
                     dgvProfessors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                     dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -109,8 +112,8 @@ VALUES (@name, @sched, @year, @section, @teacher)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@name", txtSubjectName.Text.Trim());
                 cmd.Parameters.AddWithValue("@sched", txtSchedule.Text.Trim());
-                cmd.Parameters.AddWithValue("@year", txtYearLevel.Text.Trim());
-                cmd.Parameters.AddWithValue("@section", txtSection.Text.Trim());
+                cmd.Parameters.AddWithValue("@year", cmbyearlevel.Text.Trim());
+                cmd.Parameters.AddWithValue("@section", cmbsection.Text.Trim());
                 cmd.Parameters.AddWithValue("@teacher", cmbProfessor.SelectedValue);
 
                 conn.Open();
@@ -166,10 +169,12 @@ VALUES (@name, @sched, @year, @section, @teacher)";
 
             txtSubjectName.Text = dgvProfessors.Rows[e.RowIndex].Cells["SubjectName"].Value.ToString();
             txtSchedule.Text = dgvProfessors.Rows[e.RowIndex].Cells["Schedule"].Value.ToString();
-            txtYearLevel.Text = dgvProfessors.Rows[e.RowIndex].Cells["YearLevel"].Value.ToString();
-            txtSection.Text = dgvProfessors.Rows[e.RowIndex].Cells["Section"].Value.ToString();
+            cmbyearlevel.Text = dgvProfessors.Rows[e.RowIndex].Cells["YearLevel"].Value.ToString();
+            cmbsection.Text = dgvProfessors.Rows[e.RowIndex].Cells["Section"].Value.ToString();
 
-            cmbProfessor.Text = dgvProfessors.Rows[e.RowIndex].Cells["Professor"].Value.ToString();
+            // Set combobox using TeacherID (not name)
+            cmbProfessor.SelectedValue =
+                dgvProfessors.Rows[e.RowIndex].Cells["TeacherID"].Value;
         }
 
 
@@ -179,10 +184,14 @@ VALUES (@name, @sched, @year, @section, @teacher)";
         {
             txtSubjectName.Clear();
             txtSchedule.Clear();
-            txtYearLevel.Clear();
-            txtSection.Clear();
+
+            // For ComboBoxes, use SelectedIndex = -1
+            cmbyearlevel.SelectedIndex = -1;
+            cmbsection.SelectedIndex = -1;
+
             cmbProfessor.SelectedIndex = -1;
         }
+
 
 
         //  SIDE NAVIGATION BUTTONS (UNCHANGED)
