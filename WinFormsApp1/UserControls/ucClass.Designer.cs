@@ -18,6 +18,8 @@
         {
             lblTitle = new Label();
             pnlFilters = new Panel();
+            cmbsubjects = new ComboBox();
+            lblsubjects = new Label();
             lblLevel = new Label();
             cmbYearLevel = new ComboBox();
             lblSection = new Label();
@@ -37,13 +39,15 @@
             lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblTitle.Location = new Point(20, 10);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(178, 25);
+            lblTitle.Size = new Size(229, 32);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Class Management";
             // 
             // pnlFilters
             // 
             pnlFilters.BorderStyle = BorderStyle.FixedSingle;
+            pnlFilters.Controls.Add(cmbsubjects);
+            pnlFilters.Controls.Add(lblsubjects);
             pnlFilters.Controls.Add(lblLevel);
             pnlFilters.Controls.Add(cmbYearLevel);
             pnlFilters.Controls.Add(lblSection);
@@ -57,9 +61,27 @@
             pnlFilters.Size = new Size(740, 120);
             pnlFilters.TabIndex = 1;
             // 
+            // cmbsubjects
+            // 
+            cmbsubjects.FormattingEnabled = true;
+            cmbsubjects.Location = new Point(80, 83);
+            cmbsubjects.Name = "cmbsubjects";
+            cmbsubjects.Size = new Size(229, 28);
+            cmbsubjects.TabIndex = 9;
+            cmbsubjects.SelectedIndexChanged += cmbsubjects_SelectedIndexChanged;
+            // 
+            // lblsubjects
+            // 
+            lblsubjects.AutoSize = true;
+            lblsubjects.Location = new Point(14, 86);
+            lblsubjects.Name = "lblsubjects";
+            lblsubjects.Size = new Size(67, 20);
+            lblsubjects.TabIndex = 8;
+            lblsubjects.Text = "Subjects:";
+            // 
             // lblLevel
             // 
-            lblLevel.Location = new Point(20, 20);
+            lblLevel.Location = new Point(3, 50);
             lblLevel.Name = "lblLevel";
             lblLevel.Size = new Size(84, 23);
             lblLevel.TabIndex = 0;
@@ -69,15 +91,15 @@
             // 
             cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbYearLevel.Items.AddRange(new object[] { "1st Year", "2nd Year", "3rd Year" });
-            cmbYearLevel.Location = new Point(110, 17);
+            cmbYearLevel.Location = new Point(80, 49);
             cmbYearLevel.Name = "cmbYearLevel";
-            cmbYearLevel.Size = new Size(170, 23);
+            cmbYearLevel.Size = new Size(170, 28);
             cmbYearLevel.TabIndex = 1;
-            cmbYearLevel.SelectedIndexChanged += cmbYearlevel_SelectedIndexChanged;
+            cmbYearLevel.SelectedIndexChanged += cmbYearLevel_SelectedIndexChanged;
             // 
             // lblSection
             // 
-            lblSection.Location = new Point(310, 20);
+            lblSection.Location = new Point(14, 14);
             lblSection.Name = "lblSection";
             lblSection.Size = new Size(64, 23);
             lblSection.TabIndex = 2;
@@ -87,15 +109,15 @@
             // 
             cmbSections.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSections.Items.AddRange(new object[] { "BSIT-1A", "BSCS-2A", "BSIS-3B" });
-            cmbSections.Location = new Point(380, 17);
+            cmbSections.Location = new Point(80, 9);
             cmbSections.Name = "cmbSections";
-            cmbSections.Size = new Size(170, 23);
+            cmbSections.Size = new Size(87, 28);
             cmbSections.TabIndex = 3;
-            cmbSections.SelectedIndexChanged += cmbsections_SelectedIndexChanged;
+            cmbSections.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
             // 
             // lblSchedule
             // 
-            lblSchedule.Location = new Point(20, 60);
+            lblSchedule.Location = new Point(454, 45);
             lblSchedule.Name = "lblSchedule";
             lblSchedule.Size = new Size(75, 23);
             lblSchedule.TabIndex = 4;
@@ -103,33 +125,35 @@
             // 
             // txtSchedule
             // 
-            txtSchedule.Location = new Point(110, 57);
+            txtSchedule.Location = new Point(535, 41);
             txtSchedule.Name = "txtSchedule";
-            txtSchedule.Size = new Size(200, 23);
+            txtSchedule.Size = new Size(200, 27);
             txtSchedule.TabIndex = 5;
             // 
             // lblTotal
             // 
-            lblTotal.Location = new Point(330, 60);
+            lblTotal.Location = new Point(600, 86);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(96, 23);
+            lblTotal.Size = new Size(61, 23);
             lblTotal.TabIndex = 6;
             lblTotal.Text = "Total Students:";
             // 
             // txtTotal
             // 
-            txtTotal.Location = new Point(432, 57);
+            txtTotal.Location = new Point(667, 83);
             txtTotal.Name = "txtTotal";
-            txtTotal.Size = new Size(68, 23);
+            txtTotal.Size = new Size(68, 27);
             txtTotal.TabIndex = 7;
             // 
             // dgvClass
             // 
             dgvClass.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvClass.BackgroundColor = Color.White;
+            dgvClass.ColumnHeadersHeight = 29;
             dgvClass.Location = new Point(20, 180);
             dgvClass.Name = "dgvClass";
             dgvClass.RowHeadersVisible = false;
+            dgvClass.RowHeadersWidth = 51;
             dgvClass.RowTemplate.Height = 28;
             dgvClass.Size = new Size(740, 300);
             dgvClass.TabIndex = 2;
@@ -167,5 +191,7 @@
         private TextBox txtTotal;
 
         private DataGridView dgvClass;
+        private ComboBox cmbsubjects;
+        private Label lblsubjects;
     }
 }
