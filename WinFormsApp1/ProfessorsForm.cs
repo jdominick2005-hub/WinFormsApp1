@@ -371,5 +371,30 @@ namespace WinFormsApp1
             selectedUserId = 0;
             dgvTeachers.ClearSelection();
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to logout?",
+                "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                // Open the login form
+                LoginForm login = new LoginForm();   // <-- use your actual login form class name
+                login.Show();
+
+                // When login form is closed, exit this form too (or the whole app)
+                login.FormClosed += (s, args) =>
+                {
+                    // Close the current ProfessorsForm
+                    this.Close();
+                    // If you want to exit the whole app instead:
+                    // Application.Exit();
+                };
+
+                // Hide current form
+                this.Hide();
+            }
+        }
     }
 }

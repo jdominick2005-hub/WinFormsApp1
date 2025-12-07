@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;            
 using System.Windows.Forms;
 
 namespace WinFormsApp1
@@ -42,33 +43,53 @@ namespace WinFormsApp1
         }
 
         //
-        // NAVIGATION BUTTONS (RESTORED)
+        // SMALL HELPER TO AVOID DUPLICATE FORMS
+        //
+        private T GetOrCreateForm<T>() where T : Form, new()
+        {
+            // Look for an already open form of this type
+            var existing = Application.OpenForms.OfType<T>().FirstOrDefault();
+
+            if (existing == null || existing.IsDisposed)
+            {
+                existing = new T();
+            }
+
+            return existing;
+        }
+
+        //
+        // NAVIGATION BUTTONS
         // 
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-            AdminForm home = new AdminForm();
+            var home = GetOrCreateForm<AdminForm>();
             home.Show();
-            this.Hide();
+            home.BringToFront();
+            this.Hide();   // or this.Close(); if you prefer
         }
 
         private void btnProfessors_Click(object sender, EventArgs e)
         {
-            ProfessorsForm f = new ProfessorsForm();
+            var f = GetOrCreateForm<ProfessorsForm>();
             f.Show();
+            f.BringToFront();
             this.Hide();
         }
 
         private void btnManage_Click(object sender, EventArgs e)
         {
-            // You are already in Manage, so refresh only
+            // You are already in Manage, so maybe just refresh
             LoadSubjects();
+            // No need to open another ManageForm
         }
 
         private void btnStudentRegistration_Click(object sender, EventArgs e)
         {
-            StudentRegistration f = new StudentRegistration();
+            var f = GetOrCreateForm<StudentRegistration>();
             f.Show();
+            f.BringToFront();
             this.Hide();
         }
 
@@ -254,6 +275,31 @@ namespace WinFormsApp1
             cmbyearlevel.SelectedIndex = -1;
             cmbsection.SelectedIndex = -1;
             cmbProfessor.SelectedIndex = -1;
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to logout?",
+                "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                // Open the login form
+                LoginForm login = new LoginForm();   // <-- use your actual login form class name
+                login.Show();
+
+                // When login form is closed, exit this form too (or the whole app)
+                login.FormClosed += (s, args) =>
+                {
+                    // Close the current ProfessorsForm
+                    this.Close();
+                    // If you want to exit the whole app instead:
+                    // Application.Exit();
+                };
+
+                // Hide current form
+                this.Hide();
+            }
         }
     }
 }
