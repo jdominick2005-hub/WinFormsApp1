@@ -17,6 +17,9 @@
 
         private void InitializeComponent()
         {
+
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             lblTitle = new Label();
             pnlFilters = new Panel();
             lblSelectSection = new Label();
@@ -28,9 +31,7 @@
             lblYearLevel = new Label();
             cmbYearLevel = new ComboBox();
             dvgStudents = new DataGridView();
-            btnSave = new Button();
-            btnLoad = new Button();
-            btnMarkAll = new Button();
+            btnMarkAllPresent = new Button();
             btnClearAll = new Button();
             pnlFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dvgStudents).BeginInit();
@@ -39,15 +40,17 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitle.Location = new Point(20, 10);
+            lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.Black;
+            lblTitle.Location = new Point(20, 15);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(256, 30);
+            lblTitle.Size = new Size(283, 32);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Attendance Monitoring";
             // 
             // pnlFilters
             // 
+            pnlFilters.BackColor = Color.White;
             pnlFilters.BorderStyle = BorderStyle.FixedSingle;
             pnlFilters.Controls.Add(lblSelectSection);
             pnlFilters.Controls.Add(cmbSection);
@@ -57,32 +60,37 @@
             pnlFilters.Controls.Add(cmbSubjects);
             pnlFilters.Controls.Add(lblYearLevel);
             pnlFilters.Controls.Add(cmbYearLevel);
-            pnlFilters.Location = new Point(20, 55);
+            pnlFilters.Location = new Point(20, 65);
             pnlFilters.Name = "pnlFilters";
-            pnlFilters.Size = new Size(750, 120);
+            pnlFilters.Padding = new Padding(10);
+            pnlFilters.Size = new Size(740, 110);
             pnlFilters.TabIndex = 1;
             // 
             // lblSelectSection
             // 
             lblSelectSection.AutoSize = true;
-            lblSelectSection.Location = new Point(20, 18);
+            lblSelectSection.Font = new Font("Segoe UI", 9F);
+            lblSelectSection.Location = new Point(15, 15);
             lblSelectSection.Name = "lblSelectSection";
-            lblSelectSection.Size = new Size(83, 15);
+            lblSelectSection.Size = new Size(49, 15);
             lblSelectSection.TabIndex = 0;
-            lblSelectSection.Text = "Select Section:";
+            lblSelectSection.Text = "Section:";
             // 
             // cmbSection
             // 
             cmbSection.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbSection.Location = new Point(130, 15);
+            cmbSection.FlatStyle = FlatStyle.Flat;
+            cmbSection.Font = new Font("Segoe UI", 9F);
+            cmbSection.Location = new Point(90, 12);
             cmbSection.Name = "cmbSection";
-            cmbSection.Size = new Size(150, 23);
+            cmbSection.Size = new Size(140, 23);
             cmbSection.TabIndex = 1;
             // 
             // lblDate
             // 
             lblDate.AutoSize = true;
-            lblDate.Location = new Point(310, 18);
+            lblDate.Font = new Font("Segoe UI", 9F);
+            lblDate.Location = new Point(260, 15);
             lblDate.Name = "lblDate";
             lblDate.Size = new Size(34, 15);
             lblDate.TabIndex = 2;
@@ -90,7 +98,8 @@
             // 
             // dtpDate
             // 
-            dtpDate.Location = new Point(360, 15);
+            dtpDate.Font = new Font("Segoe UI", 9F);
+            dtpDate.Location = new Point(310, 12);
             dtpDate.Name = "dtpDate";
             dtpDate.Size = new Size(220, 23);
             dtpDate.TabIndex = 3;
@@ -98,24 +107,29 @@
             // lblSelectSubject
             // 
             lblSelectSubject.AutoSize = true;
-            lblSelectSubject.Location = new Point(20, 55);
+            lblSelectSubject.Font = new Font("Segoe UI", 9F);
+            lblSelectSubject.Location = new Point(15, 55);
             lblSelectSubject.Name = "lblSelectSubject";
-            lblSelectSubject.Size = new Size(83, 15);
+            lblSelectSubject.Size = new Size(49, 15);
             lblSelectSubject.TabIndex = 4;
-            lblSelectSubject.Text = "Select Subject:";
+            lblSelectSubject.Text = "Subject:";
             // 
             // cmbSubjects
             // 
             cmbSubjects.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbSubjects.Location = new Point(130, 52);
+            cmbSubjects.FlatStyle = FlatStyle.Flat;
+            cmbSubjects.Font = new Font("Segoe UI", 9F);
+            cmbSubjects.Location = new Point(90, 52);
             cmbSubjects.Name = "cmbSubjects";
-            cmbSubjects.Size = new Size(250, 23);
+            cmbSubjects.Size = new Size(240, 23);
             cmbSubjects.TabIndex = 5;
+            cmbSubjects.SelectedIndexChanged += cmbSubjects_SelectedIndexChanged;
             // 
             // lblYearLevel
             // 
             lblYearLevel.AutoSize = true;
-            lblYearLevel.Location = new Point(20, 88);
+            lblYearLevel.Font = new Font("Segoe UI", 9F);
+            lblYearLevel.Location = new Point(360, 55);
             lblYearLevel.Name = "lblYearLevel";
             lblYearLevel.Size = new Size(62, 15);
             lblYearLevel.TabIndex = 6;
@@ -124,91 +138,84 @@
             // cmbYearLevel
             // 
             cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbYearLevel.Location = new Point(130, 85);
+            cmbYearLevel.FlatStyle = FlatStyle.Flat;
+            cmbYearLevel.Font = new Font("Segoe UI", 9F);
+            cmbYearLevel.Location = new Point(440, 52);
             cmbYearLevel.Name = "cmbYearLevel";
-            cmbYearLevel.Size = new Size(150, 23);
+            cmbYearLevel.Size = new Size(120, 23);
             cmbYearLevel.TabIndex = 7;
             // 
             // dvgStudents
             // 
+            dvgStudents.AllowUserToResizeRows = false;
             dvgStudents.BackgroundColor = Color.White;
-            dvgStudents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dvgStudents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = Color.LightBlue;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dvgStudents.DefaultCellStyle = dataGridViewCellStyle2;
+            dvgStudents.EnableHeadersVisualStyles = false;
+            dvgStudents.GridColor = Color.Gainsboro;
             dvgStudents.Location = new Point(20, 190);
             dvgStudents.Name = "dvgStudents";
             dvgStudents.RowHeadersVisible = false;
-            dvgStudents.RowTemplate.Height = 28;
-            dvgStudents.Size = new Size(750, 244);
+            dvgStudents.Size = new Size(740, 240);
             dvgStudents.TabIndex = 2;
             // 
-            // btnSave
+            // btnMarkAllPresent
             // 
-            btnSave.BackColor = Color.FromArgb(0, 120, 215);
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(20, 457);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(110, 32);
-            btnSave.TabIndex = 3;
-            btnSave.Text = "SAVE";
-            btnSave.UseVisualStyleBackColor = false;
-            // 
-            // btnLoad
-            // 
-            btnLoad.BackColor = Color.WhiteSmoke;
-            btnLoad.FlatStyle = FlatStyle.Flat;
-            btnLoad.Font = new Font("Segoe UI", 10F);
-            btnLoad.Location = new Point(136, 457);
-            btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(110, 32);
-            btnLoad.TabIndex = 4;
-            btnLoad.Text = "LOAD";
-            btnLoad.UseVisualStyleBackColor = false;
-            // 
-            // btnMarkAll
-            // 
-            btnMarkAll.BackColor = Color.LightGreen;
-            btnMarkAll.FlatStyle = FlatStyle.Flat;
-            btnMarkAll.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnMarkAll.Location = new Point(416, 458);
-            btnMarkAll.Name = "btnMarkAll";
-            btnMarkAll.Size = new Size(130, 32);
-            btnMarkAll.TabIndex = 5;
-            btnMarkAll.Text = "MARK ALL PRESENT";
-            btnMarkAll.UseVisualStyleBackColor = false;
+            btnMarkAllPresent.BackColor = Color.FromArgb(180, 240, 180);
+            btnMarkAllPresent.FlatAppearance.BorderSize = 0;
+            btnMarkAllPresent.FlatStyle = FlatStyle.Flat;
+            btnMarkAllPresent.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnMarkAllPresent.Location = new Point(420, 440);
+            btnMarkAllPresent.Name = "btnMarkAllPresent";
+            btnMarkAllPresent.Size = new Size(150, 35);
+            btnMarkAllPresent.TabIndex = 3;
+            btnMarkAllPresent.Text = "MARK ALL PRESENT";
+            btnMarkAllPresent.UseVisualStyleBackColor = false;
             // 
             // btnClearAll
             // 
-            btnClearAll.BackColor = Color.LightCoral;
+            btnClearAll.BackColor = Color.FromArgb(255, 180, 180);
+            btnClearAll.FlatAppearance.BorderSize = 0;
             btnClearAll.FlatStyle = FlatStyle.Flat;
             btnClearAll.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnClearAll.Location = new Point(552, 458);
+            btnClearAll.Location = new Point(580, 440);
             btnClearAll.Name = "btnClearAll";
-            btnClearAll.Size = new Size(130, 32);
-            btnClearAll.TabIndex = 6;
+            btnClearAll.Size = new Size(150, 35);
+            btnClearAll.TabIndex = 4;
             btnClearAll.Text = "CLEAR ALL";
             btnClearAll.UseVisualStyleBackColor = false;
             // 
             // ucAttendance
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            Controls.Add(btnClearAll);
-            Controls.Add(btnMarkAll);
-            Controls.Add(btnLoad);
-            Controls.Add(btnSave);
-            Controls.Add(dvgStudents);
-            Controls.Add(pnlFilters);
             Controls.Add(lblTitle);
+            Controls.Add(pnlFilters);
+            Controls.Add(dvgStudents);
+            Controls.Add(btnMarkAllPresent);
+            Controls.Add(btnClearAll);
             Name = "ucAttendance";
-            Size = new Size(775, 508);
+            Size = new Size(780, 500);
             pnlFilters.ResumeLayout(false);
             pnlFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dvgStudents).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
+
 
         #endregion
 
@@ -223,9 +230,7 @@
         private System.Windows.Forms.Label lblYearLevel;
         private System.Windows.Forms.ComboBox cmbYearLevel;
         private System.Windows.Forms.DataGridView dvgStudents;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnLoad;
-        private System.Windows.Forms.Button btnMarkAll;
+        private System.Windows.Forms.Button btnMarkAllPresent;
         private System.Windows.Forms.Button btnClearAll;
     }
 }
