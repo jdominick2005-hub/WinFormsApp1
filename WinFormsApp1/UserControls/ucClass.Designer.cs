@@ -18,6 +18,8 @@
         {
             lblTitle = new Label();
             pnlFilters = new Panel();
+            lblprogram = new Label();
+            cmbprogram = new ComboBox();
             cmbsubjects = new ComboBox();
             lblsubjects = new Label();
             lblLevel = new Label();
@@ -39,13 +41,15 @@
             lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblTitle.Location = new Point(20, 10);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(178, 25);
+            lblTitle.Size = new Size(229, 32);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Class Management";
             // 
             // pnlFilters
             // 
             pnlFilters.BorderStyle = BorderStyle.FixedSingle;
+            pnlFilters.Controls.Add(lblprogram);
+            pnlFilters.Controls.Add(cmbprogram);
             pnlFilters.Controls.Add(cmbsubjects);
             pnlFilters.Controls.Add(lblsubjects);
             pnlFilters.Controls.Add(lblLevel);
@@ -61,12 +65,30 @@
             pnlFilters.Size = new Size(740, 120);
             pnlFilters.TabIndex = 1;
             // 
+            // lblprogram
+            // 
+            lblprogram.AutoSize = true;
+            lblprogram.Location = new Point(456, 12);
+            lblprogram.Name = "lblprogram";
+            lblprogram.Size = new Size(73, 20);
+            lblprogram.TabIndex = 11;
+            lblprogram.Text = "Program: ";
+            // 
+            // cmbprogram
+            // 
+            cmbprogram.FormattingEnabled = true;
+            cmbprogram.Location = new Point(535, 7);
+            cmbprogram.Name = "cmbprogram";
+            cmbprogram.Size = new Size(151, 28);
+            cmbprogram.TabIndex = 10;
+            cmbprogram.SelectedIndexChanged += cmbprogram_SelectedIndexChanged;
+            // 
             // cmbsubjects
             // 
             cmbsubjects.FormattingEnabled = true;
             cmbsubjects.Location = new Point(80, 83);
             cmbsubjects.Name = "cmbsubjects";
-            cmbsubjects.Size = new Size(229, 23);
+            cmbsubjects.Size = new Size(229, 28);
             cmbsubjects.TabIndex = 9;
             cmbsubjects.SelectedIndexChanged += cmbsubjects_SelectedIndexChanged;
             // 
@@ -75,7 +97,7 @@
             lblsubjects.AutoSize = true;
             lblsubjects.Location = new Point(14, 86);
             lblsubjects.Name = "lblsubjects";
-            lblsubjects.Size = new Size(54, 15);
+            lblsubjects.Size = new Size(67, 20);
             lblsubjects.TabIndex = 8;
             lblsubjects.Text = "Subjects:";
             // 
@@ -83,17 +105,16 @@
             // 
             lblLevel.Location = new Point(3, 50);
             lblLevel.Name = "lblLevel";
-            lblLevel.Size = new Size(84, 23);
+            lblLevel.Size = new Size(78, 23);
             lblLevel.TabIndex = 0;
             lblLevel.Text = "Year Level:";
             // 
             // cmbYearLevel
             // 
             cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbYearLevel.Items.AddRange(new object[] { "1st Year", "2nd Year", "3rd Year" });
-            cmbYearLevel.Location = new Point(80, 49);
+            cmbYearLevel.Location = new Point(80, 50);
             cmbYearLevel.Name = "cmbYearLevel";
-            cmbYearLevel.Size = new Size(170, 23);
+            cmbYearLevel.Size = new Size(157, 28);
             cmbYearLevel.TabIndex = 1;
             cmbYearLevel.SelectedIndexChanged += cmbYearLevel_SelectedIndexChanged;
             // 
@@ -108,10 +129,9 @@
             // cmbSections
             // 
             cmbSections.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbSections.Items.AddRange(new object[] { "BSIT-1A", "BSCS-2A", "BSIS-3B" });
             cmbSections.Location = new Point(80, 9);
             cmbSections.Name = "cmbSections";
-            cmbSections.Size = new Size(87, 23);
+            cmbSections.Size = new Size(87, 28);
             cmbSections.TabIndex = 3;
             cmbSections.SelectedIndexChanged += cmbSections_SelectedIndexChanged;
             // 
@@ -127,7 +147,7 @@
             // 
             txtSchedule.Location = new Point(535, 41);
             txtSchedule.Name = "txtSchedule";
-            txtSchedule.Size = new Size(200, 23);
+            txtSchedule.Size = new Size(200, 27);
             txtSchedule.TabIndex = 5;
             // 
             // lblTotal
@@ -142,7 +162,7 @@
             // 
             txtTotal.Location = new Point(667, 83);
             txtTotal.Name = "txtTotal";
-            txtTotal.Size = new Size(68, 23);
+            txtTotal.Size = new Size(68, 27);
             txtTotal.TabIndex = 7;
             // 
             // dgvClass
@@ -193,5 +213,7 @@
         private DataGridView dgvClass;
         private ComboBox cmbsubjects;
         private Label lblsubjects;
+        private Label lblprogram;
+        private ComboBox cmbprogram;
     }
 }
