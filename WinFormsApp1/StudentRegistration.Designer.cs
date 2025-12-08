@@ -286,6 +286,7 @@ namespace WinFormsApp1
             // lblStudentId
             // 
             lblStudentId.AutoSize = true;
+            lblStudentId.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblStudentId.Location = new Point(95, 61);
             lblStudentId.Name = "lblStudentId";
             lblStudentId.Size = new Size(76, 20);

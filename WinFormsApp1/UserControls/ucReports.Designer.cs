@@ -28,7 +28,6 @@
             cmbCourse = new ComboBox();
             lblDate = new Label();
             dtpDate = new DateTimePicker();
-            btnLoad = new Button();
             pictureBox1 = new PictureBox();
             dvgSummary = new DataGridView();
             lblTotals = new Label();
@@ -44,7 +43,7 @@
             lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblTitle.Location = new Point(110, 15);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(285, 25);
+            lblTitle.Size = new Size(364, 32);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Attendance Reports & Summary";
             // 
@@ -61,7 +60,6 @@
             pnlFilters.Controls.Add(cmbCourse);
             pnlFilters.Controls.Add(lblDate);
             pnlFilters.Controls.Add(dtpDate);
-            pnlFilters.Controls.Add(btnLoad);
             pnlFilters.Location = new Point(25, 75);
             pnlFilters.Name = "pnlFilters";
             pnlFilters.Size = new Size(745, 110);
@@ -80,7 +78,7 @@
             cmbSection.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSection.Location = new Point(92, 12);
             cmbSection.Name = "cmbSection";
-            cmbSection.Size = new Size(150, 23);
+            cmbSection.Size = new Size(150, 28);
             cmbSection.TabIndex = 1;
             cmbSection.SelectedIndexChanged += cmbSection_SelectedIndexChanged_1;
             // 
@@ -97,7 +95,7 @@
             cmbSubject.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSubject.Location = new Point(320, 12);
             cmbSubject.Name = "cmbSubject";
-            cmbSubject.Size = new Size(180, 23);
+            cmbSubject.Size = new Size(180, 28);
             cmbSubject.TabIndex = 3;
             cmbSubject.SelectedIndexChanged += cmbSubject_SelectedIndexChanged_1;
             // 
@@ -114,7 +112,7 @@
             cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbYearLevel.Location = new Point(92, 52);
             cmbYearLevel.Name = "cmbYearLevel";
-            cmbYearLevel.Size = new Size(150, 23);
+            cmbYearLevel.Size = new Size(150, 28);
             cmbYearLevel.TabIndex = 5;
             cmbYearLevel.SelectedIndexChanged += cmbYearLevel_SelectedIndexChanged;
             // 
@@ -131,7 +129,7 @@
             cmbCourse.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCourse.Location = new Point(320, 52);
             cmbCourse.Name = "cmbCourse";
-            cmbCourse.Size = new Size(180, 23);
+            cmbCourse.Size = new Size(180, 28);
             cmbCourse.TabIndex = 7;
             // 
             // lblDate
@@ -146,22 +144,8 @@
             // 
             dtpDate.Location = new Point(560, 12);
             dtpDate.Name = "dtpDate";
-            dtpDate.Size = new Size(170, 23);
+            dtpDate.Size = new Size(170, 27);
             dtpDate.TabIndex = 9;
-            // 
-            // btnLoad
-            // 
-            btnLoad.BackColor = Color.FromArgb(0, 120, 215);
-            btnLoad.FlatAppearance.BorderSize = 0;
-            btnLoad.FlatStyle = FlatStyle.Flat;
-            btnLoad.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnLoad.ForeColor = Color.White;
-            btnLoad.Location = new Point(560, 52);
-            btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(170, 28);
-            btnLoad.TabIndex = 10;
-            btnLoad.Text = "LOAD";
-            btnLoad.UseVisualStyleBackColor = false;
             // 
             // pictureBox1
             // 
@@ -177,10 +161,12 @@
             // 
             dvgSummary.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dvgSummary.BackgroundColor = Color.White;
+            dvgSummary.ColumnHeadersHeight = 29;
             dvgSummary.GridColor = Color.Silver;
             dvgSummary.Location = new Point(25, 200);
             dvgSummary.Name = "dvgSummary";
             dvgSummary.RowHeadersVisible = false;
+            dvgSummary.RowHeadersWidth = 51;
             dvgSummary.RowTemplate.Height = 28;
             dvgSummary.Size = new Size(745, 260);
             dvgSummary.TabIndex = 3;
@@ -245,8 +231,6 @@
 
         private Label lblCourse;
         private ComboBox cmbCourse;
-
-        private Button btnLoad;
         private PictureBox pictureBox1;
 
         private DataGridView dvgSummary;
