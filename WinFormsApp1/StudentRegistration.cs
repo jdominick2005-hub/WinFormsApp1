@@ -15,6 +15,13 @@ namespace WinFormsApp1
         {
             InitializeComponent();
             this.Load += StudentRegistration_Load;
+
+            // Optional quality-of-life settings for the grid
+            dgvStudentRegistration.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvStudentRegistration.MultiSelect = false;
+            dgvStudentRegistration.ReadOnly = true;
+            dgvStudentRegistration.AllowUserToAddRows = false;
+            dgvStudentRegistration.AllowUserToDeleteRows = false;
         }
 
         // Form load
@@ -125,6 +132,13 @@ namespace WinFormsApp1
 
                 dgvStudentRegistration.AutoGenerateColumns = true;
                 dgvStudentRegistration.DataSource = dt;
+                dgvStudentRegistration.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                // HIDE StudentID column from the grid
+                if (dgvStudentRegistration.Columns.Contains("StudentID"))
+                {
+                    dgvStudentRegistration.Columns["StudentID"].Visible = false;
+                }
             }
         }
 
@@ -135,6 +149,7 @@ namespace WinFormsApp1
 
             DataGridViewRow row = dgvStudentRegistration.Rows[e.RowIndex];
 
+            // StudentID is hidden in the grid but still accessible in code
             txtStudentID.Text = row.Cells["StudentID"].Value?.ToString() ?? "";
             txtFirstName.Text = row.Cells["FirstName"].Value?.ToString() ?? "";
             txtLastName.Text = row.Cells["LastName"].Value?.ToString() ?? "";

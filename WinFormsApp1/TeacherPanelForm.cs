@@ -46,6 +46,8 @@ namespace WinFormsApp1
 
         private void btnClass_Click(object sender, EventArgs e)
         {
+            LoadControl(new ucClass(teacherID));
+
         }
 
         private void btnSubject_Click(object sender, EventArgs e)

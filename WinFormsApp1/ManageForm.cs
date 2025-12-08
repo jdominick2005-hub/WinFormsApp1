@@ -304,18 +304,5 @@ namespace WinFormsApp1
                 login.FormClosed += (s, args) => Close();
             }
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void cmbcourse_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

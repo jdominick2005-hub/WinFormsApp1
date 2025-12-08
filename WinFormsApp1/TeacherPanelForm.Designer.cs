@@ -54,9 +54,10 @@
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnLogout.Location = new Point(13, 395);
+            btnLogout.Location = new Point(15, 527);
+            btnLogout.Margin = new Padding(3, 4, 3, 4);
             btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(223, 56);
+            btnLogout.Size = new Size(255, 75);
             btnLogout.TabIndex = 70;
             btnLogout.Text = "Log out";
             btnLogout.UseVisualStyleBackColor = true;
@@ -66,9 +67,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
-            label2.Location = new Point(267, 69);
+            label2.Location = new Point(305, 92);
             label2.Name = "label2";
-            label2.Size = new Size(239, 47);
+            label2.Size = new Size(298, 60);
             label2.TabIndex = 69;
             label2.Text = "DASHBOARD";
             // 
@@ -77,9 +78,9 @@
             label5.AutoSize = true;
             label5.BackColor = Color.Silver;
             label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label5.Location = new Point(72, 205);
+            label5.Location = new Point(82, 273);
             label5.Name = "label5";
-            label5.Size = new Size(0, 20);
+            label5.Size = new Size(0, 25);
             label5.TabIndex = 65;
             // 
             // panel3
@@ -91,9 +92,10 @@
             panel3.Controls.Add(btnAttendance);
             panel3.Controls.Add(btnClass);
             panel3.Controls.Add(btnHome);
-            panel3.Location = new Point(-1, 183);
+            panel3.Location = new Point(-1, 244);
+            panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(235, 460);
+            panel3.Size = new Size(269, 613);
             panel3.TabIndex = 1;
             // 
             // btnReports
@@ -102,9 +104,10 @@
             btnReports.FlatAppearance.BorderSize = 0;
             btnReports.FlatStyle = FlatStyle.Flat;
             btnReports.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnReports.Location = new Point(12, 231);
+            btnReports.Location = new Point(14, 308);
+            btnReports.Margin = new Padding(3, 4, 3, 4);
             btnReports.Name = "btnReports";
-            btnReports.Size = new Size(223, 56);
+            btnReports.Size = new Size(255, 75);
             btnReports.TabIndex = 73;
             btnReports.Text = "REPORTS";
             btnReports.UseVisualStyleBackColor = false;
@@ -116,9 +119,10 @@
             btnAttendance.FlatAppearance.BorderSize = 0;
             btnAttendance.FlatStyle = FlatStyle.Flat;
             btnAttendance.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnAttendance.Location = new Point(13, 159);
+            btnAttendance.Location = new Point(15, 212);
+            btnAttendance.Margin = new Padding(3, 4, 3, 4);
             btnAttendance.Name = "btnAttendance";
-            btnAttendance.Size = new Size(223, 56);
+            btnAttendance.Size = new Size(255, 75);
             btnAttendance.TabIndex = 5;
             btnAttendance.Text = "ATTENDANCE";
             btnAttendance.UseVisualStyleBackColor = false;
@@ -131,9 +135,10 @@
             btnClass.FlatAppearance.BorderSize = 0;
             btnClass.FlatStyle = FlatStyle.Flat;
             btnClass.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnClass.Location = new Point(12, 87);
+            btnClass.Location = new Point(14, 116);
+            btnClass.Margin = new Padding(3, 4, 3, 4);
             btnClass.Name = "btnClass";
-            btnClass.Size = new Size(223, 56);
+            btnClass.Size = new Size(255, 75);
             btnClass.TabIndex = 2;
             btnClass.Text = "CLASS";
             btnClass.UseVisualStyleBackColor = false;
@@ -146,9 +151,10 @@
             btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatStyle = FlatStyle.Flat;
             btnHome.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnHome.Location = new Point(12, 15);
+            btnHome.Location = new Point(14, 20);
+            btnHome.Margin = new Padding(3, 4, 3, 4);
             btnHome.Name = "btnHome";
-            btnHome.Size = new Size(224, 56);
+            btnHome.Size = new Size(256, 75);
             btnHome.TabIndex = 0;
             btnHome.Text = "HOME";
             btnHome.UseVisualStyleBackColor = false;
@@ -163,8 +169,9 @@
             panel1.Controls.Add(panel3);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(235, 644);
+            panel1.Size = new Size(268, 859);
             panel1.TabIndex = 66;
             // 
             // pictureBox1
@@ -173,8 +180,9 @@
             pictureBox1.BackgroundImageLayout = ImageLayout.None;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(-1, -1);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(235, 187);
+            pictureBox1.Size = new Size(269, 249);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -183,49 +191,52 @@
             // 
             lblUserName.AutoSize = true;
             lblUserName.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            lblUserName.Location = new Point(131, 50);
+            lblUserName.Location = new Point(167, 67);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(78, 21);
+            lblUserName.Size = new Size(95, 28);
             lblUserName.TabIndex = 68;
             lblUserName.Text = "TEACHER";
             // 
             // panelMain
             // 
-            panelMain.Location = new Point(235, 136);
+            panelMain.Location = new Point(269, 181);
+            panelMain.Margin = new Padding(3, 4, 3, 4);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(775, 508);
+            panelMain.Size = new Size(886, 677);
             panelMain.TabIndex = 71;
             // 
             // panelTopDashboard
             // 
             panelTopDashboard.Controls.Add(label3);
             panelTopDashboard.Controls.Add(lblUserName);
-            panelTopDashboard.Location = new Point(235, 0);
+            panelTopDashboard.Location = new Point(269, 0);
+            panelTopDashboard.Margin = new Padding(3, 4, 3, 4);
             panelTopDashboard.Name = "panelTopDashboard";
-            panelTopDashboard.Size = new Size(775, 136);
+            panelTopDashboard.Size = new Size(886, 181);
             panelTopDashboard.TabIndex = 72;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(39, 50);
+            label3.Location = new Point(45, 67);
             label3.Name = "label3";
-            label3.Size = new Size(94, 21);
+            label3.Size = new Size(116, 28);
             label3.TabIndex = 75;
             label3.Text = "WELCOME: ";
             // 
             // TeacherPanelForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1008, 644);
+            ClientSize = new Size(1152, 859);
             Controls.Add(label2);
             Controls.Add(panelMain);
             Controls.Add(label5);
             Controls.Add(panel1);
             Controls.Add(panelTopDashboard);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "TeacherPanelForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "TeacherPanelForm";
