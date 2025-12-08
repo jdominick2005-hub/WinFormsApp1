@@ -35,15 +35,12 @@ namespace WinFormsApp1
             cmbsection = new ComboBox();
             cmbcourse = new ComboBox();
             cmbyearlevel = new ComboBox();
-            btnEnroll = new Button();
             lblEnroll = new Label();
-            btnEdit = new Button();
             btnDelete = new Button();
             lblLastName = new Label();
             dgvStudentRegistration = new DataGridView();
             btnUpdate = new Button();
             txtLastName = new TextBox();
-            btnShow = new Button();
             btnRegister = new Button();
             lblSection = new Label();
             txtFirstName = new TextBox();
@@ -62,6 +59,7 @@ namespace WinFormsApp1
             pictureBox1 = new PictureBox();
             panel3 = new Panel();
             btnLogout = new Button();
+            btnEdit = new Button();
             gbStudentRegistration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStudentRegistration).BeginInit();
             panel1.SuspendLayout();
@@ -76,7 +74,6 @@ namespace WinFormsApp1
             gbStudentRegistration.Controls.Add(cmbsection);
             gbStudentRegistration.Controls.Add(cmbcourse);
             gbStudentRegistration.Controls.Add(cmbyearlevel);
-            gbStudentRegistration.Controls.Add(btnEnroll);
             gbStudentRegistration.Controls.Add(lblEnroll);
             gbStudentRegistration.Controls.Add(btnEdit);
             gbStudentRegistration.Controls.Add(btnDelete);
@@ -84,7 +81,6 @@ namespace WinFormsApp1
             gbStudentRegistration.Controls.Add(dgvStudentRegistration);
             gbStudentRegistration.Controls.Add(btnUpdate);
             gbStudentRegistration.Controls.Add(txtLastName);
-            gbStudentRegistration.Controls.Add(btnShow);
             gbStudentRegistration.Controls.Add(btnRegister);
             gbStudentRegistration.Controls.Add(lblSection);
             gbStudentRegistration.Controls.Add(txtFirstName);
@@ -93,19 +89,20 @@ namespace WinFormsApp1
             gbStudentRegistration.Controls.Add(lblYearLevel);
             gbStudentRegistration.Controls.Add(lblFirstName);
             gbStudentRegistration.Controls.Add(lblStudentId);
-            gbStudentRegistration.Location = new Point(258, 118);
+            gbStudentRegistration.Location = new Point(267, 96);
             gbStudentRegistration.Name = "gbStudentRegistration";
-            gbStudentRegistration.Size = new Size(711, 526);
+            gbStudentRegistration.Size = new Size(711, 536);
             gbStudentRegistration.TabIndex = 1;
             gbStudentRegistration.TabStop = false;
             gbStudentRegistration.Text = "Student Registration";
             // 
             // clbSubjects
             // 
+            clbSubjects.BorderStyle = BorderStyle.None;
             clbSubjects.FormattingEnabled = true;
-            clbSubjects.Location = new Point(83, 237);
+            clbSubjects.Location = new Point(170, 217);
             clbSubjects.Name = "clbSubjects";
-            clbSubjects.Size = new Size(248, 58);
+            clbSubjects.Size = new Size(248, 54);
             clbSubjects.TabIndex = 20;
             // 
             // cmbsection
@@ -115,6 +112,7 @@ namespace WinFormsApp1
             cmbsection.Name = "cmbsection";
             cmbsection.Size = new Size(215, 23);
             cmbsection.TabIndex = 19;
+            cmbsection.SelectedIndexChanged += cmbsection_SelectedIndexChanged;
             // 
             // cmbcourse
             // 
@@ -123,7 +121,7 @@ namespace WinFormsApp1
             cmbcourse.Name = "cmbcourse";
             cmbcourse.Size = new Size(215, 23);
             cmbcourse.TabIndex = 18;
-            cmbcourse.SelectedIndexChanged += cmbsection_SelectedIndexChanged;
+            cmbcourse.SelectedIndexChanged += cmbcourse_SelectedIndexChanged;
             // 
             // cmbyearlevel
             // 
@@ -132,18 +130,7 @@ namespace WinFormsApp1
             cmbyearlevel.Name = "cmbyearlevel";
             cmbyearlevel.Size = new Size(196, 23);
             cmbyearlevel.TabIndex = 17;
-            // 
-            // btnEnroll
-            // 
-            btnEnroll.BackColor = Color.SteelBlue;
-            btnEnroll.FlatStyle = FlatStyle.Flat;
-            btnEnroll.Location = new Point(558, 246);
-            btnEnroll.Name = "btnEnroll";
-            btnEnroll.Size = new Size(75, 28);
-            btnEnroll.TabIndex = 16;
-            btnEnroll.Text = "Enroll";
-            btnEnroll.UseVisualStyleBackColor = false;
-            btnEnroll.Click += btnEnroll_Click;
+            cmbyearlevel.SelectedIndexChanged += cmbyearlevel_SelectedIndexChanged;
             // 
             // lblEnroll
             // 
@@ -154,27 +141,15 @@ namespace WinFormsApp1
             lblEnroll.TabIndex = 15;
             lblEnroll.Text = "Select Subject:";
             // 
-            // btnEdit
-            // 
-            btnEdit.BackColor = Color.SteelBlue;
-            btnEdit.FlatStyle = FlatStyle.Flat;
-            btnEdit.Location = new Point(558, 126);
-            btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(75, 28);
-            btnEdit.TabIndex = 2;
-            btnEdit.Text = "Edit";
-            btnEdit.UseVisualStyleBackColor = false;
-            btnEdit.Click += btnEdit_Click;
-            // 
             // btnDelete
             // 
             btnDelete.BackColor = Color.SteelBlue;
             btnDelete.FlatStyle = FlatStyle.Flat;
-            btnDelete.Location = new Point(558, 206);
+            btnDelete.Location = new Point(558, 162);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(75, 28);
             btnDelete.TabIndex = 4;
-            btnDelete.Text = "Delete All";
+            btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
             btnDelete.Click += btnDelete_Click;
             // 
@@ -191,10 +166,10 @@ namespace WinFormsApp1
             // 
             dgvStudentRegistration.BackgroundColor = Color.Gainsboro;
             dgvStudentRegistration.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudentRegistration.Location = new Point(83, 328);
+            dgvStudentRegistration.Location = new Point(83, 283);
             dgvStudentRegistration.Name = "dgvStudentRegistration";
             dgvStudentRegistration.RowHeadersWidth = 51;
-            dgvStudentRegistration.Size = new Size(550, 170);
+            dgvStudentRegistration.Size = new Size(550, 231);
             dgvStudentRegistration.TabIndex = 3;
             dgvStudentRegistration.CellClick += dgvStudentRegistration_CellClick;
             // 
@@ -202,7 +177,7 @@ namespace WinFormsApp1
             // 
             btnUpdate.BackColor = Color.SteelBlue;
             btnUpdate.FlatStyle = FlatStyle.Flat;
-            btnUpdate.Location = new Point(558, 166);
+            btnUpdate.Location = new Point(558, 125);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(75, 28);
             btnUpdate.TabIndex = 3;
@@ -212,22 +187,11 @@ namespace WinFormsApp1
             // 
             // txtLastName
             // 
+            txtLastName.BorderStyle = BorderStyle.FixedSingle;
             txtLastName.Location = new Point(170, 96);
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(196, 23);
             txtLastName.TabIndex = 8;
-            // 
-            // btnShow
-            // 
-            btnShow.BackColor = Color.SteelBlue;
-            btnShow.FlatStyle = FlatStyle.Flat;
-            btnShow.Location = new Point(558, 86);
-            btnShow.Name = "btnShow";
-            btnShow.Size = new Size(75, 28);
-            btnShow.TabIndex = 1;
-            btnShow.Text = "Show";
-            btnShow.UseVisualStyleBackColor = false;
-            btnShow.Click += btnShow_Click;
             // 
             // btnRegister
             // 
@@ -252,6 +216,7 @@ namespace WinFormsApp1
             // 
             // txtFirstName
             // 
+            txtFirstName.BorderStyle = BorderStyle.FixedSingle;
             txtFirstName.Location = new Point(170, 67);
             txtFirstName.Name = "txtFirstName";
             txtFirstName.Size = new Size(196, 23);
@@ -259,6 +224,7 @@ namespace WinFormsApp1
             // 
             // txtStudentID
             // 
+            txtStudentID.BorderStyle = BorderStyle.FixedSingle;
             txtStudentID.Location = new Point(170, 38);
             txtStudentID.Name = "txtStudentID";
             txtStudentID.Size = new Size(196, 23);
@@ -426,6 +392,18 @@ namespace WinFormsApp1
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
             // 
+            // btnEdit
+            // 
+            btnEdit.BackColor = Color.SteelBlue;
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.Location = new Point(558, 84);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(75, 28);
+            btnEdit.TabIndex = 2;
+            btnEdit.Text = "Edit";
+            btnEdit.UseVisualStyleBackColor = false;
+            btnEdit.Click += btnEdit_Click;
+            // 
             // StudentRegistration
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -463,14 +441,11 @@ namespace WinFormsApp1
         private Button btnRegister;
         private Button btnDelete;
         private Button btnUpdate;
-        private Button btnShow;
         private DataGridView dgvStudentRegistration;
         private Label lblSection;
-        private Button btnEdit;
         private TextBox txtLastName;
         private Label lblLastName;
         private Label lblEnroll;
-        private Button btnEnroll;
         private Label label2;
         private Label label5;
         private Button btnStudentRegistration;
@@ -485,5 +460,6 @@ namespace WinFormsApp1
         private ComboBox cmbyearlevel;
         private ComboBox cmbsection;
         private CheckedListBox clbSubjects;
+        private Button btnEdit;
     }
 }

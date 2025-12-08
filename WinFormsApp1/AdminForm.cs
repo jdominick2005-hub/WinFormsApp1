@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -12,7 +13,9 @@ namespace WinFormsApp1
 {
     public partial class AdminForm : Form
     {
-        private readonly string connectionString = @"Data Source=GERALD\SQLEXPRESS;Initial Catalog=AttendanceDB_v2;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;";
+        // Use the same connection string as the other forms
+        private readonly string connectionString =
+            ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
 
         private DateTime currentDate = DateTime.Today;
         private System.Windows.Forms.Timer refreshTimer;
@@ -269,13 +272,12 @@ namespace WinFormsApp1
 
                 area.AxisX.Title = "";
                 area.AxisY.Minimum = 0;
-                area.AxisY.Maximum = 100;
                 area.AxisY.Interval = 10;
                 area.AxisY.Title = "Registered Students";
 
                 try { chart1.Click -= chart1_Click; } catch { }
 
-                Series series = new Series("Monthly Average")
+                Series series = new Series("Monthly Registered Students")
                 {
                     ChartType = SeriesChartType.Line,
                     BorderWidth = 3,
@@ -621,9 +623,6 @@ namespace WinFormsApp1
 
         private void panel3_Paint(object sender, PaintEventArgs e) { }
 
-        private void panel5_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        private void panel5_Paint(object sender, PaintEventArgs e) { }
     }
 }

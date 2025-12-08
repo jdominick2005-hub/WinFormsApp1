@@ -17,15 +17,15 @@ namespace WinFormsApp1
             this.Load += StudentRegistration_Load;
         }
 
+        // Form load
         private void StudentRegistration_Load(object sender, EventArgs e)
         {
             InitializeYearCourseSectionCombos();
             LoadStudents();
-            LoadSubjects();
+            LoadSubjects(null, null, null);   // no subjects at start
         }
 
-        // ====================== COMBO PRESET VALUES ======================
-
+        // Init combos
         private void InitializeYearCourseSectionCombos()
         {
             cmbyearlevel.Items.Clear();
@@ -50,10 +50,21 @@ namespace WinFormsApp1
             cmbsection.SelectedIndex = -1;
         }
 
-        // ====================== LOAD SUBJECTS (uses clbSubjects) ======================
-
-        private void LoadSubjects(string sectionFilter = null)
+        // Load subjects (filter)
+        private void LoadSubjects(string yearFilter, string courseFilter, string sectionFilter)
         {
+            bool hasYear = !string.IsNullOrWhiteSpace(yearFilter);
+            bool hasCourse = !string.IsNullOrWhiteSpace(courseFilter);
+            bool hasSection = !string.IsNullOrWhiteSpace(sectionFilter);
+
+            // nothing chosen → no subjects
+            if (!hasYear && !hasCourse && !hasSection)
+            {
+                clbSubjects.DataSource = null;
+                clbSubjects.Items.Clear();
+                return;
+            }
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string sql = @"
@@ -61,14 +72,25 @@ namespace WinFormsApp1
                            SubjectName + ' (' + Section + ')' AS FullName
                     FROM Subjects";
 
-                if (!string.IsNullOrEmpty(sectionFilter))
-                {
-                    sql += " WHERE Section = @Sec";
-                }
+                List<string> conditions = new List<string>();
+
+                if (hasYear)
+                    conditions.Add("YearLevel = @Year");
+                if (hasCourse)
+                    conditions.Add("Course = @Course");
+                if (hasSection)
+                    conditions.Add("Section = @Sec");
+
+                if (conditions.Count > 0)
+                    sql += " WHERE " + string.Join(" AND ", conditions);
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
-                    if (!string.IsNullOrEmpty(sectionFilter))
+                    if (hasYear)
+                        cmd.Parameters.AddWithValue("@Year", yearFilter);
+                    if (hasCourse)
+                        cmd.Parameters.AddWithValue("@Course", courseFilter);
+                    if (hasSection)
                         cmd.Parameters.AddWithValue("@Sec", sectionFilter);
 
                     conn.Open();
@@ -76,14 +98,13 @@ namespace WinFormsApp1
                     dt.Load(cmd.ExecuteReader());
 
                     clbSubjects.DataSource = dt;
-                    clbSubjects.DisplayMember = "FullName";  // <-- alias fixed
+                    clbSubjects.DisplayMember = "FullName";
                     clbSubjects.ValueMember = "SubjectID";
                 }
             }
         }
 
-        // ====================== LOAD STUDENTS GRID ======================
-
+        // Load students
         private void LoadStudents()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -107,8 +128,7 @@ namespace WinFormsApp1
             }
         }
 
-        // ====================== GRID CLICK ======================
-
+        // Grid click
         private void dgvStudentRegistration_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -123,14 +143,11 @@ namespace WinFormsApp1
             cmbcourse.Text = row.Cells["Course"].Value?.ToString() ?? "";
             cmbsection.Text = row.Cells["Section"].Value?.ToString() ?? "";
 
-            if (!string.IsNullOrWhiteSpace(cmbsection.Text))
-                LoadSubjects(cmbsection.Text);
-            else
-                LoadSubjects();
+            // correct order: year, course, section
+            LoadSubjects(cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text);
         }
 
-        // ====================== EDIT / UPDATE ======================
-
+        // Enable edit
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtStudentID.Text))
@@ -146,6 +163,7 @@ namespace WinFormsApp1
             cmbsection.Enabled = true;
         }
 
+        // Update student
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtStudentID.Text))
@@ -188,8 +206,7 @@ namespace WinFormsApp1
             MessageBox.Show("Student updated.");
         }
 
-        // ====================== DELETE ======================
-
+        // Delete student
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtStudentID.Text))
@@ -221,8 +238,7 @@ namespace WinFormsApp1
             MessageBox.Show("Student deleted.");
         }
 
-        // ====================== REGISTER + AUTO-ENROLL ======================
-
+        // Register student
         private void btnRegister_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtFirstName.Text) ||
@@ -255,7 +271,7 @@ namespace WinFormsApp1
                 newStudentId = Convert.ToInt32(cmd.ExecuteScalar());
             }
 
-            AutoEnroll(newStudentId, cmbsection.Text);
+            AutoEnroll(newStudentId, cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text);
             UpdateClassification(newStudentId);
             LoadStudents();
             ClearFields();
@@ -263,17 +279,25 @@ namespace WinFormsApp1
             MessageBox.Show("Student registered and auto-enrolled.");
         }
 
-        private void AutoEnroll(int studentId, string section)
+        // Auto enroll
+        private void AutoEnroll(int studentId, string yearLevel, string course, string section)
         {
-            if (string.IsNullOrWhiteSpace(section)) return;
+            if (string.IsNullOrWhiteSpace(yearLevel) ||
+                string.IsNullOrWhiteSpace(course) ||
+                string.IsNullOrWhiteSpace(section))
+                return;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                // get all subjects in that section
-                SqlCommand getSubjects = new SqlCommand(
-                    "SELECT SubjectID FROM Subjects WHERE Section = @S", conn);
+                string sql = @"
+                    SELECT SubjectID FROM Subjects
+                    WHERE YearLevel = @YL AND Course = @C AND Section = @S";
+
+                SqlCommand getSubjects = new SqlCommand(sql, conn);
+                getSubjects.Parameters.AddWithValue("@YL", yearLevel);
+                getSubjects.Parameters.AddWithValue("@C", course);
                 getSubjects.Parameters.AddWithValue("@S", section);
 
                 DataTable dt = new DataTable();
@@ -290,8 +314,7 @@ namespace WinFormsApp1
             }
         }
 
-        // ====================== MANUAL ENROLL (clbSubjects) ======================
-
+        // Manual enroll
         private void btnEnroll_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtStudentID.Text))
@@ -339,41 +362,40 @@ namespace WinFormsApp1
             MessageBox.Show("Enrollment updated.");
         }
 
-        // ====================== CLASSIFICATION LOGIC ======================
-
+        // Update class (Regular/Irregular)
         private void UpdateClassification(int studentId)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                // get student's year + section
                 string yearLevel = "";
+                string course = "";
                 string section = "";
 
                 using (SqlCommand cmdInfo = new SqlCommand(
-                    "SELECT YearLevel, Section FROM Students WHERE StudentID = @ID", conn))
+                    "SELECT YearLevel, Course, Section FROM Students WHERE StudentID = @ID", conn))
                 {
                     cmdInfo.Parameters.AddWithValue("@ID", studentId);
                     using (SqlDataReader r = cmdInfo.ExecuteReader())
                     {
                         if (!r.Read()) return;
                         yearLevel = r["YearLevel"].ToString();
+                        course = r["Course"].ToString();
                         section = r["Section"].ToString();
                     }
                 }
 
-                // total subjects for that year+section
                 int totalSubjects;
                 using (SqlCommand cmdTotal = new SqlCommand(
-                    "SELECT COUNT(*) FROM Subjects WHERE YearLevel = @YL AND Section = @S", conn))
+                    "SELECT COUNT(*) FROM Subjects WHERE YearLevel = @YL AND Course = @C AND Section = @S", conn))
                 {
                     cmdTotal.Parameters.AddWithValue("@YL", yearLevel);
+                    cmdTotal.Parameters.AddWithValue("@C", course);
                     cmdTotal.Parameters.AddWithValue("@S", section);
                     totalSubjects = (int)cmdTotal.ExecuteScalar();
                 }
 
-                // how many of those the student is enrolled in
                 int enrolledSame;
                 using (SqlCommand cmdEnrolled = new SqlCommand(@"
                     SELECT COUNT(*)
@@ -381,10 +403,12 @@ namespace WinFormsApp1
                     JOIN Subjects S ON E.SubjectID = S.SubjectID
                     WHERE E.StudentID = @ID
                       AND S.YearLevel = @YL
+                      AND S.Course = @C
                       AND S.Section = @S", conn))
                 {
                     cmdEnrolled.Parameters.AddWithValue("@ID", studentId);
                     cmdEnrolled.Parameters.AddWithValue("@YL", yearLevel);
+                    cmdEnrolled.Parameters.AddWithValue("@C", course);
                     cmdEnrolled.Parameters.AddWithValue("@S", section);
                     enrolledSame = (int)cmdEnrolled.ExecuteScalar();
                 }
@@ -404,8 +428,7 @@ namespace WinFormsApp1
             LoadStudents();
         }
 
-        // ====================== HELPERS & NAV ======================
-
+        // Clear inputs
         private void ClearFields()
         {
             txtStudentID.Text = "";
@@ -415,42 +438,56 @@ namespace WinFormsApp1
             cmbcourse.SelectedIndex = -1;
             cmbsection.SelectedIndex = -1;
 
-            clbSubjects.ClearSelected();
-            for (int i = 0; i < clbSubjects.Items.Count; i++)
-                clbSubjects.SetItemChecked(i, false);
+            clbSubjects.DataSource = null;
+            clbSubjects.Items.Clear();
         }
 
+        // Show students
         private void btnShow_Click(object sender, EventArgs e)
         {
             LoadStudents();
         }
 
+        // Section change
         private void cmbsection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(cmbsection.Text))
-                LoadSubjects(cmbsection.Text);
-            else
-                LoadSubjects();
+            LoadSubjects(cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text);
         }
 
+        // Course change
+        private void cmbcourse_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSubjects(cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text);
+        }
+
+        // Year change
+        private void cmbyearlevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSubjects(cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text);
+        }
+
+        // Home nav
         private void btnHome_Click(object sender, EventArgs e)
         {
             new AdminForm().Show();
             this.Hide();
         }
 
+        // Manage nav
         private void btnManage_Click(object sender, EventArgs e)
         {
             new ManageForm().Show();
             this.Hide();
         }
 
+        // Professors nav
         private void btnProfessors_Click(object sender, EventArgs e)
         {
             new ProfessorsForm().Show();
             this.Hide();
         }
 
+        // Logout
         private void btnLogout_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Are you sure you want to logout?",
@@ -465,10 +502,10 @@ namespace WinFormsApp1
             }
         }
 
-        // Dummy handlers if wired in designer
+        // Group enter
         private void gbStudentRegistration_Enter(object sender, EventArgs e) { }
+
+        // Label click
         private void lblEnroll_Click(object sender, EventArgs e) { }
-        private void cmbcourse_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void cmbyearlevel_SelectedIndexChanged(object sender, EventArgs e) { }
     }
 }

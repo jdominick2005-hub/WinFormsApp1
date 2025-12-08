@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;            
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
@@ -17,59 +17,76 @@ namespace WinFormsApp1
         public ManageForm()
         {
             InitializeComponent();
+
             this.Load += ManageFormLoad;
 
-            // Table selection
             dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProfessors.MultiSelect = false;
-
+            dgvProfessors.ReadOnly = true;
+            dgvProfessors.AllowUserToAddRows = false;
             dgvProfessors.CellClick += dgvProfessors_CellClick;
 
-            // Buttons
             btnAdd.Click += btnAdd_Click;
             btnDelete.Click += btnDelete_Click;
 
-            // Navigation buttons
             btnHome.Click += btnHome_Click;
             btnProfessors.Click += btnProfessors_Click;
             btnManage.Click += btnManage_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
         }
 
+        // Form load
         private void ManageFormLoad(object sender, EventArgs e)
         {
+            InitializeYearSectionCourseCombos();
             LoadProfessors();
             LoadSubjects();
         }
 
-        //
-        // SMALL HELPER TO AVOID DUPLICATE FORMS
-        //
+        // Init combos
+        private void InitializeYearSectionCourseCombos()
+        {
+            cmbyearlevel.Items.Clear();
+            cmbyearlevel.Items.Add("1st Year");
+            cmbyearlevel.Items.Add("2nd Year");
+            cmbyearlevel.Items.Add("3rd Year");
+            cmbyearlevel.Items.Add("4th Year");
+
+            cmbsection.Items.Clear();
+            cmbsection.Items.Add("A");
+            cmbsection.Items.Add("B");
+            cmbsection.Items.Add("C");
+
+            cmbcourse.Items.Clear();
+            cmbcourse.Items.Add("BSIT");
+            cmbcourse.Items.Add("BSCS");
+            cmbcourse.Items.Add("BMMAM");
+            cmbcourse.Items.Add("BSCpE");
+
+            cmbyearlevel.SelectedIndex = -1;
+            cmbsection.SelectedIndex = -1;
+            cmbcourse.SelectedIndex = -1;
+        }
+
+        // Reuse form
         private T GetOrCreateForm<T>() where T : Form, new()
         {
-            // Look for an already open form of this type
             var existing = Application.OpenForms.OfType<T>().FirstOrDefault();
-
             if (existing == null || existing.IsDisposed)
-            {
                 existing = new T();
-            }
-
             return existing;
         }
 
-        //
-        // NAVIGATION BUTTONS
-        // 
-
+        // Home nav
         private void btnHome_Click(object sender, EventArgs e)
         {
             var home = GetOrCreateForm<AdminForm>();
             home.Show();
             home.BringToFront();
-            this.Hide();   // or this.Close(); if you prefer
+            this.Hide();
         }
 
+        // Prof nav
         private void btnProfessors_Click(object sender, EventArgs e)
         {
             var f = GetOrCreateForm<ProfessorsForm>();
@@ -78,13 +95,14 @@ namespace WinFormsApp1
             this.Hide();
         }
 
+        // Manage nav
         private void btnManage_Click(object sender, EventArgs e)
         {
-            // You are already in Manage, so maybe just refresh
+            LoadProfessors();
             LoadSubjects();
-            // No need to open another ManageForm
         }
 
+        // StudReg nav
         private void btnStudentRegistration_Click(object sender, EventArgs e)
         {
             var f = GetOrCreateForm<StudentRegistration>();
@@ -93,21 +111,18 @@ namespace WinFormsApp1
             this.Hide();
         }
 
-        //
-        // DATA LOADING
-        // 
-
+        // Load teachers
         private void LoadProfessors()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string sql = @"
-                SELECT 
-                    T.TeacherID,
-                    CONCAT(L.FirstName, ' ', L.LastName, ' - ', T.Program) AS DisplayName
-                FROM Teachers T
-                JOIN Logins L ON T.UserID = L.UserID
-                ORDER BY L.LastName";
+                    SELECT 
+                        T.TeacherID,
+                        CONCAT(L.FirstName, ' ', L.LastName, ' - ', T.Program) AS DisplayName
+                    FROM Teachers T
+                    JOIN Logins L ON T.UserID = L.UserID
+                    ORDER BY L.LastName";
 
                 SqlDataAdapter da = new SqlDataAdapter(sql, conn);
                 DataTable dt = new DataTable();
@@ -116,28 +131,29 @@ namespace WinFormsApp1
                 cmbProfessor.DataSource = dt;
                 cmbProfessor.DisplayMember = "DisplayName";
                 cmbProfessor.ValueMember = "TeacherID";
-
                 cmbProfessor.SelectedIndex = -1;
             }
         }
 
+        // Load subjects
         private void LoadSubjects()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string sql = @"
-                SELECT 
-                    S.SubjectID,
-                    S.SubjectName,
-                    S.Schedule,
-                    S.YearLevel,
-                    S.Section,
-                    T.Program,
-                    CONCAT(L.FirstName, ' ', L.LastName) AS ProfessorName
-                FROM Subjects S
-                LEFT JOIN Teachers T ON S.TeacherID = T.TeacherID
-                LEFT JOIN Logins L ON T.UserID = L.UserID
-                ORDER BY S.SubjectName";
+                    SELECT 
+                        S.SubjectID,
+                        S.SubjectName,
+                        S.Schedule,
+                        S.YearLevel,
+                        S.Course,
+                        S.Section,
+                        T.Program,
+                        CONCAT(L.FirstName, ' ', L.LastName) AS ProfessorName
+                    FROM Subjects S
+                    LEFT JOIN Teachers T ON S.TeacherID = T.TeacherID
+                    LEFT JOIN Logins L ON T.UserID = L.UserID
+                    ORDER BY S.SubjectName";
 
                 SqlDataAdapter da = new SqlDataAdapter(sql, conn);
                 DataTable dt = new DataTable();
@@ -145,51 +161,84 @@ namespace WinFormsApp1
 
                 dgvProfessors.DataSource = dt;
 
-                dgvProfessors.Columns["SubjectID"].Visible = false;
+                if (dgvProfessors.Columns.Contains("SubjectID"))
+                    dgvProfessors.Columns["SubjectID"].Visible = false;
 
                 dgvProfessors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                dgvProfessors.ReadOnly = true;
-                dgvProfessors.AllowUserToAddRows = false;
             }
         }
 
-        //
-        // SUBJECT SELECTION
-        // 
-
+        // Grid click
         private void dgvProfessors_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
             DataGridViewRow row = dgvProfessors.Rows[e.RowIndex];
-            selectedSubjectID = Convert.ToInt32(row.Cells["SubjectID"].Value);
+
+            if (row.Cells["SubjectID"].Value != null)
+                selectedSubjectID = Convert.ToInt32(row.Cells["SubjectID"].Value);
         }
 
-        //
-        // ADD SUBJECT
-        //
+        // Validate inputs
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(txtSubjectName.Text) ||
+                string.IsNullOrWhiteSpace(txtSchedule.Text) ||
+                string.IsNullOrWhiteSpace(cmbyearlevel.Text) ||
+                string.IsNullOrWhiteSpace(cmbcourse.Text) ||
+                string.IsNullOrWhiteSpace(cmbsection.Text) ||
+                cmbProfessor.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please complete all fields.");
+                return false;
+            }
 
+            return true;
+        }
+
+        // Check duplicate
+        private bool SubjectExists(string subject, string yearLevel, string course, string section)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+                SELECT COUNT(*) FROM Subjects
+                WHERE SubjectName = @name
+                  AND YearLevel = @year
+                  AND Course = @course
+                  AND Section = @section", conn))
+            {
+                cmd.Parameters.AddWithValue("@name", subject.Trim());
+                cmd.Parameters.AddWithValue("@year", yearLevel.Trim());
+                cmd.Parameters.AddWithValue("@course", course.Trim());
+                cmd.Parameters.AddWithValue("@section", section.Trim());
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // Add subject
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (!ValidateInputs()) return;
 
-            if (SubjectExists(txtSubjectName.Text, cmbsection.Text))
+            if (SubjectExists(txtSubjectName.Text, cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text))
             {
-                MessageBox.Show("This subject already exists for this section.",
-                                "Duplicate", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("This subject already exists for this year, course, and section.");
                 return;
             }
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string sql = @"
-                INSERT INTO Subjects (SubjectName, Schedule, YearLevel, Section, TeacherID)
-                VALUES (@name, @sched, @year, @section, @teacher)";
+                    INSERT INTO Subjects (SubjectName, Schedule, YearLevel, Course, Section, TeacherID)
+                    VALUES (@name, @sched, @year, @course, @section, @teacher)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@name", txtSubjectName.Text.Trim());
                 cmd.Parameters.AddWithValue("@sched", txtSchedule.Text.Trim());
                 cmd.Parameters.AddWithValue("@year", cmbyearlevel.Text.Trim());
+                cmd.Parameters.AddWithValue("@course", cmbcourse.Text.Trim());
                 cmd.Parameters.AddWithValue("@section", cmbsection.Text.Trim());
                 cmd.Parameters.AddWithValue("@teacher", cmbProfessor.SelectedValue);
 
@@ -197,26 +246,22 @@ namespace WinFormsApp1
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show("Subject added successfully!");
+            MessageBox.Show("Subject added successfully.");
             LoadSubjects();
             ClearInputs();
         }
 
-        //
-        // DELETE SUBJECT
-        //
-
+        // Delete subject
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (selectedSubjectID == 0)
             {
-                MessageBox.Show("Please select a subject to delete.",
-                    "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a subject to delete.");
                 return;
             }
 
-            if (MessageBox.Show("Are you sure you want to delete this subject?",
-                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            if (MessageBox.Show("Delete this subject?", "Confirm",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -228,55 +273,24 @@ namespace WinFormsApp1
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show("Subject deleted successfully.");
+            MessageBox.Show("Subject deleted.");
             LoadSubjects();
             selectedSubjectID = 0;
         }
 
-        //
-        // HELPER FUNCTIONS
-        //
-
-        private bool ValidateInputs()
-        {
-            if (string.IsNullOrWhiteSpace(txtSubjectName.Text) ||
-                string.IsNullOrWhiteSpace(txtSchedule.Text) ||
-                string.IsNullOrWhiteSpace(cmbyearlevel.Text) ||
-                string.IsNullOrWhiteSpace(cmbsection.Text) ||
-                cmbProfessor.SelectedIndex == -1)
-            {
-                MessageBox.Show("Please complete all fields before saving.",
-                                "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool SubjectExists(string subject, string section)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(@"
-                SELECT COUNT(*) FROM Subjects
-                WHERE SubjectName=@name AND Section=@section", conn))
-            {
-                cmd.Parameters.AddWithValue("@name", subject.Trim());
-                cmd.Parameters.AddWithValue("@section", section.Trim());
-
-                conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
-            }
-        }
-
+        // Clear fields
         private void ClearInputs()
         {
             txtSubjectName.Clear();
             txtSchedule.Clear();
             cmbyearlevel.SelectedIndex = -1;
             cmbsection.SelectedIndex = -1;
+            cmbcourse.SelectedIndex = -1;
             cmbProfessor.SelectedIndex = -1;
+            selectedSubjectID = 0;
         }
 
+        // Logout
         private void btnLogout_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Are you sure you want to logout?",
@@ -284,22 +298,24 @@ namespace WinFormsApp1
 
             if (result == DialogResult.Yes)
             {
-                // Open the login form
-                LoginForm login = new LoginForm();   // <-- use your actual login form class name
+                var login = GetOrCreateForm<LoginForm>();
                 login.Show();
-
-                // When login form is closed, exit this form too (or the whole app)
-                login.FormClosed += (s, args) =>
-                {
-                    // Close the current ProfessorsForm
-                    this.Close();
-                    // If you want to exit the whole app instead:
-                    // Application.Exit();
-                };
-
-                // Hide current form
-                this.Hide();
+                Hide();
+                login.FormClosed += (s, args) => Close();
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void cmbcourse_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

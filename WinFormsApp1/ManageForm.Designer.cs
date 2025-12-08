@@ -59,6 +59,8 @@ namespace WinFormsApp1
             cmbyearlevel = new ComboBox();
             cmbsection = new ComboBox();
             gbProfessorSectionAssignment = new GroupBox();
+            cmbcourse = new ComboBox();
+            label1 = new Label();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -194,6 +196,7 @@ namespace WinFormsApp1
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
             // 
             // lblSection
             // 
@@ -335,6 +338,8 @@ namespace WinFormsApp1
             // gbProfessorSectionAssignment
             // 
             gbProfessorSectionAssignment.BackColor = Color.White;
+            gbProfessorSectionAssignment.Controls.Add(cmbcourse);
+            gbProfessorSectionAssignment.Controls.Add(label1);
             gbProfessorSectionAssignment.Controls.Add(cmbsection);
             gbProfessorSectionAssignment.Controls.Add(cmbyearlevel);
             gbProfessorSectionAssignment.Controls.Add(cmbProfessor);
@@ -358,6 +363,28 @@ namespace WinFormsApp1
             gbProfessorSectionAssignment.TabStop = false;
             gbProfessorSectionAssignment.Text = "Professor Section Assignment";
             gbProfessorSectionAssignment.Enter += gbProfessorSectionAssignment_Enter;
+            // 
+            // cmbcourse
+            // 
+            cmbcourse.BackColor = Color.White;
+            cmbcourse.FormattingEnabled = true;
+            cmbcourse.Items.AddRange(new object[] { "A", "B", "C" });
+            cmbcourse.Location = new Point(189, 210);
+            cmbcourse.Name = "cmbcourse";
+            cmbcourse.Size = new Size(232, 24);
+            cmbcourse.TabIndex = 103;
+            cmbcourse.SelectedIndexChanged += cmbcourse_SelectedIndexChanged;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(93, 218);
+            label1.Name = "label1";
+            label1.Size = new Size(49, 16);
+            label1.TabIndex = 102;
+            label1.Text = "Course:\r\n";
+            label1.Click += label1_Click;
             // 
             // ManageForm
             // 
@@ -415,5 +442,7 @@ namespace WinFormsApp1
         private ComboBox cmbyearlevel;
         private ComboBox cmbsection;
         private GroupBox gbProfessorSectionAssignment;
+        private Label label1;
+        private ComboBox cmbcourse;
     }
 }

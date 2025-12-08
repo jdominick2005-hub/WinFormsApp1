@@ -13,52 +13,57 @@ namespace WinFormsApp1
             ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
 
         private int teacherID;
+        private string teacherProgram = "";
 
         public ucAttendance(int teacherId)
         {
             InitializeComponent();
             teacherID = teacherId;
 
-            // Wire UI events
-            cmbSection.SelectedIndexChanged += (s, e) => OnSectionOrYearChanged();
-            cmbYearLevel.SelectedIndexChanged += (s, e) => OnSectionOrYearChanged();
-            cmbSubjects.SelectedIndexChanged += (s, e) => ReloadData();
-            dtpDate.ValueChanged += (s, e) => ReloadData();
-
-            // Ensure combobox commit triggers CellValueChanged for DataGridView
-            dvgStudents.CurrentCellDirtyStateChanged += (s, e) =>
-            {
-                if (dvgStudents.IsCurrentCellDirty)
-                    dvgStudents.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            };
-
-            dvgStudents.CellValueChanged += DvgStudents_CellValueChanged;
-
-            // mark-all-present button (already in designer)
-            btnMarkAllPresent.Click += BtnMarkAllPresent_Click;
-
-            // initial load
+            LoadTeacherProgram();
             LoadSections();
             LoadYearLevels();
-            // choose defaults if available
-            if (cmbSection.Items.Count > 0) cmbSection.SelectedIndex = 0;
-            if (cmbYearLevel.Items.Count > 0) cmbYearLevel.SelectedIndex = 0;
-
-            LoadSubjects(cmbSection.Text, cmbYearLevel.Text);
             SetupGrid();
-            ReloadData();
+
+            // wire events
+            cmbSection.SelectedIndexChanged += cmbSection_SelectedIndexChanged;
+            cmbYearLevel.SelectedIndexChanged += cmbYearLevel_SelectedIndexChanged;
+            cmbSubjects.SelectedIndexChanged += cmbSubjects_SelectedIndexChanged;
+            dtpDate.ValueChanged += dtpDate_ValueChanged;
+
+            dvgStudents.CurrentCellDirtyStateChanged += dvgStudents_CurrentCellDirtyStateChanged;
+            dvgStudents.CellValueChanged += DvgStudents_CellValueChanged;
+            btnMarkAllPresent.Click += BtnMarkAllPresent_Click;
+
+            // start with no subject selected
+            cmbSection.SelectedIndex = -1;
+            cmbYearLevel.SelectedIndex = -1;
+            cmbSubjects.DataSource = null;
+            dvgStudents.DataSource = null;
         }
 
-        // When section or year changes, reload subjects (filtered) then students
-        private void OnSectionOrYearChanged()
+        // teacher program
+        private void LoadTeacherProgram()
         {
-            LoadSubjects(cmbSection.Text, cmbYearLevel.Text);
-            ReloadData();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(
+                    "SELECT Program FROM Teachers WHERE TeacherID=@TID", conn))
+                {
+                    cmd.Parameters.AddWithValue("@TID", teacherID);
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    teacherProgram = result?.ToString() ?? "";
+                }
+            }
+            catch
+            {
+                teacherProgram = "";
+            }
         }
 
-        // ------------------------------------------------------------
-        // LOAD SECTIONS (text only)
-        // ------------------------------------------------------------
+        // load sections
         private void LoadSections()
         {
             cmbSection.Items.Clear();
@@ -67,7 +72,7 @@ namespace WinFormsApp1
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT DISTINCT ISNULL(Section,'') AS Section FROM Subjects WHERE TeacherID=@T ORDER BY Section", conn))
+                    "SELECT DISTINCT Section FROM Subjects WHERE TeacherID=@T ORDER BY Section", conn))
                 {
                     cmd.Parameters.AddWithValue("@T", teacherID);
                     conn.Open();
@@ -77,7 +82,7 @@ namespace WinFormsApp1
                         while (dr.Read())
                         {
                             string sec = dr["Section"]?.ToString();
-                            if (!string.IsNullOrWhiteSpace(sec) && !cmbSection.Items.Contains(sec))
+                            if (!string.IsNullOrWhiteSpace(sec))
                                 cmbSection.Items.Add(sec);
                         }
                     }
@@ -89,9 +94,7 @@ namespace WinFormsApp1
             }
         }
 
-        // ------------------------------------------------------------
-        // LOAD YEAR LEVELS
-        // ------------------------------------------------------------
+        // load year levels
         private void LoadYearLevels()
         {
             cmbYearLevel.Items.Clear();
@@ -100,7 +103,7 @@ namespace WinFormsApp1
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT DISTINCT ISNULL(YearLevel,'') AS YearLevel FROM Subjects WHERE TeacherID=@T ORDER BY YearLevel", conn))
+                    "SELECT DISTINCT YearLevel FROM Subjects WHERE TeacherID=@T ORDER BY YearLevel", conn))
                 {
                     cmd.Parameters.AddWithValue("@T", teacherID);
                     conn.Open();
@@ -110,7 +113,7 @@ namespace WinFormsApp1
                         while (dr.Read())
                         {
                             string yl = dr["YearLevel"]?.ToString();
-                            if (!string.IsNullOrWhiteSpace(yl) && !cmbYearLevel.Items.Contains(yl))
+                            if (!string.IsNullOrWhiteSpace(yl))
                                 cmbYearLevel.Items.Add(yl);
                         }
                     }
@@ -122,12 +125,19 @@ namespace WinFormsApp1
             }
         }
 
-        // ------------------------------------------------------------
-        // LOAD SUBJECTS (filtered by section + year if provided)
-        // SubjectName displayed WITHOUT section suffix.
-        // ------------------------------------------------------------
-        private void LoadSubjects(string section = null, string yearLevel = null)
+        // load subjects for this teacher + filters
+        private void LoadSubjects()
         {
+            // like student registration: no filters = clear subjects
+            bool hasSection = !string.IsNullOrWhiteSpace(cmbSection.Text);
+            bool hasYear = !string.IsNullOrWhiteSpace(cmbYearLevel.Text);
+
+            if (!hasSection && !hasYear)
+            {
+                cmbSubjects.DataSource = null;
+                return;
+            }
+
             DataTable dt = new DataTable();
 
             try
@@ -143,16 +153,22 @@ namespace WinFormsApp1
                         WHERE TeacherID = @TeacherID
                     ";
 
-                    if (!string.IsNullOrWhiteSpace(section))
+                    if (hasSection)
                     {
                         sql += " AND Section = @Section ";
-                        cmd.Parameters.AddWithValue("@Section", section);
+                        cmd.Parameters.AddWithValue("@Section", cmbSection.Text);
                     }
 
-                    if (!string.IsNullOrWhiteSpace(yearLevel))
+                    if (hasYear)
                     {
                         sql += " AND YearLevel = @YearLevel ";
-                        cmd.Parameters.AddWithValue("@YearLevel", yearLevel);
+                        cmd.Parameters.AddWithValue("@YearLevel", cmbYearLevel.Text);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(teacherProgram))
+                    {
+                        sql += " AND Course = @Course ";
+                        cmd.Parameters.AddWithValue("@Course", teacherProgram);
                     }
 
                     sql += " ORDER BY SubjectName ";
@@ -170,6 +186,8 @@ namespace WinFormsApp1
 
                 if (cmbSubjects.Items.Count > 0)
                     cmbSubjects.SelectedIndex = 0;
+                else
+                    dvgStudents.DataSource = null;
             }
             catch (Exception ex)
             {
@@ -177,21 +195,22 @@ namespace WinFormsApp1
             }
         }
 
-        // ------------------------------------------------------------
-        // RELOAD STUDENTS & EXISTING ATTENDANCE
-        // ------------------------------------------------------------
+        // reload grid + attendance
         private void ReloadData()
         {
-            // if no subject selected, nothing to load
-            if (cmbSubjects.DataSource == null || cmbSubjects.SelectedValue == null) return;
+            if (cmbSubjects.DataSource == null || cmbSubjects.SelectedValue == null)
+            {
+                dvgStudents.DataSource = null;
+                return;
+            }
 
-            int subjectID;
-            if (!int.TryParse(cmbSubjects.SelectedValue.ToString(), out subjectID)) return;
+            if (!int.TryParse(cmbSubjects.SelectedValue.ToString(), out int subjectID))
+            {
+                dvgStudents.DataSource = null;
+                return;
+            }
 
-            string section = cmbSection.Text?.Trim();
-            string year = cmbYearLevel.Text?.Trim();
             DateTime date = dtpDate.Value.Date;
-
             DataTable dt = new DataTable();
 
             try
@@ -216,16 +235,23 @@ namespace WinFormsApp1
                         WHERE e.SubjectID = @SubjectID
                     ";
 
-                    if (!string.IsNullOrWhiteSpace(section))
+                    // optional extra filters, but subject already defines year/section
+                    if (!string.IsNullOrWhiteSpace(cmbSection.Text))
                     {
                         sql += " AND s.Section = @Section ";
-                        cmd.Parameters.AddWithValue("@Section", section);
+                        cmd.Parameters.AddWithValue("@Section", cmbSection.Text);
                     }
 
-                    if (!string.IsNullOrWhiteSpace(year))
+                    if (!string.IsNullOrWhiteSpace(cmbYearLevel.Text))
                     {
                         sql += " AND s.YearLevel = @YearLevel ";
-                        cmd.Parameters.AddWithValue("@YearLevel", year);
+                        cmd.Parameters.AddWithValue("@YearLevel", cmbYearLevel.Text);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(teacherProgram))
+                    {
+                        sql += " AND s.Course = @Course ";
+                        cmd.Parameters.AddWithValue("@Course", teacherProgram);
                     }
 
                     sql += " ORDER BY s.LastName, s.FirstName ";
@@ -240,11 +266,8 @@ namespace WinFormsApp1
 
                 dvgStudents.DataSource = dt;
 
-                // hide internal columns safely (if they exist)
                 if (dvgStudents.Columns.Contains("StudentID")) dvgStudents.Columns["StudentID"].Visible = false;
                 if (dvgStudents.Columns.Contains("AttendanceID")) dvgStudents.Columns["AttendanceID"].Visible = false;
-
-                // read-only name
                 if (dvgStudents.Columns.Contains("FullName")) dvgStudents.Columns["FullName"].ReadOnly = true;
 
                 ColorRows();
@@ -255,9 +278,40 @@ namespace WinFormsApp1
             }
         }
 
-        // ------------------------------------------------------------
-        // AUTO-SAVE when DataGridView cell changes
-        // ------------------------------------------------------------
+        // section changed
+        private void cmbSection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSubjects();
+            ReloadData();
+        }
+
+        // year changed
+        private void cmbYearLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSubjects();
+            ReloadData();
+        }
+
+        // subject changed
+        private void cmbSubjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ReloadData();
+        }
+
+        // date changed
+        private void dtpDate_ValueChanged(object sender, EventArgs e)
+        {
+            ReloadData();
+        }
+
+        // grid edit commit
+        private void dvgStudents_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dvgStudents.IsCurrentCellDirty)
+                dvgStudents.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        // cell changed
         private void DvgStudents_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -268,30 +322,23 @@ namespace WinFormsApp1
             }
             catch (Exception ex)
             {
-                // avoid crashing UI loop - notify user for debugging
                 MessageBox.Show("Error saving attendance:\n" + ex.Message);
             }
         }
 
-        // ------------------------------------------------------------
-        // Auto-save a single row (insert or update)
-        // ------------------------------------------------------------
+        // save one row
         private void AutoSaveRow(int rowIndex)
         {
             if (cmbSubjects.DataSource == null || cmbSubjects.SelectedValue == null) return;
 
             DataGridViewRow row = dvgStudents.Rows[rowIndex];
-
-            // skip if accidental/new-row
             if (row.IsNewRow) return;
 
-            // basic validation: student id must be present
             if (!dvgStudents.Columns.Contains("StudentID")) return;
             object sidObj = row.Cells["StudentID"].Value;
             if (sidObj == null || sidObj == DBNull.Value) return;
 
             int studentID = Convert.ToInt32(sidObj);
-
             int subjectID = Convert.ToInt32(cmbSubjects.SelectedValue);
             string status = row.Cells["Status"].Value?.ToString() ?? "Not Recorded";
             string remarks = row.Cells["Remarks"].Value?.ToString() ?? "";
@@ -304,8 +351,6 @@ namespace WinFormsApp1
             }
 
             DateTime date = dtpDate.Value.Date;
-
-            // Do not attempt to save if status is null/empty (but we allow Not Recorded if user left it)
             if (string.IsNullOrWhiteSpace(status)) return;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -314,7 +359,6 @@ namespace WinFormsApp1
 
                 if (attendanceId == 0)
                 {
-                    // insert
                     using (SqlCommand cmd = new SqlCommand(@"
                         INSERT INTO Attendance (StudentID, SubjectID, DateTaken, Status, Remarks)
                         VALUES (@S, @Sub, @D, @St, @R);
@@ -337,7 +381,6 @@ namespace WinFormsApp1
                 }
                 else
                 {
-                    // update
                     using (SqlCommand cmd = new SqlCommand(@"
                         UPDATE Attendance
                         SET Status = @St,
@@ -355,9 +398,7 @@ namespace WinFormsApp1
             }
         }
 
-        // ------------------------------------------------------------
-        // MARK ALL PRESENT (changes cells which triggers auto-save)
-        // ------------------------------------------------------------
+        // mark all present
         private void BtnMarkAllPresent_Click(object sender, EventArgs e)
         {
             try
@@ -375,15 +416,12 @@ namespace WinFormsApp1
             }
         }
 
-        // ------------------------------------------------------------
-        // SETUP GRID: ensure Status is combo and Remarks exists
-        // ------------------------------------------------------------
+        // grid style and status combo
         private void SetupGrid()
         {
             dvgStudents.AutoGenerateColumns = true;
             dvgStudents.AllowUserToAddRows = false;
 
-            // ✅ ADD THIS BLOCK HERE
             dvgStudents.BorderStyle = BorderStyle.None;
             dvgStudents.BackgroundColor = Color.White;
             dvgStudents.GridColor = Color.Gainsboro;
@@ -398,10 +436,7 @@ namespace WinFormsApp1
 
             dvgStudents.RowTemplate.Height = 28;
             dvgStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            // ✅ END OF STYLING
 
-
-            // Keep your existing DataBindingComplete logic
             dvgStudents.DataBindingComplete += (s, e) =>
             {
                 if (dvgStudents.Columns.Contains("Status") &&
@@ -445,10 +480,7 @@ namespace WinFormsApp1
             };
         }
 
-
-        // 
-        // COLOR ROWS BASED ON STATUS
-        // 
+        // row colors
         private void ColorRows()
         {
             try
@@ -459,7 +491,6 @@ namespace WinFormsApp1
 
                     string status = row.Cells["Status"].Value?.ToString() ?? "";
 
-                    // Soft background color based on attendance
                     row.DefaultCellStyle.BackColor = status switch
                     {
                         "Present" => Color.FromArgb(220, 255, 220),
@@ -468,7 +499,6 @@ namespace WinFormsApp1
                         _ => Color.White
                     };
 
-                    // NICE ALTERNATING STYLE  
                     if (status == "Not Recorded")
                     {
                         if (row.Index % 2 == 0)
@@ -479,13 +509,6 @@ namespace WinFormsApp1
                 }
             }
             catch { }
-        }
-
-
-
-        private void cmbSubjects_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

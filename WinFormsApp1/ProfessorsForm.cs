@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
@@ -23,28 +22,34 @@ namespace WinFormsApp1
 
             dgvTeachers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTeachers.MultiSelect = false;
+            dgvTeachers.CellClick += dgvTeachers_CellClick;
 
-            // ► Restore NAVIGATION EVENTS
             btnHome.Click += btnHome_Click;
             btnManage.Click += btnManage_Click;
             btnProfessors.Click += btnProfessors_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
 
-            // ► CRUD EVENTS
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnUpdate.Click += btnUpdate_Click;
             btnDelete.Click += btnDelete_Click;
 
-            dgvTeachers.CellClick += dgvTeachers_CellClick;
-
+            InitializeProgramCombo();
             LoadTeachers();
         }
 
-        // ---------------------------------------------------------------------
-        // ⭐ NAVIGATION BUTTONS — RESTORED EXACTLY AS YOU REQUESTED
-        // ---------------------------------------------------------------------
+        // Program options
+        private void InitializeProgramCombo()
+        {
+            cmbprogram.Items.Clear();
+            cmbprogram.Items.Add("BSIT");
+            cmbprogram.Items.Add("BSCpE");
+            cmbprogram.Items.Add("BSCS");
+            cmbprogram.Items.Add("BMMA");
+            cmbprogram.SelectedIndex = -1;
+        }
 
+        // Go home
         private void btnHome_Click(object sender, EventArgs e)
         {
             AdminForm home = new AdminForm();
@@ -52,6 +57,7 @@ namespace WinFormsApp1
             this.Hide();
         }
 
+        // Go manage
         private void btnManage_Click(object sender, EventArgs e)
         {
             ManageForm form = new ManageForm();
@@ -59,13 +65,14 @@ namespace WinFormsApp1
             this.Hide();
         }
 
+        // Stay here
         private void btnProfessors_Click(object sender, EventArgs e)
         {
-            // Already in this form, just bring it forward
             this.BringToFront();
             this.WindowState = FormWindowState.Normal;
         }
 
+        // Go students
         private void btnStudentRegistration_Click(object sender, EventArgs e)
         {
             StudentRegistration form = new StudentRegistration();
@@ -73,10 +80,7 @@ namespace WinFormsApp1
             this.Hide();
         }
 
-        // ---------------------------------------------------------------------
-        // ⭐ LOAD TEACHERS
-        // ---------------------------------------------------------------------
-
+        // Load teachers
         private void LoadTeachers()
         {
             try
@@ -98,7 +102,6 @@ namespace WinFormsApp1
                 da.Fill(dt);
 
                 dgvTeachers.DataSource = dt;
-
                 dgvTeachers.Columns["TeacherID"].Visible = false;
                 dgvTeachers.Columns["UserID"].Visible = false;
                 dgvTeachers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -109,10 +112,7 @@ namespace WinFormsApp1
             }
         }
 
-        // ---------------------------------------------------------------------
-        // ⭐ CELL CLICK — Load values into textboxes
-        // ---------------------------------------------------------------------
-
+        // Select row
         private void dgvTeachers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -128,11 +128,10 @@ namespace WinFormsApp1
 
             txtUsername.Text = row.Cells["Username"].Value.ToString();
             txtEmail.Text = row.Cells["Email"].Value.ToString();
-            txtprogram.Text = row.Cells["Program"].Value.ToString();
-
-            txtPassword.Clear();
+            cmbprogram.Text = row.Cells["Program"].Value.ToString();
         }
 
+        // Edit button
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (dgvTeachers.SelectedRows.Count == 0)
@@ -145,21 +144,16 @@ namespace WinFormsApp1
                 new DataGridViewCellEventArgs(0, dgvTeachers.SelectedRows[0].Index));
         }
 
+        // Validate fields
         private bool ValidateInputs(bool requirePassword)
         {
             if (string.IsNullOrWhiteSpace(txtFirstName.Text) ||
                 string.IsNullOrWhiteSpace(txtLastName.Text) ||
                 string.IsNullOrWhiteSpace(txtUsername.Text) ||
                 string.IsNullOrWhiteSpace(txtEmail.Text) ||
-                string.IsNullOrWhiteSpace(txtprogram.Text))
+                string.IsNullOrWhiteSpace(cmbprogram.Text))
             {
                 MessageBox.Show("Please complete all fields.");
-                return false;
-            }
-
-            if (requirePassword && string.IsNullOrWhiteSpace(txtPassword.Text))
-            {
-                MessageBox.Show("Password is required for new teachers.");
                 return false;
             }
 
@@ -172,6 +166,7 @@ namespace WinFormsApp1
             return true;
         }
 
+        // Check username
         private bool UsernameExists(string username, int excludeUserId = 0)
         {
             using SqlConnection conn = new SqlConnection(connectionString);
@@ -187,13 +182,10 @@ namespace WinFormsApp1
             return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
         }
 
-        // ---------------------------------------------------------------------
-        // ⭐ ADD TEACHER
-        // ---------------------------------------------------------------------
-
-        private async void btnAdd_Click(object sender, EventArgs e)
+        // Add teacher
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs(requirePassword: true)) return;
+            if (!ValidateInputs(requirePassword: false)) return;
 
             if (UsernameExists(txtUsername.Text.Trim()))
             {
@@ -212,16 +204,11 @@ namespace WinFormsApp1
                     INSERT INTO Logins (Username, Password, FirstName, LastName, Role)
                     VALUES (@u, @p, @fn, @ln, 'Teacher');
                     SELECT SCOPE_IDENTITY();",
-                    conn, trx)
-                {
-                    Parameters =
-                    {
-                        new SqlParameter("@u", txtUsername.Text.Trim()),
-                        new SqlParameter("@p", txtPassword.Text.Trim()),
-                        new SqlParameter("@fn", txtFirstName.Text.Trim()),
-                        new SqlParameter("@ln", txtLastName.Text.Trim())
-                    }
-                };
+                    conn, trx);
+                cmd.Parameters.AddWithValue("@u", txtUsername.Text.Trim());
+                cmd.Parameters.AddWithValue("@p", "coi123");
+                cmd.Parameters.AddWithValue("@fn", txtFirstName.Text.Trim());
+                cmd.Parameters.AddWithValue("@ln", txtLastName.Text.Trim());
 
                 newUserId = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -229,15 +216,14 @@ namespace WinFormsApp1
                     INSERT INTO Teachers (UserID, Program, Email)
                     VALUES (@uid, @prog, @mail)",
                     conn, trx);
-
                 cmd2.Parameters.AddWithValue("@uid", newUserId);
-                cmd2.Parameters.AddWithValue("@prog", txtprogram.Text.Trim());
+                cmd2.Parameters.AddWithValue("@prog", cmbprogram.Text.Trim());
                 cmd2.Parameters.AddWithValue("@mail", txtEmail.Text.Trim());
                 cmd2.ExecuteNonQuery();
 
                 trx.Commit();
 
-                MessageBox.Show("Teacher added successfully!");
+                MessageBox.Show("Teacher added successfully!\nDefault password: coi123");
                 LoadTeachers();
                 ClearFields();
             }
@@ -248,10 +234,7 @@ namespace WinFormsApp1
             }
         }
 
-        // ---------------------------------------------------------------------
-        // ⭐ UPDATE TEACHER
-        // ---------------------------------------------------------------------
-
+        // Update teacher
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (selectedTeacherId == 0 || selectedUserId == 0)
@@ -281,22 +264,11 @@ namespace WinFormsApp1
                         LastName=@ln
                     WHERE UserID=@id",
                     conn, trx);
-
                 cmd.Parameters.AddWithValue("@u", txtUsername.Text.Trim());
                 cmd.Parameters.AddWithValue("@fn", txtFirstName.Text.Trim());
                 cmd.Parameters.AddWithValue("@ln", txtLastName.Text.Trim());
                 cmd.Parameters.AddWithValue("@id", selectedUserId);
                 cmd.ExecuteNonQuery();
-
-                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
-                {
-                    using SqlCommand pw = new SqlCommand(
-                        "UPDATE Logins SET Password=@p WHERE UserID=@id", conn, trx);
-
-                    pw.Parameters.AddWithValue("@p", txtPassword.Text.Trim());
-                    pw.Parameters.AddWithValue("@id", selectedUserId);
-                    pw.ExecuteNonQuery();
-                }
 
                 using SqlCommand cmd2 = new SqlCommand(@"
                     UPDATE Teachers SET
@@ -304,8 +276,7 @@ namespace WinFormsApp1
                         Email=@mail
                     WHERE TeacherID=@tid",
                     conn, trx);
-
-                cmd2.Parameters.AddWithValue("@prog", txtprogram.Text.Trim());
+                cmd2.Parameters.AddWithValue("@prog", cmbprogram.Text.Trim());
                 cmd2.Parameters.AddWithValue("@mail", txtEmail.Text.Trim());
                 cmd2.Parameters.AddWithValue("@tid", selectedTeacherId);
                 cmd2.ExecuteNonQuery();
@@ -323,55 +294,73 @@ namespace WinFormsApp1
             }
         }
 
-        // ---------------------------------------------------------------------
-        // ⭐ DELETE TEACHER
-        // ---------------------------------------------------------------------
-
+        // Delete teacher
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (selectedTeacherId == 0)
+            if (selectedTeacherId == 0 || selectedUserId == 0)
             {
                 MessageBox.Show("Select a teacher first.");
                 return;
             }
 
-            if (MessageBox.Show("Delete this teacher?", "Confirm",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            if (MessageBox.Show("Delete this teacher and their subjects?",
+                "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
             using SqlConnection conn = new SqlConnection(connectionString);
             conn.Open();
+            SqlTransaction trx = conn.BeginTransaction();
 
-            using SqlCommand cmd = new SqlCommand(
-                "DELETE FROM Teachers WHERE TeacherID=@tid", conn);
-            cmd.Parameters.AddWithValue("@tid", selectedTeacherId);
-            cmd.ExecuteNonQuery();
+            try
+            {
+                using SqlCommand cmdCredits = new SqlCommand(
+                    "DELETE FROM TeacherCredits WHERE TeacherID=@tid", conn, trx);
+                cmdCredits.Parameters.AddWithValue("@tid", selectedTeacherId);
+                cmdCredits.ExecuteNonQuery();
 
-            using SqlCommand cmd2 = new SqlCommand(
-                "DELETE FROM Logins WHERE UserID=@uid", conn);
-            cmd2.Parameters.AddWithValue("@uid", selectedUserId);
-            cmd2.ExecuteNonQuery();
+                using SqlCommand cmdSub = new SqlCommand(
+                    "DELETE FROM Subjects WHERE TeacherID=@tid", conn, trx);
+                cmdSub.Parameters.AddWithValue("@tid", selectedTeacherId);
+                cmdSub.ExecuteNonQuery();
 
-            MessageBox.Show("Teacher deleted!");
+                using SqlCommand cmdT = new SqlCommand(
+                    "DELETE FROM Teachers WHERE TeacherID=@tid", conn, trx);
+                cmdT.Parameters.AddWithValue("@tid", selectedTeacherId);
+                cmdT.ExecuteNonQuery();
 
-            LoadTeachers();
-            ClearFields();
+                using SqlCommand cmdL = new SqlCommand(
+                    "DELETE FROM Logins WHERE UserID=@uid", conn, trx);
+                cmdL.Parameters.AddWithValue("@uid", selectedUserId);
+                cmdL.ExecuteNonQuery();
+
+                trx.Commit();
+
+                MessageBox.Show("Teacher and related data deleted!");
+                LoadTeachers();
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                trx.Rollback();
+                MessageBox.Show("Error deleting teacher:\n" + ex.Message);
+            }
         }
 
+        // Clear fields
         private void ClearFields()
         {
             txtFirstName.Clear();
             txtLastName.Clear();
             txtUsername.Clear();
-            txtPassword.Clear();
             txtEmail.Clear();
-            txtprogram.Clear();
+            cmbprogram.SelectedIndex = -1;
 
             selectedTeacherId = 0;
             selectedUserId = 0;
             dgvTeachers.ClearSelection();
         }
 
+        // Logout
         private void btnLogout_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Are you sure you want to logout?",
@@ -379,22 +368,26 @@ namespace WinFormsApp1
 
             if (result == DialogResult.Yes)
             {
-                // Open the login form
-                LoginForm login = new LoginForm();   // <-- use your actual login form class name
+                LoginForm login = new LoginForm();
                 login.Show();
 
-                // When login form is closed, exit this form too (or the whole app)
                 login.FormClosed += (s, args) =>
                 {
-                    // Close the current ProfessorsForm
                     this.Close();
-                    // If you want to exit the whole app instead:
-                    // Application.Exit();
                 };
 
-                // Hide current form
                 this.Hide();
             }
+        }
+
+        // Program label
+        private void lblPrograms_Click(object sender, EventArgs e)
+        {
+        }
+
+        // Program change
+        private void cmbprogram_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
     }
 }

@@ -42,17 +42,15 @@ namespace WinFormsApp1
             btnStudentRegistration = new Button();
             lblLast = new Label();
             lblEmail = new Label();
-            lblPassword = new Label();
             lblUsername = new Label();
             lblPrograms = new Label();
             txtEmail = new TextBox();
             txtLastName = new TextBox();
-            txtPassword = new TextBox();
             txtUsername = new TextBox();
             btnAdd = new Button();
             btnDelete = new Button();
             gbProfessorSectionRegistration = new GroupBox();
-            txtprogram = new TextBox();
+            cmbprogram = new ComboBox();
             lblFirst = new Label();
             txtFirstName = new TextBox();
             btnUpdate = new Button();
@@ -210,16 +208,6 @@ namespace WinFormsApp1
             lblEmail.TabIndex = 85;
             lblEmail.Text = "Email Address:";
             // 
-            // lblPassword
-            // 
-            lblPassword.AutoSize = true;
-            lblPassword.Font = new Font("Microsoft JhengHei", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPassword.Location = new Point(58, 164);
-            lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(69, 17);
-            lblPassword.TabIndex = 86;
-            lblPassword.Text = "Password:";
-            // 
             // lblUsername
             // 
             lblUsername.AutoSize = true;
@@ -239,6 +227,7 @@ namespace WinFormsApp1
             lblPrograms.Size = new Size(64, 17);
             lblPrograms.TabIndex = 88;
             lblPrograms.Text = "Program:";
+            lblPrograms.Click += lblPrograms_Click;
             // 
             // txtEmail
             // 
@@ -255,14 +244,6 @@ namespace WinFormsApp1
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(257, 23);
             txtLastName.TabIndex = 2;
-            // 
-            // txtPassword
-            // 
-            txtPassword.BorderStyle = BorderStyle.FixedSingle;
-            txtPassword.Location = new Point(170, 160);
-            txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(257, 23);
-            txtPassword.TabIndex = 5;
             // 
             // txtUsername
             // 
@@ -299,7 +280,7 @@ namespace WinFormsApp1
             // 
             // gbProfessorSectionRegistration
             // 
-            gbProfessorSectionRegistration.Controls.Add(txtprogram);
+            gbProfessorSectionRegistration.Controls.Add(cmbprogram);
             gbProfessorSectionRegistration.Controls.Add(lblFirst);
             gbProfessorSectionRegistration.Controls.Add(txtFirstName);
             gbProfessorSectionRegistration.Controls.Add(btnUpdate);
@@ -308,13 +289,11 @@ namespace WinFormsApp1
             gbProfessorSectionRegistration.Controls.Add(dgvTeachers);
             gbProfessorSectionRegistration.Controls.Add(btnAdd);
             gbProfessorSectionRegistration.Controls.Add(lblPrograms);
-            gbProfessorSectionRegistration.Controls.Add(lblPassword);
             gbProfessorSectionRegistration.Controls.Add(lblUsername);
             gbProfessorSectionRegistration.Controls.Add(txtLastName);
             gbProfessorSectionRegistration.Controls.Add(txtUsername);
             gbProfessorSectionRegistration.Controls.Add(txtEmail);
             gbProfessorSectionRegistration.Controls.Add(lblEmail);
-            gbProfessorSectionRegistration.Controls.Add(txtPassword);
             gbProfessorSectionRegistration.Controls.Add(lblLast);
             gbProfessorSectionRegistration.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gbProfessorSectionRegistration.Location = new Point(267, 119);
@@ -324,14 +303,14 @@ namespace WinFormsApp1
             gbProfessorSectionRegistration.TabStop = false;
             gbProfessorSectionRegistration.Text = "Professor Section Registration";
             // 
-            // txtprogram
+            // cmbprogram
             // 
-            txtprogram.BorderStyle = BorderStyle.FixedSingle;
-            txtprogram.Location = new Point(170, 189);
-            txtprogram.Margin = new Padding(3, 2, 3, 2);
-            txtprogram.Name = "txtprogram";
-            txtprogram.Size = new Size(257, 23);
-            txtprogram.TabIndex = 93;
+            cmbprogram.FormattingEnabled = true;
+            cmbprogram.Location = new Point(170, 191);
+            cmbprogram.Name = "cmbprogram";
+            cmbprogram.Size = new Size(257, 24);
+            cmbprogram.TabIndex = 93;
+            cmbprogram.SelectedIndexChanged += cmbprogram_SelectedIndexChanged;
             // 
             // lblFirst
             // 
@@ -432,12 +411,10 @@ namespace WinFormsApp1
         private Panel panel3;
         private Label lblLast;
         private Label lblEmail;
-        private Label lblPassword;
         private Label lblUsername;
         private Label lblPrograms;
         private TextBox txtEmail;
         private TextBox txtLastName;
-        private TextBox txtPassword;
         private TextBox txtUsername;
         private Button btnAdd;
         private Button btnDelete;
@@ -448,7 +425,7 @@ namespace WinFormsApp1
         private Button btnEdit;
         private Label lblFirst;
         private TextBox txtFirstName;
-        private TextBox txtprogram;
         private Button btnLogout;
+        private ComboBox cmbprogram;
     }
 }

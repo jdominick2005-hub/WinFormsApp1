@@ -7,8 +7,6 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Drawing;  
-
 
 namespace WinFormsApp1.UserControls
 {
@@ -21,13 +19,14 @@ namespace WinFormsApp1.UserControls
         {
             InitializeComponent();
 
-            // Events (clean version)
+            // Filter events
             cmbSection.SelectedIndexChanged += (s, e) => ReloadAll();
             cmbSubject.SelectedIndexChanged += (s, e) => ReloadAll();
             cmbYearLevel.SelectedIndexChanged += (s, e) => ReloadAll();
             cmbCourse.SelectedIndexChanged += (s, e) => ReloadAll();
             dtpDate.ValueChanged += (s, e) => ReloadAll();
 
+            // Buttons
             btnLoad.Click += (s, e) => LoadSummary();
             btnExportPDF.Click += BtnExportPDF_Click;
 
@@ -35,141 +34,208 @@ namespace WinFormsApp1.UserControls
             LoadYearLevels();
             LoadCourses();
 
-            SetupGrid();     // ✔ match ucAttendance modern grid
+            SetupGrid();
         }
 
+        // ====================== FILTER LOADERS ======================
 
-
-        //  LOAD SECTIONS
+        // Sections from Subjects
         private void LoadSections()
         {
             cmbSection.Items.Clear();
 
-            using SqlConnection conn = new SqlConnection(connectionString);
-            using SqlCommand cmd = new SqlCommand(
-                "SELECT DISTINCT Section FROM Subjects ORDER BY Section", conn);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(
+                "SELECT DISTINCT Section FROM Subjects ORDER BY Section", conn))
+            {
+                conn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    cmbSection.Items.Add("");   // allow no-section filter
+                    while (dr.Read())
+                        cmbSection.Items.Add(dr["Section"].ToString());
+                }
+            }
 
-            conn.Open();
-            using SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-                cmbSection.Items.Add(dr["Section"].ToString());
-
-            if (cmbSection.Items.Count > 0)
-                cmbSection.SelectedIndex = 0;
+            cmbSection.SelectedIndex = 0;
         }
 
-
+        // Year levels from Students
         private void LoadYearLevels()
         {
             cmbYearLevel.Items.Clear();
-            cmbYearLevel.Items.Add(""); // optional filter
+            cmbYearLevel.Items.Add(""); // no filter
 
-            using SqlConnection conn = new SqlConnection(connectionString);
-            using SqlCommand cmd = new SqlCommand(
-                "SELECT DISTINCT YearLevel FROM Students ORDER BY YearLevel", conn);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(
+                "SELECT DISTINCT YearLevel FROM Students ORDER BY YearLevel", conn))
+            {
+                conn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                        cmbYearLevel.Items.Add(dr["YearLevel"].ToString());
+                }
+            }
 
-            conn.Open();
-            using SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-                cmbYearLevel.Items.Add(dr["YearLevel"].ToString());
+            cmbYearLevel.SelectedIndex = 0;
         }
 
-
+        // Courses from Students
         private void LoadCourses()
         {
             cmbCourse.Items.Clear();
             cmbCourse.Items.Add("");
 
-            using SqlConnection conn = new SqlConnection(connectionString);
-            using SqlCommand cmd = new SqlCommand(
-                "SELECT DISTINCT Course FROM Students ORDER BY Course", conn);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(
+                "SELECT DISTINCT Course FROM Students ORDER BY Course", conn))
+            {
+                conn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                        cmbCourse.Items.Add(dr["Course"].ToString());
+                }
+            }
 
-            conn.Open();
-            using SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-                cmbCourse.Items.Add(dr["Course"].ToString());
+            cmbCourse.SelectedIndex = 0;
         }
 
+        // ====================== SUBJECTS FILTERED ======================
 
-
-        //  LOAD SUBJECTS BASED ON SECTION
         private void LoadSubjects()
         {
-            if (string.IsNullOrWhiteSpace(cmbSection.Text)) return;
-
             DataTable dt = new DataTable();
 
-            using SqlConnection conn = new SqlConnection(connectionString);
-            using SqlCommand cmd = new SqlCommand(@"
-        SELECT SubjectID, SubjectName
-        FROM Subjects
-        WHERE Section = @Section
-        ORDER BY SubjectName", conn);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.Connection = conn;
 
-            cmd.Parameters.AddWithValue("@Section", cmbSection.Text);
+                string sql = @"
+                    SELECT SubjectID, SubjectName
+                    FROM Subjects
+                    WHERE 1 = 1
+                ";
 
-            new SqlDataAdapter(cmd).Fill(dt);
+                // Filter by Section (if chosen)
+                if (!string.IsNullOrWhiteSpace(cmbSection.Text))
+                {
+                    sql += " AND Section = @Section ";
+                    cmd.Parameters.AddWithValue("@Section", cmbSection.Text);
+                }
+
+                // Filter by YearLevel (if chosen)
+                if (!string.IsNullOrWhiteSpace(cmbYearLevel.Text))
+                {
+                    sql += " AND YearLevel = @YearLevel ";
+                    cmd.Parameters.AddWithValue("@YearLevel", cmbYearLevel.Text);
+                }
+
+                // Filter by Course (if Subjects table has Course column)
+                if (!string.IsNullOrWhiteSpace(cmbCourse.Text))
+                {
+                    sql += " AND Course = @Course ";
+                    cmd.Parameters.AddWithValue("@Course", cmbCourse.Text);
+                }
+
+                sql += " ORDER BY SubjectName";
+                cmd.CommandText = sql;
+
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+            }
 
             cmbSubject.DisplayMember = "SubjectName";
             cmbSubject.ValueMember = "SubjectID";
             cmbSubject.DataSource = dt;
+
+            if (cmbSubject.Items.Count > 0)
+                cmbSubject.SelectedIndex = 0;
         }
 
+        // ====================== SUMMARY TABLE ======================
 
-
-        //  LOAD SUMMARY TABLE
         private void LoadSummary()
         {
-            if (cmbSubject.SelectedValue == null) return;
+            if (cmbSubject.SelectedValue == null)
+            {
+                dvgSummary.DataSource = null;
+                lblTotals.Text = "Summary → Present: 0   |   Absent: 0   |   Late: 0";
+                return;
+            }
 
             int subjectID = Convert.ToInt32(cmbSubject.SelectedValue);
             DateTime date = dtpDate.Value.Date;
 
             string yearLevel = cmbYearLevel.Text;
             string course = cmbCourse.Text;
+            string section = cmbSection.Text;
 
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(@"
-        SELECT 
-            s.StudentID,
-            (s.FirstName + ' ' + s.LastName) AS FullName,
-            s.YearLevel,
-            s.Course,
-            a.Status,
-            a.Remarks
-        FROM Attendance a
-        INNER JOIN Students s ON a.StudentID = s.StudentID
-        WHERE 
-            a.SubjectID = @SubjectID
-            AND CAST(a.DateTaken AS DATE) = @DateTaken
-            " + (string.IsNullOrEmpty(yearLevel) ? "" : " AND s.YearLevel = @YearLevel ") + @"
-            " + (string.IsNullOrEmpty(course) ? "" : " AND s.Course = @Course ") + @"
-        ORDER BY s.LastName, s.FirstName
-    ", conn))
+            using (SqlCommand cmd = new SqlCommand())
             {
+                cmd.Connection = conn;
+
+                string sql = @"
+                    SELECT 
+                        s.StudentID,
+                        (s.FirstName + ' ' + s.LastName) AS FullName,
+                        s.YearLevel,
+                        s.Course,
+                        s.Section,
+                        a.Status,
+                        a.Remarks
+                    FROM Attendance a
+                    INNER JOIN Students s ON a.StudentID = s.StudentID
+                    WHERE 
+                        a.SubjectID = @SubjectID
+                        AND CAST(a.DateTaken AS DATE) = @DateTaken
+                ";
+
                 cmd.Parameters.AddWithValue("@SubjectID", subjectID);
                 cmd.Parameters.AddWithValue("@DateTaken", date);
 
                 if (!string.IsNullOrEmpty(yearLevel))
+                {
+                    sql += " AND s.YearLevel = @YearLevel ";
                     cmd.Parameters.AddWithValue("@YearLevel", yearLevel);
+                }
 
                 if (!string.IsNullOrEmpty(course))
+                {
+                    sql += " AND s.Course = @Course ";
                     cmd.Parameters.AddWithValue("@Course", course);
+                }
+
+                if (!string.IsNullOrEmpty(section))
+                {
+                    sql += " AND s.Section = @Section ";
+                    cmd.Parameters.AddWithValue("@Section", section);
+                }
+
+                sql += " ORDER BY s.LastName, s.FirstName";
+
+                cmd.CommandText = sql;
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
             }
 
             dvgSummary.DataSource = dt;
-            FormatGrid();     // hide StudentID column etc
+            FormatGrid();
             CalculateTotals(dt);
 
             if (dt.Rows.Count == 0)
                 lblTotals.Text = "Summary → Present: 0   |   Absent: 0   |   Late: 0";
         }
 
+        // ====================== GRID SETUP ======================
 
         private void SetupGrid()
         {
@@ -179,14 +245,12 @@ namespace WinFormsApp1.UserControls
 
             dvgSummary.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
             dvgSummary.ColumnHeadersDefaultCellStyle.Font =
-    new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-
+                new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
 
             dvgSummary.RowTemplate.Height = 28;
             dvgSummary.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dvgSummary.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-
 
         private void FormatGrid()
         {
@@ -194,10 +258,8 @@ namespace WinFormsApp1.UserControls
                 dvgSummary.Columns["StudentID"].Visible = false;
         }
 
+        // ====================== TOTAL COUNTS ======================
 
-
-
-        //  TOTAL COUNTS
         private void CalculateTotals(DataTable dt)
         {
             int present = dt.Select("Status = 'Present'").Length;
@@ -207,24 +269,8 @@ namespace WinFormsApp1.UserControls
             lblTotals.Text = $"Summary → Present: {present}   |   Absent: {absent}   |   Late: {late}";
         }
 
+        // ====================== PDF EXPORT ======================
 
-        //  EVENT HANDLERS
-        private void BtnLoad_Click(object sender, EventArgs e) => LoadSummary();
-        private void DtpDate_ValueChanged(object sender, EventArgs e) => LoadSummary();
-
-        private void CmbSection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadSubjects();
-            LoadSummary();
-        }
-
-        private void CmbSubject_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadSummary();
-        }
-
-
-        //  EXPORT TO PDF
         private void BtnExportPDF_Click(object sender, EventArgs e)
         {
             if (dvgSummary.Rows.Count == 0)
@@ -233,9 +279,11 @@ namespace WinFormsApp1.UserControls
                 return;
             }
 
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "PDF Files (*.pdf)|*.pdf";
-            sfd.FileName = "AttendanceSummary.pdf";
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "PDF Files (*.pdf)|*.pdf",
+                FileName = "AttendanceSummary.pdf"
+            };
 
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
@@ -247,9 +295,8 @@ namespace WinFormsApp1.UserControls
                     PdfWriter.GetInstance(pdfDoc, stream);
                     pdfDoc.Open();
 
-                    // ✅ Embedded Logo
+                    // Logo
                     iTextSharp.text.Image logo;
-
                     using (MemoryStream ms = new MemoryStream())
                     {
                         Properties.Resources.SchoolLogo.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -265,28 +312,35 @@ namespace WinFormsApp1.UserControls
                     var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16);
                     var normalFont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
 
-                    Paragraph title = new Paragraph("ATTENDANCE SUMMARY REPORT", headerFont);
-                    title.Alignment = Element.ALIGN_CENTER;
-
+                    Paragraph title = new Paragraph("ATTENDANCE SUMMARY REPORT", headerFont)
+                    {
+                        Alignment = Element.ALIGN_CENTER
+                    };
                     pdfDoc.Add(title);
                     pdfDoc.Add(new Paragraph("\n"));
 
                     Paragraph details = new Paragraph(
                         $"Section:  {cmbSection.Text}\n" +
                         $"Subject:  {cmbSubject.Text}\n" +
+                        $"Year:     {cmbYearLevel.Text}\n" +
+                        $"Course:   {cmbCourse.Text}\n" +
                         $"Date:     {dtpDate.Value:MMMM dd, yyyy}\n\n",
                         normalFont);
 
                     pdfDoc.Add(details);
 
-                    // TABLE
-                    PdfPTable table = new PdfPTable(dvgSummary.Columns.Count);
-                    table.WidthPercentage = 100;
+                    // Table
+                    PdfPTable table = new PdfPTable(dvgSummary.Columns.Count)
+                    {
+                        WidthPercentage = 100
+                    };
 
                     foreach (DataGridViewColumn col in dvgSummary.Columns)
                     {
-                        PdfPCell cell = new PdfPCell(new Phrase(col.HeaderText, normalFont));
-                        cell.BackgroundColor = new BaseColor(230, 230, 250);
+                        PdfPCell cell = new PdfPCell(new Phrase(col.HeaderText, normalFont))
+                        {
+                            BackgroundColor = new BaseColor(230, 230, 250)
+                        };
                         table.AddCell(cell);
                     }
 
@@ -300,7 +354,6 @@ namespace WinFormsApp1.UserControls
                     }
 
                     pdfDoc.Add(table);
-
                     pdfDoc.Add(new Paragraph("\n" + lblTotals.Text, normalFont));
 
                     pdfDoc.Close();
@@ -314,31 +367,19 @@ namespace WinFormsApp1.UserControls
                 MessageBox.Show("PDF Export Error:\n" + ex.Message);
             }
         }
+
+        // ====================== HELPER ======================
+
         private void ReloadAll()
         {
             LoadSubjects();
             LoadSummary();
         }
 
-
-        private void cmbSubject_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dvgSummary_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void cmbYearLevel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbSection_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
+        // Empty designer-generated handlers (safe to leave)
+        private void cmbSubject_SelectedIndexChanged_1(object sender, EventArgs e) { }
+        private void dvgSummary_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        private void cmbYearLevel_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void cmbSection_SelectedIndexChanged_1(object sender, EventArgs e) { }
     }
 }
