@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TeacherPanelForm));
             btnLogout = new Button();
-            label2 = new Label();
             label5 = new Label();
             panel3 = new Panel();
             btnReports = new Button();
@@ -39,10 +38,10 @@
             btnHome = new Button();
             panel1 = new Panel();
             pictureBox1 = new PictureBox();
-            lblUserName = new Label();
             panelMain = new Panel();
-            panelTopDashboard = new Panel();
+            lblUserName = new Label();
             label3 = new Label();
+            panelTopDashboard = new Panel();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -62,16 +61,6 @@
             btnLogout.Text = "Log out";
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
-            label2.Location = new Point(305, 92);
-            label2.Name = "label2";
-            label2.Size = new Size(298, 60);
-            label2.TabIndex = 69;
-            label2.Text = "DASHBOARD";
             // 
             // label5
             // 
@@ -187,6 +176,15 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
+            // panelMain
+            // 
+            panelMain.BackColor = Color.White;
+            panelMain.Location = new Point(269, 99);
+            panelMain.Margin = new Padding(3, 4, 3, 4);
+            panelMain.Name = "panelMain";
+            panelMain.Size = new Size(886, 759);
+            panelMain.TabIndex = 71;
+            // 
             // lblUserName
             // 
             lblUserName.AutoSize = true;
@@ -196,24 +194,6 @@
             lblUserName.Size = new Size(95, 28);
             lblUserName.TabIndex = 68;
             lblUserName.Text = "TEACHER";
-            // 
-            // panelMain
-            // 
-            panelMain.Location = new Point(269, 181);
-            panelMain.Margin = new Padding(3, 4, 3, 4);
-            panelMain.Name = "panelMain";
-            panelMain.Size = new Size(886, 677);
-            panelMain.TabIndex = 71;
-            // 
-            // panelTopDashboard
-            // 
-            panelTopDashboard.Controls.Add(label3);
-            panelTopDashboard.Controls.Add(lblUserName);
-            panelTopDashboard.Location = new Point(269, 0);
-            panelTopDashboard.Margin = new Padding(3, 4, 3, 4);
-            panelTopDashboard.Name = "panelTopDashboard";
-            panelTopDashboard.Size = new Size(886, 181);
-            panelTopDashboard.TabIndex = 72;
             // 
             // label3
             // 
@@ -225,12 +205,22 @@
             label3.TabIndex = 75;
             label3.Text = "WELCOME: ";
             // 
+            // panelTopDashboard
+            // 
+            panelTopDashboard.BackColor = Color.White;
+            panelTopDashboard.Controls.Add(label3);
+            panelTopDashboard.Controls.Add(lblUserName);
+            panelTopDashboard.Location = new Point(269, 0);
+            panelTopDashboard.Margin = new Padding(3, 4, 3, 4);
+            panelTopDashboard.Name = "panelTopDashboard";
+            panelTopDashboard.Size = new Size(886, 181);
+            panelTopDashboard.TabIndex = 72;
+            // 
             // TeacherPanelForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1152, 859);
-            Controls.Add(label2);
             Controls.Add(panelMain);
             Controls.Add(label5);
             Controls.Add(panel1);
@@ -252,18 +242,17 @@
         #endregion
 
         private Button btnLogout;
-        private Label label2;
         private Label label5;
         private Panel panel3;
         private Button btnAttendance;
         private Button btnClass;
         private Panel panel1;
         private PictureBox pictureBox1;
-        private Label lblUserName;
         private Button btnReports;
         private Panel panelMain;
-        private Panel panelTopDashboard;
         private Button btnHome;
+        private Label lblUserName;
         public Label label3;
+        private Panel panelTopDashboard;
     }
 }

@@ -17,14 +17,12 @@
 
         private void InitializeComponent()
         {
-
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             lblTitle = new Label();
             pnlFilters = new Panel();
             lblSelectSection = new Label();
             cmbSection = new ComboBox();
-            lblDate = new Label();
             dtpDate = new DateTimePicker();
             lblSelectSubject = new Label();
             cmbSubjects = new ComboBox();
@@ -40,13 +38,13 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblTitle.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
             lblTitle.ForeColor = Color.Black;
-            lblTitle.Location = new Point(20, 15);
+            lblTitle.Location = new Point(16, 20);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(283, 32);
+            lblTitle.Size = new Size(311, 60);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Attendance Monitoring";
+            lblTitle.Text = "ATTENDANCE";
             // 
             // pnlFilters
             // 
@@ -54,13 +52,11 @@
             pnlFilters.BorderStyle = BorderStyle.FixedSingle;
             pnlFilters.Controls.Add(lblSelectSection);
             pnlFilters.Controls.Add(cmbSection);
-            pnlFilters.Controls.Add(lblDate);
-            pnlFilters.Controls.Add(dtpDate);
             pnlFilters.Controls.Add(lblSelectSubject);
             pnlFilters.Controls.Add(cmbSubjects);
             pnlFilters.Controls.Add(lblYearLevel);
             pnlFilters.Controls.Add(cmbYearLevel);
-            pnlFilters.Location = new Point(20, 65);
+            pnlFilters.Location = new Point(71, 113);
             pnlFilters.Name = "pnlFilters";
             pnlFilters.Padding = new Padding(10);
             pnlFilters.Size = new Size(740, 110);
@@ -72,7 +68,7 @@
             lblSelectSection.Font = new Font("Segoe UI", 9F);
             lblSelectSection.Location = new Point(15, 15);
             lblSelectSection.Name = "lblSelectSection";
-            lblSelectSection.Size = new Size(49, 15);
+            lblSelectSection.Size = new Size(61, 20);
             lblSelectSection.TabIndex = 0;
             lblSelectSection.Text = "Section:";
             // 
@@ -83,25 +79,15 @@
             cmbSection.Font = new Font("Segoe UI", 9F);
             cmbSection.Location = new Point(90, 12);
             cmbSection.Name = "cmbSection";
-            cmbSection.Size = new Size(140, 23);
+            cmbSection.Size = new Size(140, 28);
             cmbSection.TabIndex = 1;
-            // 
-            // lblDate
-            // 
-            lblDate.AutoSize = true;
-            lblDate.Font = new Font("Segoe UI", 9F);
-            lblDate.Location = new Point(260, 15);
-            lblDate.Name = "lblDate";
-            lblDate.Size = new Size(34, 15);
-            lblDate.TabIndex = 2;
-            lblDate.Text = "Date:";
             // 
             // dtpDate
             // 
             dtpDate.Font = new Font("Segoe UI", 9F);
-            dtpDate.Location = new Point(310, 12);
+            dtpDate.Location = new Point(577, 39);
             dtpDate.Name = "dtpDate";
-            dtpDate.Size = new Size(220, 23);
+            dtpDate.Size = new Size(271, 27);
             dtpDate.TabIndex = 3;
             // 
             // lblSelectSubject
@@ -110,7 +96,7 @@
             lblSelectSubject.Font = new Font("Segoe UI", 9F);
             lblSelectSubject.Location = new Point(15, 55);
             lblSelectSubject.Name = "lblSelectSubject";
-            lblSelectSubject.Size = new Size(49, 15);
+            lblSelectSubject.Size = new Size(61, 20);
             lblSelectSubject.TabIndex = 4;
             lblSelectSubject.Text = "Subject:";
             // 
@@ -121,7 +107,7 @@
             cmbSubjects.Font = new Font("Segoe UI", 9F);
             cmbSubjects.Location = new Point(90, 52);
             cmbSubjects.Name = "cmbSubjects";
-            cmbSubjects.Size = new Size(240, 23);
+            cmbSubjects.Size = new Size(240, 28);
             cmbSubjects.TabIndex = 5;
             cmbSubjects.SelectedIndexChanged += cmbSubjects_SelectedIndexChanged;
             // 
@@ -131,7 +117,7 @@
             lblYearLevel.Font = new Font("Segoe UI", 9F);
             lblYearLevel.Location = new Point(360, 55);
             lblYearLevel.Name = "lblYearLevel";
-            lblYearLevel.Size = new Size(62, 15);
+            lblYearLevel.Size = new Size(78, 20);
             lblYearLevel.TabIndex = 6;
             lblYearLevel.Text = "Year Level:";
             // 
@@ -142,7 +128,7 @@
             cmbYearLevel.Font = new Font("Segoe UI", 9F);
             cmbYearLevel.Location = new Point(440, 52);
             cmbYearLevel.Name = "cmbYearLevel";
-            cmbYearLevel.Size = new Size(120, 23);
+            cmbYearLevel.Size = new Size(120, 28);
             cmbYearLevel.TabIndex = 7;
             // 
             // dvgStudents
@@ -157,6 +143,7 @@
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dvgStudents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dvgStudents.ColumnHeadersHeight = 29;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
@@ -167,10 +154,11 @@
             dvgStudents.DefaultCellStyle = dataGridViewCellStyle2;
             dvgStudents.EnableHeadersVisualStyles = false;
             dvgStudents.GridColor = Color.Gainsboro;
-            dvgStudents.Location = new Point(20, 190);
+            dvgStudents.Location = new Point(71, 242);
             dvgStudents.Name = "dvgStudents";
             dvgStudents.RowHeadersVisible = false;
-            dvgStudents.Size = new Size(740, 240);
+            dvgStudents.RowHeadersWidth = 51;
+            dvgStudents.Size = new Size(740, 446);
             dvgStudents.TabIndex = 2;
             // 
             // btnMarkAllPresent
@@ -179,7 +167,7 @@
             btnMarkAllPresent.FlatAppearance.BorderSize = 0;
             btnMarkAllPresent.FlatStyle = FlatStyle.Flat;
             btnMarkAllPresent.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnMarkAllPresent.Location = new Point(420, 440);
+            btnMarkAllPresent.Location = new Point(501, 694);
             btnMarkAllPresent.Name = "btnMarkAllPresent";
             btnMarkAllPresent.Size = new Size(150, 35);
             btnMarkAllPresent.TabIndex = 3;
@@ -192,7 +180,7 @@
             btnClearAll.FlatAppearance.BorderSize = 0;
             btnClearAll.FlatStyle = FlatStyle.Flat;
             btnClearAll.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnClearAll.Location = new Point(580, 440);
+            btnClearAll.Location = new Point(661, 694);
             btnClearAll.Name = "btnClearAll";
             btnClearAll.Size = new Size(150, 35);
             btnClearAll.TabIndex = 4;
@@ -205,10 +193,11 @@
             Controls.Add(lblTitle);
             Controls.Add(pnlFilters);
             Controls.Add(dvgStudents);
+            Controls.Add(dtpDate);
             Controls.Add(btnMarkAllPresent);
             Controls.Add(btnClearAll);
             Name = "ucAttendance";
-            Size = new Size(780, 500);
+            Size = new Size(886, 759);
             pnlFilters.ResumeLayout(false);
             pnlFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dvgStudents).EndInit();
@@ -223,7 +212,6 @@
         private System.Windows.Forms.Panel pnlFilters;
         private System.Windows.Forms.Label lblSelectSection;
         private System.Windows.Forms.ComboBox cmbSection;
-        private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.Label lblSelectSubject;
         private System.Windows.Forms.ComboBox cmbSubjects;

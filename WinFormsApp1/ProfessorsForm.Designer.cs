@@ -183,6 +183,7 @@ namespace WinFormsApp1
             btnLogout.TabIndex = 100;
             btnLogout.Text = "LOG OUT";
             btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
             // 
             // btnStudentRegistration
             // 

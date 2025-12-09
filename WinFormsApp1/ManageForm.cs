@@ -324,8 +324,16 @@ namespace WinFormsApp1
         // logout click
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Logout?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                Open<LoginForm>();
+            var result = MessageBox.Show("Are you sure you want to logout?",
+                "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                LoginForm login = new LoginForm();
+                login.Show();
+                login.FormClosed += (s, args) => this.Close();
+                this.Hide();
+            }
         }
 
         // open form

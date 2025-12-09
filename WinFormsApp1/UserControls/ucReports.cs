@@ -27,7 +27,6 @@ namespace WinFormsApp1.UserControls
             dtpDate.ValueChanged += (s, e) => ReloadAll();
 
             // Buttons
-            btnLoad.Click += (s, e) => LoadSummary();
             btnExportPDF.Click += BtnExportPDF_Click;
 
             LoadSections();
@@ -381,5 +380,15 @@ namespace WinFormsApp1.UserControls
         private void dvgSummary_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
         private void cmbYearLevel_SelectedIndexChanged(object sender, EventArgs e) { }
         private void cmbSection_SelectedIndexChanged_1(object sender, EventArgs e) { }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpDate_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
