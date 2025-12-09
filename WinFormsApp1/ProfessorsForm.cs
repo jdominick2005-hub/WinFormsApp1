@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -22,25 +24,90 @@ namespace WinFormsApp1
         {
             InitializeComponent();
 
+            // grid basic
             dgvTeachers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTeachers.MultiSelect = false;
-            dgvTeachers.CellClick += dgvTeachers_CellClick;
-            dgvTeachers.ReadOnly = true; // grid not inputable
+            dgvTeachers.ReadOnly = true;
+            dgvTeachers.AllowUserToAddRows = false;
 
+            dgvTeachers.CellClick += dgvTeachers_CellClick;
+            dgvTeachers.CellMouseEnter += dgvTeachers_CellMouseEnter;
+            dgvTeachers.CellMouseLeave += dgvTeachers_CellMouseLeave;
+
+            // nav buttons
             btnHome.Click += btnHome_Click;
             btnManage.Click += btnManage_Click;
             btnProfessors.Click += btnProfessors_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
 
+            // crud buttons
             btnAdd.Click += btnAdd_Click;
             btnUpdate.Click += btnUpdate_Click;
-            btnDelete.Click += btnDelete_Click;
 
+            // form events
+            this.Load += ProfessorsForm_Load;          // first time
+            this.Activated += ProfessorsForm_Activated; // auto-refresh when returning
+        }
+
+        // form load
+        private void ProfessorsForm_Load(object sender, EventArgs e)
+        {
             InitializeProgramCombo();
+            RoundButtons();
             LoadTeachers();
         }
 
-        // ---------------------- INITIAL SETUP -----------------------
+        // auto refresh
+        private void ProfessorsForm_Activated(object sender, EventArgs e)
+        {
+            LoadTeachers();
+        }
+
+        // round buttons
+        private void RoundButtons()
+        {
+            RoundButton(btnAdd, 20);
+            RoundButton(btnUpdate, 20);
+            RoundButton(btnDelete, 20);
+        }
+
+        private void RoundButton(Button btn, int radius)
+        {
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.BackColor = Color.SteelBlue;
+            btn.ForeColor = Color.White;
+
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(btn.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(btn.Width - radius, btn.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, btn.Height - radius, radius, radius, 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+        }
+
+        // grid style
+        private void StyleGrid()
+        {
+            dgvTeachers.EnableHeadersVisualStyles = false;
+            dgvTeachers.ColumnHeadersDefaultCellStyle.BackColor = Color.SteelBlue;
+            dgvTeachers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvTeachers.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+            dgvTeachers.ColumnHeadersHeight = 38;
+
+            dgvTeachers.BackgroundColor = Color.White;
+            dgvTeachers.BorderStyle = BorderStyle.None;
+            dgvTeachers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            dgvTeachers.RowsDefaultCellStyle.BackColor = Color.White;
+            dgvTeachers.AlternatingRowsDefaultCellStyle.BackColor =
+                Color.FromArgb(245, 249, 255);
+            dgvTeachers.DefaultCellStyle.SelectionBackColor = Color.SteelBlue;
+            dgvTeachers.DefaultCellStyle.SelectionForeColor = Color.White;
+        }
 
         private void InitializeProgramCombo()
         {
@@ -78,8 +145,6 @@ namespace WinFormsApp1
             this.Hide();
         }
 
-        // ---------------------- VALIDATION -----------------------
-
         private bool ValidateInputs()
         {
             if (string.IsNullOrWhiteSpace(txtFirstName.Text) ||
@@ -90,17 +155,18 @@ namespace WinFormsApp1
             {
                 MessageBox.Show("Please complete all fields.", "Validation",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
             }
-
-            if (!Regex.IsMatch(txtEmail.Text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            else if (!Regex.IsMatch(txtEmail.Text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
                 MessageBox.Show("Invalid email format.", "Validation",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
+            }
+            else
+            {
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         private bool UsernameExists(string username, int excludeUserId = 0)
@@ -117,8 +183,6 @@ namespace WinFormsApp1
             conn.Open();
             return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
         }
-
-        // ---------------------- LOAD TEACHERS -----------------------
 
         private void LoadTeachers()
         {
@@ -143,7 +207,6 @@ namespace WinFormsApp1
                 dgvTeachers.DataSource = dt;
                 dgvTeachers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-                // HIDE ID COLUMNS (TeacherID, UserID, and StudentID if ever present)
                 if (dgvTeachers.Columns.Contains("TeacherID"))
                     dgvTeachers.Columns["TeacherID"].Visible = false;
 
@@ -152,14 +215,14 @@ namespace WinFormsApp1
 
                 if (dgvTeachers.Columns.Contains("StudentID"))
                     dgvTeachers.Columns["StudentID"].Visible = false;
+
+                StyleGrid();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading teachers:\n" + ex.Message);
             }
         }
-
-        // ---------------------- SELECT ROW -----------------------
 
         private void dgvTeachers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -179,7 +242,23 @@ namespace WinFormsApp1
             cmbprogram.Text = row.Cells["Program"].Value.ToString();
         }
 
-        // ---------------------- ADD TEACHER -----------------------
+        private void dgvTeachers_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var row = dgvTeachers.Rows[e.RowIndex];
+            if (row.Tag == null)
+                row.Tag = row.DefaultCellStyle.BackColor;
+            if (!row.Selected)
+                row.DefaultCellStyle.BackColor = Color.FromArgb(230, 238, 255);
+        }
+
+        private void dgvTeachers_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var row = dgvTeachers.Rows[e.RowIndex];
+            if (!row.Selected && row.Tag is Color original)
+                row.DefaultCellStyle.BackColor = original;
+        }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -191,7 +270,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            string defaultPassword = "coi123";   // FIXED DEFAULT PASSWORD
+            string defaultPassword = "coi123";
 
             using SqlConnection conn = new SqlConnection(connectionString);
             conn.Open();
@@ -226,17 +305,14 @@ namespace WinFormsApp1
 
                 trx.Commit();
 
-                // AUTO SEND EMAIL
                 SendCredentialsEmail(txtEmail.Text.Trim(),
                     txtFirstName.Text.Trim(),
                     txtLastName.Text.Trim(),
                     txtUsername.Text.Trim(),
-                    defaultPassword
-                );
+                    defaultPassword);
 
                 MessageBox.Show("Teacher added successfully! Credentials sent via email.");
                 LoadTeachers();
-                ClearFields();
             }
             catch (Exception ex)
             {
@@ -244,8 +320,6 @@ namespace WinFormsApp1
                 MessageBox.Show("Error adding teacher:\n" + ex.Message);
             }
         }
-
-        // ---------------------- EMAIL SENDER -----------------------
 
         private void SendCredentialsEmail(string to, string first, string last, string user, string pass)
         {
@@ -288,8 +362,6 @@ namespace WinFormsApp1
             }
         }
 
-        // ---------------------- UPDATE TEACHER -----------------------
-
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (selectedTeacherId == 0 || selectedUserId == 0)
@@ -305,144 +377,10 @@ namespace WinFormsApp1
                 MessageBox.Show("Username already taken!");
                 return;
             }
-
-            using SqlConnection conn = new SqlConnection(connectionString);
-            conn.Open();
-            SqlTransaction trx = conn.BeginTransaction();
-
-            try
-            {
-                using SqlCommand cmd = new SqlCommand(@"
-                    UPDATE Logins SET
-                        Username=@u,
-                        FirstName=@fn,
-                        LastName=@ln
-                    WHERE UserID=@id",
-                    conn, trx);
-
-                cmd.Parameters.AddWithValue("@u", txtUsername.Text.Trim());
-                cmd.Parameters.AddWithValue("@fn", txtFirstName.Text.Trim());
-                cmd.Parameters.AddWithValue("@ln", txtLastName.Text.Trim());
-                cmd.Parameters.AddWithValue("@id", selectedUserId);
-                cmd.ExecuteNonQuery();
-
-                using SqlCommand cmd2 = new SqlCommand(@"
-                    UPDATE Teachers SET
-                        Program=@prog,
-                        Email=@mail
-                    WHERE TeacherID=@tid",
-                    conn, trx);
-
-                cmd2.Parameters.AddWithValue("@prog", cmbprogram.Text.Trim());
-                cmd2.Parameters.AddWithValue("@mail", txtEmail.Text.Trim());
-                cmd2.Parameters.AddWithValue("@tid", selectedTeacherId);
-                cmd2.ExecuteNonQuery();
-
-                trx.Commit();
-
-                MessageBox.Show("Teacher updated successfully!");
-                LoadTeachers();
-                ClearFields();
-            }
-            catch (Exception ex)
-            {
-                trx.Rollback();
-                MessageBox.Show("Update failed:\n" + ex.Message);
-            }
-        }
-
-        // ---------------------- DELETE TEACHER -----------------------
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (selectedTeacherId == 0 || selectedUserId == 0)
-            {
-                MessageBox.Show("Select a teacher first.");
-                return;
-            }
-
-            if (MessageBox.Show("Delete this teacher and their subjects?",
-                "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                return;
-
-            using SqlConnection conn = new SqlConnection(connectionString);
-            conn.Open();
-            SqlTransaction trx = conn.BeginTransaction();
-
-            try
-            {
-                using SqlCommand cmdCredits = new SqlCommand(
-                    "DELETE FROM TeacherCredits WHERE TeacherID=@tid", conn, trx);
-                cmdCredits.Parameters.AddWithValue("@tid", selectedTeacherId);
-                cmdCredits.ExecuteNonQuery();
-
-                using SqlCommand cmdSub = new SqlCommand(
-                    "DELETE FROM Subjects WHERE TeacherID=@tid", conn, trx);
-                cmdSub.Parameters.AddWithValue("@tid", selectedTeacherId);
-                cmdSub.ExecuteNonQuery();
-
-                using SqlCommand cmdT = new SqlCommand(
-                    "DELETE FROM Teachers WHERE TeacherID=@tid", conn, trx);
-                cmdT.Parameters.AddWithValue("@tid", selectedTeacherId);
-                cmdT.ExecuteNonQuery();
-
-                using SqlCommand cmdL = new SqlCommand(
-                    "DELETE FROM Logins WHERE UserID=@uid", conn, trx);
-                cmdL.Parameters.AddWithValue("@uid", selectedUserId);
-                cmdL.ExecuteNonQuery();
-
-                trx.Commit();
-
-                MessageBox.Show("Teacher and related data deleted!");
-                LoadTeachers();
-                ClearFields();
-            }
-            catch (Exception ex)
-            {
-                trx.Rollback();
-                MessageBox.Show("Error deleting teacher:\n" + ex.Message);
-            }
-        }
-
-        // ---------------------- CLEAR -----------------------
-
-        private void ClearFields()
-        {
-            txtFirstName.Clear();
-            txtLastName.Clear();
-            txtUsername.Clear();
-            txtEmail.Clear();
-            cmbprogram.SelectedIndex = -1;
-
-            selectedTeacherId = 0;
-            selectedUserId = 0;
-            dgvTeachers.ClearSelection();
-        }
-
-        // ---------------------- LOGOUT -----------------------
-
-        private void btnLogout_Click(object sender, EventArgs e)
-        {
-            var result = MessageBox.Show("Are you sure you want to logout?",
-                "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                LoginForm login = new LoginForm();
-                login.Show();
-
-                login.FormClosed += (s, args) =>
-                {
-                    this.Close();
-                };
-
-                this.Hide();
-            }
-        }
-
-        private void dgvTeachers_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }
+
+
+
+

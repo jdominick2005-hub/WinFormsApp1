@@ -80,7 +80,6 @@
             lblUserName.Size = new Size(78, 28);
             lblUserName.TabIndex = 62;
             lblUserName.Text = "ADMIN";
-            lblUserName.Click += lblUserName_Click;
             // 
             // btnManage
             // 
@@ -169,7 +168,6 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(269, 612);
             panel3.TabIndex = 1;
-            panel3.Paint += panel3_Paint;
             // 
             // btnStudentRegistration
             // 
@@ -301,7 +299,6 @@
             panel5.Name = "panel5";
             panel5.Size = new Size(184, 107);
             panel5.TabIndex = 67;
-            panel5.Paint += panel5_Paint;
             // 
             // lblpresent
             // 
@@ -367,7 +364,6 @@
             // dataGridView1
             // 
             dataGridView1.BackgroundColor = Color.White;
-            dataGridView1.BorderStyle = BorderStyle.Fixed3D;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(317, 616);
             dataGridView1.Margin = new Padding(3, 4, 3, 4);
@@ -392,10 +388,11 @@
             dateTimePicker1.CalendarFont = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             dateTimePicker1.CalendarMonthBackground = Color.White;
             dateTimePicker1.Enabled = false;
-            dateTimePicker1.Location = new Point(860, 111);
+            dateTimePicker1.ImeMode = ImeMode.Off;
+            dateTimePicker1.Location = new Point(825, 69);
             dateTimePicker1.Margin = new Padding(3, 4, 3, 4);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(254, 27);
+            dateTimePicker1.Size = new Size(299, 27);
             dateTimePicker1.TabIndex = 72;
             dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 

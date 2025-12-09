@@ -52,20 +52,30 @@ namespace WinFormsApp1
             txtSchedule = new TextBox();
             btnDelete = new Button();
             lblProfessor = new Label();
-            dgvProfessors = new DataGridView();
             lblYear = new Label();
             lblSubjectName = new Label();
             cmbProfessor = new ComboBox();
             cmbyearlevel = new ComboBox();
             cmbsection = new ComboBox();
             gbProfessorSectionAssignment = new GroupBox();
+            btnupdate = new Button();
+            dgvProfessors = new DataGridView();
+            panel5 = new Panel();
             cmbcourse = new ComboBox();
+            panel6 = new Panel();
+            panel4 = new Panel();
+            panel2 = new Panel();
             label1 = new Label();
+            dateTimePicker1 = new DateTimePicker();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvProfessors).BeginInit();
             gbProfessorSectionAssignment.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProfessors).BeginInit();
+            panel5.SuspendLayout();
+            panel6.SuspendLayout();
+            panel4.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // label2
@@ -209,7 +219,7 @@ namespace WinFormsApp1
             // 
             lblSection.AutoSize = true;
             lblSection.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblSection.Location = new Point(106, 249);
+            lblSection.Location = new Point(112, 242);
             lblSection.Name = "lblSection";
             lblSection.Size = new Size(63, 19);
             lblSection.TabIndex = 73;
@@ -220,10 +230,10 @@ namespace WinFormsApp1
             btnAdd.BackColor = Color.SteelBlue;
             btnAdd.FlatAppearance.BorderSize = 0;
             btnAdd.FlatStyle = FlatStyle.Popup;
-            btnAdd.Location = new Point(574, 532);
+            btnAdd.Location = new Point(617, 120);
             btnAdd.Margin = new Padding(3, 4, 3, 4);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(78, 37);
+            btnAdd.Size = new Size(96, 43);
             btnAdd.TabIndex = 6;
             btnAdd.Text = "Add\r\n";
             btnAdd.UseVisualStyleBackColor = false;
@@ -233,7 +243,7 @@ namespace WinFormsApp1
             // 
             lblSchedule.AutoSize = true;
             lblSchedule.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblSchedule.Location = new Point(106, 169);
+            lblSchedule.Location = new Point(112, 166);
             lblSchedule.Name = "lblSchedule";
             lblSchedule.Size = new Size(76, 19);
             lblSchedule.TabIndex = 72;
@@ -243,7 +253,7 @@ namespace WinFormsApp1
             // 
             txtSubjectName.BackColor = Color.White;
             txtSubjectName.BorderStyle = BorderStyle.FixedSingle;
-            txtSubjectName.Location = new Point(216, 121);
+            txtSubjectName.Location = new Point(237, 120);
             txtSubjectName.Margin = new Padding(3, 4, 3, 4);
             txtSubjectName.Name = "txtSubjectName";
             txtSubjectName.Size = new Size(265, 27);
@@ -253,7 +263,7 @@ namespace WinFormsApp1
             // 
             txtSchedule.BackColor = Color.White;
             txtSchedule.BorderStyle = BorderStyle.FixedSingle;
-            txtSchedule.Location = new Point(216, 160);
+            txtSchedule.Location = new Point(237, 158);
             txtSchedule.Margin = new Padding(3, 4, 3, 4);
             txtSchedule.Name = "txtSchedule";
             txtSchedule.Size = new Size(265, 27);
@@ -264,10 +274,10 @@ namespace WinFormsApp1
             btnDelete.BackColor = Color.SteelBlue;
             btnDelete.FlatAppearance.BorderSize = 0;
             btnDelete.FlatStyle = FlatStyle.Popup;
-            btnDelete.Location = new Point(658, 532);
+            btnDelete.Location = new Point(617, 181);
             btnDelete.Margin = new Padding(3, 4, 3, 4);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(78, 37);
+            btnDelete.Size = new Size(96, 43);
             btnDelete.TabIndex = 7;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
@@ -277,32 +287,17 @@ namespace WinFormsApp1
             // 
             lblProfessor.AutoSize = true;
             lblProfessor.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblProfessor.Location = new Point(47, 66);
+            lblProfessor.Location = new Point(57, 60);
             lblProfessor.Name = "lblProfessor";
             lblProfessor.Size = new Size(212, 19);
             lblProfessor.TabIndex = 79;
             lblProfessor.Text = "Please select a Professor first:";
             // 
-            // dgvProfessors
-            // 
-            dgvProfessors.BackgroundColor = Color.Gainsboro;
-            dgvProfessors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProfessors.Location = new Point(65, 316);
-            dgvProfessors.Margin = new Padding(3, 4, 3, 4);
-            dgvProfessors.MultiSelect = false;
-            dgvProfessors.Name = "dgvProfessors";
-            dgvProfessors.ReadOnly = true;
-            dgvProfessors.RowHeadersWidth = 51;
-            dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProfessors.Size = new Size(687, 208);
-            dgvProfessors.TabIndex = 8;
-            dgvProfessors.CellContentClick += dgvProfessors_CellClick;
-            // 
             // lblYear
             // 
             lblYear.AutoSize = true;
             lblYear.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblYear.Location = new Point(106, 209);
+            lblYear.Location = new Point(112, 204);
             lblYear.Name = "lblYear";
             lblYear.Size = new Size(83, 19);
             lblYear.TabIndex = 98;
@@ -312,7 +307,7 @@ namespace WinFormsApp1
             // 
             lblSubjectName.AutoSize = true;
             lblSubjectName.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblSubjectName.Location = new Point(106, 129);
+            lblSubjectName.Location = new Point(112, 128);
             lblSubjectName.Name = "lblSubjectName";
             lblSubjectName.Size = new Size(105, 19);
             lblSubjectName.TabIndex = 97;
@@ -321,8 +316,9 @@ namespace WinFormsApp1
             // cmbProfessor
             // 
             cmbProfessor.BackColor = Color.White;
+            cmbProfessor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProfessor.FormattingEnabled = true;
-            cmbProfessor.Location = new Point(265, 63);
+            cmbProfessor.Location = new Point(-1, -1);
             cmbProfessor.Margin = new Padding(3, 4, 3, 4);
             cmbProfessor.Name = "cmbProfessor";
             cmbProfessor.Size = new Size(265, 27);
@@ -331,9 +327,10 @@ namespace WinFormsApp1
             // cmbyearlevel
             // 
             cmbyearlevel.BackColor = Color.White;
+            cmbyearlevel.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbyearlevel.FormattingEnabled = true;
             cmbyearlevel.Items.AddRange(new object[] { "1", "2", "3", "4" });
-            cmbyearlevel.Location = new Point(216, 199);
+            cmbyearlevel.Location = new Point(-1, -1);
             cmbyearlevel.Margin = new Padding(3, 4, 3, 4);
             cmbyearlevel.Name = "cmbyearlevel";
             cmbyearlevel.Size = new Size(265, 27);
@@ -342,9 +339,10 @@ namespace WinFormsApp1
             // cmbsection
             // 
             cmbsection.BackColor = Color.White;
+            cmbsection.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbsection.FormattingEnabled = true;
             cmbsection.Items.AddRange(new object[] { "A", "B", "C" });
-            cmbsection.Location = new Point(216, 237);
+            cmbsection.Location = new Point(-1, -1);
             cmbsection.Margin = new Padding(3, 4, 3, 4);
             cmbsection.Name = "cmbsection";
             cmbsection.Size = new Size(265, 27);
@@ -353,14 +351,15 @@ namespace WinFormsApp1
             // gbProfessorSectionAssignment
             // 
             gbProfessorSectionAssignment.BackColor = Color.White;
-            gbProfessorSectionAssignment.Controls.Add(cmbcourse);
+            gbProfessorSectionAssignment.Controls.Add(btnupdate);
+            gbProfessorSectionAssignment.Controls.Add(dgvProfessors);
+            gbProfessorSectionAssignment.Controls.Add(panel5);
+            gbProfessorSectionAssignment.Controls.Add(panel6);
+            gbProfessorSectionAssignment.Controls.Add(panel4);
+            gbProfessorSectionAssignment.Controls.Add(panel2);
             gbProfessorSectionAssignment.Controls.Add(label1);
-            gbProfessorSectionAssignment.Controls.Add(cmbsection);
-            gbProfessorSectionAssignment.Controls.Add(cmbyearlevel);
-            gbProfessorSectionAssignment.Controls.Add(cmbProfessor);
             gbProfessorSectionAssignment.Controls.Add(lblSubjectName);
             gbProfessorSectionAssignment.Controls.Add(lblYear);
-            gbProfessorSectionAssignment.Controls.Add(dgvProfessors);
             gbProfessorSectionAssignment.Controls.Add(lblProfessor);
             gbProfessorSectionAssignment.Controls.Add(btnDelete);
             gbProfessorSectionAssignment.Controls.Add(txtSchedule);
@@ -368,39 +367,118 @@ namespace WinFormsApp1
             gbProfessorSectionAssignment.Controls.Add(lblSchedule);
             gbProfessorSectionAssignment.Controls.Add(btnAdd);
             gbProfessorSectionAssignment.Controls.Add(lblSection);
-            gbProfessorSectionAssignment.FlatStyle = FlatStyle.Flat;
+            gbProfessorSectionAssignment.FlatStyle = FlatStyle.System;
             gbProfessorSectionAssignment.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gbProfessorSectionAssignment.ForeColor = Color.Black;
-            gbProfessorSectionAssignment.Location = new Point(305, 155);
+            gbProfessorSectionAssignment.Location = new Point(305, 156);
             gbProfessorSectionAssignment.Margin = new Padding(3, 4, 3, 4);
             gbProfessorSectionAssignment.Name = "gbProfessorSectionAssignment";
             gbProfessorSectionAssignment.Padding = new Padding(3, 4, 3, 4);
-            gbProfessorSectionAssignment.Size = new Size(815, 645);
+            gbProfessorSectionAssignment.Size = new Size(815, 696);
             gbProfessorSectionAssignment.TabIndex = 96;
             gbProfessorSectionAssignment.TabStop = false;
             gbProfessorSectionAssignment.Text = "Professor Section Assignment";
             gbProfessorSectionAssignment.Enter += gbProfessorSectionAssignment_Enter;
             // 
+            // btnupdate
+            // 
+            btnupdate.BackColor = Color.SteelBlue;
+            btnupdate.FlatAppearance.BorderSize = 0;
+            btnupdate.FlatStyle = FlatStyle.Popup;
+            btnupdate.Location = new Point(617, 242);
+            btnupdate.Margin = new Padding(3, 4, 3, 4);
+            btnupdate.Name = "btnupdate";
+            btnupdate.Size = new Size(96, 43);
+            btnupdate.TabIndex = 106;
+            btnupdate.Text = "Update";
+            btnupdate.UseVisualStyleBackColor = false;
+            btnupdate.Click += btnupdate_Click;
+            // 
+            // dgvProfessors
+            // 
+            dgvProfessors.BackgroundColor = Color.White;
+            dgvProfessors.BorderStyle = BorderStyle.Fixed3D;
+            dgvProfessors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProfessors.Location = new Point(0, 342);
+            dgvProfessors.Margin = new Padding(3, 4, 3, 4);
+            dgvProfessors.MultiSelect = false;
+            dgvProfessors.Name = "dgvProfessors";
+            dgvProfessors.ReadOnly = true;
+            dgvProfessors.RowHeadersWidth = 51;
+            dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProfessors.Size = new Size(815, 348);
+            dgvProfessors.TabIndex = 8;
+            dgvProfessors.CellContentClick += dgvProfessors_CellClick;
+            // 
+            // panel5
+            // 
+            panel5.BorderStyle = BorderStyle.FixedSingle;
+            panel5.Controls.Add(cmbcourse);
+            panel5.Location = new Point(237, 272);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(265, 27);
+            panel5.TabIndex = 105;
+            // 
             // cmbcourse
             // 
             cmbcourse.BackColor = Color.White;
+            cmbcourse.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbcourse.FormattingEnabled = true;
             cmbcourse.Items.AddRange(new object[] { "A", "B", "C" });
-            cmbcourse.Location = new Point(216, 280);
+            cmbcourse.Location = new Point(-1, -1);
             cmbcourse.Margin = new Padding(3, 4, 3, 4);
             cmbcourse.Name = "cmbcourse";
             cmbcourse.Size = new Size(265, 27);
             cmbcourse.TabIndex = 5;
             // 
+            // panel6
+            // 
+            panel6.BorderStyle = BorderStyle.FixedSingle;
+            panel6.Controls.Add(cmbyearlevel);
+            panel6.Location = new Point(237, 196);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(265, 27);
+            panel6.TabIndex = 105;
+            // 
+            // panel4
+            // 
+            panel4.BorderStyle = BorderStyle.FixedSingle;
+            panel4.Controls.Add(cmbsection);
+            panel4.Location = new Point(237, 234);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(265, 27);
+            panel4.TabIndex = 104;
+            // 
+            // panel2
+            // 
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(cmbProfessor);
+            panel2.Location = new Point(293, 55);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(265, 27);
+            panel2.TabIndex = 103;
+            // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft JhengHei", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(106, 283);
+            label1.Location = new Point(112, 280);
             label1.Name = "label1";
-            label1.Size = new Size(61, 19);
+            label1.Size = new Size(74, 19);
             label1.TabIndex = 102;
-            label1.Text = "Course:\r\n";
+            label1.Text = "Program:\r\n";
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.CalendarFont = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dateTimePicker1.CalendarMonthBackground = Color.White;
+            dateTimePicker1.Enabled = false;
+            dateTimePicker1.ImeMode = ImeMode.Off;
+            dateTimePicker1.Location = new Point(821, 108);
+            dateTimePicker1.Margin = new Padding(3, 4, 3, 4);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(299, 27);
+            dateTimePicker1.TabIndex = 106;
             // 
             // ManageForm
             // 
@@ -408,6 +486,7 @@ namespace WinFormsApp1
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1152, 859);
+            Controls.Add(dateTimePicker1);
             Controls.Add(label2);
             Controls.Add(label5);
             Controls.Add(panel1);
@@ -422,9 +501,13 @@ namespace WinFormsApp1
             panel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvProfessors).EndInit();
             gbProfessorSectionAssignment.ResumeLayout(false);
             gbProfessorSectionAssignment.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProfessors).EndInit();
+            panel5.ResumeLayout(false);
+            panel6.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -452,7 +535,6 @@ namespace WinFormsApp1
         private TextBox txtSchedule;
         private Button btnDelete;
         private Label lblProfessor;
-        private DataGridView dgvProfessors;
         private Label lblYear;
         private Label lblSubjectName;
         private ComboBox cmbProfessor;
@@ -461,5 +543,12 @@ namespace WinFormsApp1
         private GroupBox gbProfessorSectionAssignment;
         private Label label1;
         private ComboBox cmbcourse;
+        private Panel panel5;
+        private Panel panel6;
+        private Panel panel4;
+        private Panel panel2;
+        private DataGridView dgvProfessors;
+        private DateTimePicker dateTimePicker1;
+        private Button btnupdate;
     }
 }

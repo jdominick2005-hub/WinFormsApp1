@@ -32,6 +32,7 @@
             dvgSummary = new DataGridView();
             lblTotals = new Label();
             btnExportPDF = new Button();
+            btnLoad = new Button();
             pnlFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dvgSummary).BeginInit();
@@ -60,6 +61,7 @@
             pnlFilters.Controls.Add(cmbCourse);
             pnlFilters.Controls.Add(lblDate);
             pnlFilters.Controls.Add(dtpDate);
+            pnlFilters.Controls.Add(btnLoad);
             pnlFilters.Location = new Point(25, 75);
             pnlFilters.Name = "pnlFilters";
             pnlFilters.Size = new Size(745, 110);
@@ -195,6 +197,20 @@
             btnExportPDF.Text = "Export to PDF";
             btnExportPDF.UseVisualStyleBackColor = false;
             // 
+            // btnLoad
+            // 
+            btnLoad.BackColor = Color.FromArgb(0, 120, 215);
+            btnLoad.FlatAppearance.BorderSize = 0;
+            btnLoad.FlatStyle = FlatStyle.Flat;
+            btnLoad.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnLoad.ForeColor = Color.White;
+            btnLoad.Location = new Point(560, 52);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(170, 28);
+            btnLoad.TabIndex = 10;
+            btnLoad.Text = "LOAD";
+            btnLoad.UseVisualStyleBackColor = false;
+            // 
             // ucReports
             // 
             Controls.Add(lblTitle);
@@ -236,5 +252,6 @@
         private DataGridView dvgSummary;
         private Label lblTotals;
         private Button btnExportPDF;
+        private Button btnLoad;
     }
 }

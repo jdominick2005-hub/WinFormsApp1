@@ -13,7 +13,6 @@ namespace WinFormsApp1
 {
     public partial class AdminForm : Form
     {
-        // Use the same connection string as the other forms
         private readonly string connectionString =
             ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
 
@@ -98,46 +97,14 @@ namespace WinFormsApp1
             StyleDataGrid();
         }
 
-        private void lblstudents_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel5, ShowAllStudentsInGrid);
-        }
-
-        private void lblstudnum_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel5, ShowAllStudentsInGrid);
-        }
-
-        private void lblprof_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel6, ShowAllTeachersInGrid);
-        }
-
-        private void lblprofnum_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel6, ShowAllTeachersInGrid);
-        }
-
-        private void lblpresent_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel4, ShowEnrollmentsInGrid);
-        }
-
-        private void lblpresentnum_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel4, ShowEnrollmentsInGrid);
-        }
-
-        private void lblabsent_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel2, ShowStaffAccountsInGrid);
-        }
-
-        private void lblabsentnum_Click(object sender, EventArgs e)
-        {
-            ShowKpi(panel2, ShowStaffAccountsInGrid);
-        }
-
+        private void lblstudents_Click(object sender, EventArgs e) => ShowKpi(panel5, ShowAllStudentsInGrid);
+        private void lblstudnum_Click(object sender, EventArgs e) => ShowKpi(panel5, ShowAllStudentsInGrid);
+        private void lblprof_Click(object sender, EventArgs e) => ShowKpi(panel6, ShowAllTeachersInGrid);
+        private void lblprofnum_Click(object sender, EventArgs e) => ShowKpi(panel6, ShowAllTeachersInGrid);
+        private void lblpresent_Click(object sender, EventArgs e) => ShowKpi(panel4, ShowEnrollmentsInGrid);
+        private void lblpresentnum_Click(object sender, EventArgs e) => ShowKpi(panel4, ShowEnrollmentsInGrid);
+        private void lblabsent_Click(object sender, EventArgs e) => ShowKpi(panel2, ShowStaffAccountsInGrid);
+        private void lblabsentnum_Click(object sender, EventArgs e) => ShowKpi(panel2, ShowStaffAccountsInGrid);
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -167,25 +134,24 @@ namespace WinFormsApp1
             try
             {
                 int totalStudents = ExecuteScalarInt("SELECT COUNT(*) FROM Students");
-                if (lblstudnum != null) lblstudnum.Text = totalStudents.ToString();
-                if (lblstudents != null) lblstudents.Text = "TOTAL STUDENTS";
+                lblstudnum.Text = totalStudents.ToString();
+                lblstudents.Text = "TOTAL STUDENTS";
 
                 int totalTeachers = ExecuteScalarInt("SELECT COUNT(*) FROM Teachers");
-                if (lblprofnum != null) lblprofnum.Text = totalTeachers.ToString();
-                if (lblprof != null) lblprof.Text = "TOTAL PROFESSORS";
+                lblprofnum.Text = totalTeachers.ToString();
+                lblprof.Text = "TOTAL PROFESSORS";
 
                 int totalEnrollments = ExecuteScalarInt("SELECT COUNT(*) FROM Enrollments");
-                if (lblpresentnum != null) lblpresentnum.Text = totalEnrollments.ToString();
-                if (lblpresent != null) lblpresent.Text = "TOTAL ENROLLMENTS";
+                lblpresentnum.Text = totalEnrollments.ToString();
+                lblpresent.Text = "TOTAL ENROLLMENTS";
 
                 int staffAccounts = ExecuteScalarInt("SELECT COUNT(*) FROM Logins WHERE Role IN ('Admin','Teacher')");
-                if (lblabsentnum != null) lblabsentnum.Text = staffAccounts.ToString();
-                if (lblabsent != null) lblabsent.Text = "STAFF ACCOUNTS";
+                lblabsentnum.Text = staffAccounts.ToString();
+                lblabsent.Text = "STAFF ACCOUNTS";
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading KPIs: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading KPIs: " + ex.Message);
             }
         }
 
@@ -206,27 +172,20 @@ namespace WinFormsApp1
 
                 dataGridView1.DataSource = dt;
 
-                if (dataGridView1.Columns.Contains("AttendanceID"))
-                    dataGridView1.Columns["AttendanceID"].Visible = false;
-                if (dataGridView1.Columns.Contains("StudentID"))
-                    dataGridView1.Columns["StudentID"].Visible = false;
-                if (dataGridView1.Columns.Contains("FirstName"))
-                    dataGridView1.Columns["FirstName"].HeaderText = "First Name";
-                if (dataGridView1.Columns.Contains("LastName"))
-                    dataGridView1.Columns["LastName"].HeaderText = "Last Name";
-                if (dataGridView1.Columns.Contains("SubjectName"))
-                    dataGridView1.Columns["SubjectName"].HeaderText = "Subject";
-                if (dataGridView1.Columns.Contains("Status"))
-                    dataGridView1.Columns["Status"].HeaderText = "Status";
+                dataGridView1.Columns["AttendanceID"].Visible = false;
+                dataGridView1.Columns["StudentID"].Visible = false;
+
+                dataGridView1.Columns["FirstName"].HeaderText = "First Name";
+                dataGridView1.Columns["LastName"].HeaderText = "Last Name";
+                dataGridView1.Columns["SubjectName"].HeaderText = "Subject";
+                dataGridView1.Columns["Status"].HeaderText = "Status";
 
                 dataGridView1.AutoResizeColumns();
-
                 StyleDataGrid();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading attendance grid: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading attendance grid: " + ex.Message);
             }
         }
 
@@ -268,9 +227,8 @@ namespace WinFormsApp1
                 area.AxisX.CustomLabels.Clear();
 
                 for (int i = 1; i <= 12; i++)
-                    area.AxisX.CustomLabels.Add(i - 0.5, i + 0.5, months[i - 1]);
+                    area.AxisX.CustomLabels.Add(i - .5, i + .5, months[i - 1]);
 
-                area.AxisX.Title = "";
                 area.AxisY.Minimum = 0;
                 area.AxisY.Interval = 10;
                 area.AxisY.Title = "Registered Students";
@@ -287,17 +245,14 @@ namespace WinFormsApp1
                 };
 
                 for (int i = 0; i < 12; i++)
-                {
-                    int value = monthlyCounts[i];
-                    series.Points.AddXY(i + 1, value);
-                }
+                    series.Points.AddXY(i + 1, monthlyCounts[i]);
 
                 chart1.Series.Add(series);
 
-                Legend legend = new Legend("Legend");
-                legend.Docking = Docking.Bottom;
-                legend.Alignment = StringAlignment.Center;
-                legend.IsTextAutoFit = true;
+                Legend legend = new Legend("Legend")
+                {
+                    Docking = Docking.Bottom
+                };
                 chart1.Legends.Add(legend);
 
                 chart1.Invalidate();
@@ -323,9 +278,7 @@ namespace WinFormsApp1
                     ORDER BY LastName, FirstName";
 
                 dataGridView1.DataSource = GetDataTable(sql);
-
-                if (dataGridView1.Columns.Contains("StudentID"))
-                    dataGridView1.Columns["StudentID"].Visible = false;
+                dataGridView1.Columns["StudentID"].Visible = false;
             }
             catch (Exception ex)
             {
@@ -348,9 +301,7 @@ namespace WinFormsApp1
                     ORDER BY l.LastName, l.FirstName";
 
                 dataGridView1.DataSource = GetDataTable(sql);
-
-                if (dataGridView1.Columns.Contains("TeacherID"))
-                    dataGridView1.Columns["TeacherID"].Visible = false;
+                dataGridView1.Columns["TeacherID"].Visible = false;
             }
             catch (Exception ex)
             {
@@ -376,12 +327,9 @@ namespace WinFormsApp1
 
                 dataGridView1.DataSource = GetDataTable(sql);
 
-                if (dataGridView1.Columns.Contains("EnrollmentID"))
-                    dataGridView1.Columns["EnrollmentID"].Visible = false;
-                if (dataGridView1.Columns.Contains("StudentID"))
-                    dataGridView1.Columns["StudentID"].Visible = false;
-                if (dataGridView1.Columns.Contains("SubjectID"))
-                    dataGridView1.Columns["SubjectID"].Visible = false;
+                dataGridView1.Columns["EnrollmentID"].Visible = false;
+                dataGridView1.Columns["StudentID"].Visible = false;
+                dataGridView1.Columns["SubjectID"].Visible = false;
             }
             catch (Exception ex)
             {
@@ -389,6 +337,7 @@ namespace WinFormsApp1
             }
         }
 
+        // ✔ FIXED — NOW SHOWS ADMIN + TEACHER JUST LIKE KPI
         private void ShowStaffAccountsInGrid()
         {
             try
@@ -400,13 +349,12 @@ namespace WinFormsApp1
                            LastName AS [Last Name],
                            Role
                     FROM Logins
-                    WHERE Role = 'Teacher'
-                    ORDER BY LastName, FirstName";
+                    WHERE Role IN ('Admin','Teacher')   -- MATCHES KPI
+                    ORDER BY Role DESC, LastName, FirstName"; // Admin appears first
 
                 dataGridView1.DataSource = GetDataTable(sql);
 
-                if (dataGridView1.Columns.Contains("UserID"))
-                    dataGridView1.Columns["UserID"].Visible = false;
+                dataGridView1.Columns["UserID"].Visible = false;
             }
             catch (Exception ex)
             {
@@ -420,15 +368,12 @@ namespace WinFormsApp1
             using (var cmd = new SqlCommand(sql, conn))
             {
                 if (parameters != null)
-                {
                     foreach (var p in parameters)
                         cmd.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
-                }
+
                 conn.Open();
                 var result = cmd.ExecuteScalar();
-                return (result == null || result == DBNull.Value)
-                    ? 0
-                    : Convert.ToInt32(result);
+                return (result == null || result == DBNull.Value) ? 0 : Convert.ToInt32(result);
             }
         }
 
@@ -439,14 +384,11 @@ namespace WinFormsApp1
             using (var cmd = new SqlCommand(sql, conn))
             {
                 if (parameters != null)
-                {
                     foreach (var p in parameters)
                         cmd.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
-                }
+
                 using (var da = new SqlDataAdapter(cmd))
-                {
                     da.Fill(dt);
-                }
             }
             return dt;
         }
@@ -456,7 +398,6 @@ namespace WinFormsApp1
             if (dataGridView1 == null) return;
 
             dataGridView1.EnableHeadersVisualStyles = false;
-
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = currentGridAccentColor;
             dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView1.ColumnHeadersDefaultCellStyle.Font =
@@ -618,11 +559,6 @@ namespace WinFormsApp1
         {
             ShowKpi(panel5, ShowAllStudentsInGrid);
         }
-
-        private void lblUserName_Click(object sender, EventArgs e) { }
-
-        private void panel3_Paint(object sender, PaintEventArgs e) { }
-
-        private void panel5_Paint(object sender, PaintEventArgs e) { }
     }
 }
+

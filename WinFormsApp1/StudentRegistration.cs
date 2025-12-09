@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
@@ -14,25 +16,107 @@ namespace WinFormsApp1
         public StudentRegistration()
         {
             InitializeComponent();
-            this.Load += StudentRegistration_Load;
 
-            // Optional quality-of-life settings for the grid
+            this.Load += StudentRegistration_Load;
+            this.Activated += StudentRegistration_Activated; // auto refresh
+
+            // grid basics
             dgvStudentRegistration.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudentRegistration.MultiSelect = false;
             dgvStudentRegistration.ReadOnly = true;
             dgvStudentRegistration.AllowUserToAddRows = false;
             dgvStudentRegistration.AllowUserToDeleteRows = false;
+
+            // hover highlight
+            dgvStudentRegistration.CellMouseEnter += dgvStudentRegistration_CellMouseEnter;
+            dgvStudentRegistration.CellMouseLeave += dgvStudentRegistration_CellMouseLeave;
         }
 
-        // Form load
+        // form load
         private void StudentRegistration_Load(object sender, EventArgs e)
         {
             InitializeYearCourseSectionCombos();
+            RoundButtons();
             LoadStudents();
             LoadSubjects(null, null, null);   // no subjects at start
         }
 
-        // Init combos
+        // form activated
+        private void StudentRegistration_Activated(object sender, EventArgs e)
+        {
+            LoadStudents();
+            LoadSubjects(cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text);
+        }
+
+        // round buttons
+        private void RoundButtons()
+        {
+            RoundButton(btnRegister, 18);
+            RoundButton(btnUpdate, 18);
+            RoundButton(btnDelete, 18);
+        }
+
+        private void RoundButton(Button btn, int radius)
+        {
+            if (btn == null) return;
+
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.BackColor = Color.SteelBlue;
+            btn.ForeColor = Color.White;
+
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(btn.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(btn.Width - radius, btn.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, btn.Height - radius, radius, radius, 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+        }
+
+        // grid style
+        private void StyleGrid()
+        {
+            dgvStudentRegistration.EnableHeadersVisualStyles = false;
+            dgvStudentRegistration.ColumnHeadersDefaultCellStyle.BackColor = Color.SteelBlue;
+            dgvStudentRegistration.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvStudentRegistration.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+            dgvStudentRegistration.ColumnHeadersHeight = 38;
+
+            dgvStudentRegistration.BackgroundColor = Color.White;
+            dgvStudentRegistration.BorderStyle = BorderStyle.None;
+            dgvStudentRegistration.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            dgvStudentRegistration.RowsDefaultCellStyle.BackColor = Color.White;
+            dgvStudentRegistration.AlternatingRowsDefaultCellStyle.BackColor =
+                Color.FromArgb(245, 249, 255);
+            dgvStudentRegistration.DefaultCellStyle.SelectionBackColor = Color.SteelBlue;
+            dgvStudentRegistration.DefaultCellStyle.SelectionForeColor = Color.White;
+        }
+
+        // hover in
+        private void dgvStudentRegistration_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var row = dgvStudentRegistration.Rows[e.RowIndex];
+            if (row.Tag == null)
+                row.Tag = row.DefaultCellStyle.BackColor;
+            if (!row.Selected)
+                row.DefaultCellStyle.BackColor = Color.FromArgb(230, 238, 255);
+        }
+
+        // hover out
+        private void dgvStudentRegistration_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var row = dgvStudentRegistration.Rows[e.RowIndex];
+            if (!row.Selected && row.Tag is Color original)
+                row.DefaultCellStyle.BackColor = original;
+        }
+
+        // Form load combos
         private void InitializeYearCourseSectionCombos()
         {
             cmbyearlevel.Items.Clear();
@@ -134,11 +218,10 @@ namespace WinFormsApp1
                 dgvStudentRegistration.DataSource = dt;
                 dgvStudentRegistration.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-                // HIDE StudentID column from the grid
                 if (dgvStudentRegistration.Columns.Contains("StudentID"))
-                {
                     dgvStudentRegistration.Columns["StudentID"].Visible = false;
-                }
+
+                StyleGrid();
             }
         }
 
@@ -149,7 +232,6 @@ namespace WinFormsApp1
 
             DataGridViewRow row = dgvStudentRegistration.Rows[e.RowIndex];
 
-            // StudentID is hidden in the grid but still accessible in code
             txtStudentID.Text = row.Cells["StudentID"].Value?.ToString() ?? "";
             txtFirstName.Text = row.Cells["FirstName"].Value?.ToString() ?? "";
             txtLastName.Text = row.Cells["LastName"].Value?.ToString() ?? "";
@@ -158,24 +240,7 @@ namespace WinFormsApp1
             cmbcourse.Text = row.Cells["Course"].Value?.ToString() ?? "";
             cmbsection.Text = row.Cells["Section"].Value?.ToString() ?? "";
 
-            // correct order: year, course, section
             LoadSubjects(cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text);
-        }
-
-        // Enable edit
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtStudentID.Text))
-            {
-                MessageBox.Show("Select a student first.");
-                return;
-            }
-
-            txtFirstName.Enabled = true;
-            txtLastName.Enabled = true;
-            cmbyearlevel.Enabled = true;
-            cmbcourse.Enabled = true;
-            cmbsection.Enabled = true;
         }
 
         // Update student
@@ -517,10 +582,8 @@ namespace WinFormsApp1
             }
         }
 
-        // Group enter
         private void gbStudentRegistration_Enter(object sender, EventArgs e) { }
 
-        // Label click
         private void lblEnroll_Click(object sender, EventArgs e) { }
     }
 }

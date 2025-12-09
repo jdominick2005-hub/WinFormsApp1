@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -9,277 +10,295 @@ namespace WinFormsApp1
 {
     public partial class ManageForm : Form
     {
-        private readonly string connectionString =
+        // db string
+        private readonly string cs =
             ConfigurationManager.ConnectionStrings["AttendanceDB_v2"].ConnectionString;
 
-        private int selectedSubjectID = 0;
+        // state vars
+        private int subjectID = 0;
+        private readonly Color mainColor = Color.SteelBlue;
 
+        // ctor form
         public ManageForm()
         {
             InitializeComponent();
 
-            this.Load += ManageFormLoad;
+            // events
+            this.Load += ManageFormLoad;      // on load
+            this.Activated += ManageFormLoad; // auto refresh when returning
 
-            dgvProfessors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProfessors.MultiSelect = false;
-            dgvProfessors.ReadOnly = true;
-            dgvProfessors.AllowUserToAddRows = false;
             dgvProfessors.CellClick += dgvProfessors_CellClick;
+            dgvProfessors.CellMouseEnter += dgvProfessors_CellMouseEnter;
+            dgvProfessors.CellMouseLeave += dgvProfessors_CellMouseLeave;
 
             btnAdd.Click += btnAdd_Click;
+            btnupdate.Click += btnupdate_Click;
             btnDelete.Click += btnDelete_Click;
-
             btnHome.Click += btnHome_Click;
             btnProfessors.Click += btnProfessors_Click;
             btnManage.Click += btnManage_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
+            btnLogout.Click += btnLogout_Click;
         }
 
-        // Form load
+        // load main
         private void ManageFormLoad(object sender, EventArgs e)
         {
-            InitializeYearSectionCourseCombos();
-            LoadProfessors();
+            Round(btnAdd);
+            Round(btnupdate);
+            Round(btnDelete);
+
+            LoadComboDefaults();
+            LoadTeachers();
             LoadSubjects();
         }
 
-        // Init combos
-        private void InitializeYearSectionCourseCombos()
+        // combo data
+        private void LoadComboDefaults()
         {
             cmbyearlevel.Items.Clear();
-            cmbyearlevel.Items.Add("1st Year");
-            cmbyearlevel.Items.Add("2nd Year");
-            cmbyearlevel.Items.Add("3rd Year");
-            cmbyearlevel.Items.Add("4th Year");
-
             cmbsection.Items.Clear();
-            cmbsection.Items.Add("A");
-            cmbsection.Items.Add("B");
-            cmbsection.Items.Add("C");
-
             cmbcourse.Items.Clear();
-            cmbcourse.Items.Add("BSIT");
-            cmbcourse.Items.Add("BSCS");
-            cmbcourse.Items.Add("BMMAM");
-            cmbcourse.Items.Add("BSCpE");
 
-            cmbyearlevel.SelectedIndex = -1;
-            cmbsection.SelectedIndex = -1;
-            cmbcourse.SelectedIndex = -1;
-        }
-
-        // Reuse form
-        private T GetOrCreateForm<T>() where T : Form, new()
-        {
-            var existing = Application.OpenForms.OfType<T>().FirstOrDefault();
-            if (existing == null || existing.IsDisposed)
-                existing = new T();
-            return existing;
-        }
-
-        // Home nav
-        private void btnHome_Click(object sender, EventArgs e)
-        {
-            var home = GetOrCreateForm<AdminForm>();
-            home.Show();
-            home.BringToFront();
-            this.Hide();
-        }
-
-        // Prof nav
-        private void btnProfessors_Click(object sender, EventArgs e)
-        {
-            var f = GetOrCreateForm<ProfessorsForm>();
-            f.Show();
-            f.BringToFront();
-            this.Hide();
-        }
-
-        // Manage nav
-        private void btnManage_Click(object sender, EventArgs e)
-        {
-            LoadProfessors();
-            LoadSubjects();
-        }
-
-        // StudReg nav
-        private void btnStudentRegistration_Click(object sender, EventArgs e)
-        {
-            var f = GetOrCreateForm<StudentRegistration>();
-            f.Show();
-            f.BringToFront();
-            this.Hide();
-        }
-
-        // Load teachers
-        private void LoadProfessors()
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            cmbyearlevel.Items.AddRange(new object[]
             {
-                string sql = @"
-                    SELECT 
-                        T.TeacherID,
-                        CONCAT(L.FirstName, ' ', L.LastName, ' - ', T.Program) AS DisplayName
-                    FROM Teachers T
-                    JOIN Logins L ON T.UserID = L.UserID
-                    ORDER BY L.LastName";
+                "1st Year","2nd Year","3rd Year","4th Year"
+            });
 
-                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+            cmbsection.Items.AddRange(new object[] { "A", "B", "C" });
 
-                cmbProfessor.DataSource = dt;
-                cmbProfessor.DisplayMember = "DisplayName";
-                cmbProfessor.ValueMember = "TeacherID";
-                cmbProfessor.SelectedIndex = -1;
-            }
+            // program list
+            cmbcourse.Items.AddRange(new object[]
+            {
+                "BSIT","BSCS","BMMA","BSCpE"
+            });
         }
 
-        // Load subjects
+        // round btn
+        private void Round(Button b)
+        {
+            b.FlatStyle = FlatStyle.Flat;
+            b.FlatAppearance.BorderSize = 0;
+            b.BackColor = mainColor;
+            b.ForeColor = Color.White;
+
+            var p = new System.Drawing.Drawing2D.GraphicsPath();
+            p.AddArc(0, 0, 20, 20, 180, 90);
+            p.AddArc(b.Width - 20, 0, 20, 20, 270, 90);
+            p.AddArc(b.Width - 20, b.Height - 20, 20, 20, 0, 90);
+            p.AddArc(0, b.Height - 20, 20, 20, 90, 90);
+            p.CloseFigure();
+            b.Region = new Region(p);
+        }
+
+        // load profs
+        private void LoadTeachers()
+        {
+            using var c = new SqlConnection(cs);
+            var da = new SqlDataAdapter(
+                "SELECT TeacherID, CONCAT(L.FirstName,' ',L.LastName) AS Teacher " +
+                "FROM Teachers T JOIN Logins L ON T.UserID=L.UserID " +
+                "ORDER BY L.LastName", c);
+
+            DataTable dt = new();
+            da.Fill(dt);
+
+            cmbProfessor.DataSource = dt;
+            cmbProfessor.DisplayMember = "Teacher";
+            cmbProfessor.ValueMember = "TeacherID";
+            cmbProfessor.SelectedIndex = -1;
+        }
+
+        // load subs
         private void LoadSubjects()
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string sql = @"
-                    SELECT 
-                        S.SubjectID,
-                        S.SubjectName,
-                        S.Schedule,
-                        S.YearLevel,
-                        S.Course,
-                        S.Section,
-                        T.Program,
-                        CONCAT(L.FirstName, ' ', L.LastName) AS ProfessorName
-                    FROM Subjects S
-                    LEFT JOIN Teachers T ON S.TeacherID = T.TeacherID
-                    LEFT JOIN Logins L ON T.UserID = L.UserID
-                    ORDER BY S.SubjectName";
+            using var c = new SqlConnection(cs);
+            var da = new SqlDataAdapter(@"
+                SELECT SubjectID,
+                       SubjectName,
+                       Schedule,
+                       YearLevel,
+                       Course AS Program,
+                       Section,
+                       CONCAT(L.FirstName,' ',L.LastName) AS Professor
+                FROM Subjects S
+                LEFT JOIN Teachers T ON S.TeacherID = T.TeacherID
+                LEFT JOIN Logins L ON T.UserID = L.UserID
+                ORDER BY SubjectName", c);
 
-                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+            DataTable dt = new();
+            da.Fill(dt);
 
-                dgvProfessors.DataSource = dt;
+            dgvProfessors.DataSource = dt;
 
-                if (dgvProfessors.Columns.Contains("SubjectID"))
-                    dgvProfessors.Columns["SubjectID"].Visible = false;
+            if (dgvProfessors.Columns.Contains("SubjectID"))
+                dgvProfessors.Columns["SubjectID"].Visible = false;
 
-                dgvProfessors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            }
+            // header texts (display only)
+            dgvProfessors.Columns["SubjectName"].HeaderText = "Subject";
+            dgvProfessors.Columns["Program"].HeaderText = "Program";
+            dgvProfessors.Columns["Professor"].HeaderText = "Professor";
+
+            dgvProfessors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvProfessors.EnableHeadersVisualStyles = false;
+            dgvProfessors.ColumnHeadersDefaultCellStyle.BackColor = Color.SteelBlue;
+            dgvProfessors.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvProfessors.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 11, FontStyle.Bold);
+            dgvProfessors.ColumnHeadersHeight = 38;
+
+            dgvProfessors.RowsDefaultCellStyle.BackColor = Color.White;
+            dgvProfessors.AlternatingRowsDefaultCellStyle.BackColor =
+                Color.FromArgb(245, 249, 255);
         }
 
-        // Grid click
+        // pick row
         private void dgvProfessors_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            DataGridViewRow row = dgvProfessors.Rows[e.RowIndex];
+            var row = dgvProfessors.Rows[e.RowIndex];
 
-            if (row.Cells["SubjectID"].Value != null)
-                selectedSubjectID = Convert.ToInt32(row.Cells["SubjectID"].Value);
+            // ✅ use real column name, NOT "Subject"
+            subjectID = Convert.ToInt32(row.Cells["SubjectID"].Value);
+
+            txtSubjectName.Text = row.Cells["SubjectName"].Value.ToString();
+            txtSchedule.Text = row.Cells["Schedule"].Value.ToString();
+            cmbyearlevel.Text = row.Cells["YearLevel"].Value.ToString();
+            cmbcourse.Text = row.Cells["Program"].Value.ToString();
+            cmbsection.Text = row.Cells["Section"].Value.ToString();
+            cmbProfessor.Text = row.Cells["Professor"].Value.ToString();
         }
 
-        // Validate inputs
-        private bool ValidateInputs()
+        // hover in
+        private void dgvProfessors_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtSubjectName.Text) ||
-                string.IsNullOrWhiteSpace(txtSchedule.Text) ||
-                string.IsNullOrWhiteSpace(cmbyearlevel.Text) ||
-                string.IsNullOrWhiteSpace(cmbcourse.Text) ||
-                string.IsNullOrWhiteSpace(cmbsection.Text) ||
-                cmbProfessor.SelectedIndex == -1)
-            {
-                MessageBox.Show("Please complete all fields.");
-                return false;
-            }
-
-            return true;
+            if (e.RowIndex < 0) return;
+            dgvProfessors.Rows[e.RowIndex].DefaultCellStyle.BackColor =
+                Color.FromArgb(230, 238, 255);
         }
 
-        // Check duplicate
-        private bool SubjectExists(string subject, string yearLevel, string course, string section)
+        // hover out
+        private void dgvProfessors_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(@"
-                SELECT COUNT(*) FROM Subjects
-                WHERE SubjectName = @name
-                  AND YearLevel = @year
-                  AND Course = @course
-                  AND Section = @section", conn))
-            {
-                cmd.Parameters.AddWithValue("@name", subject.Trim());
-                cmd.Parameters.AddWithValue("@year", yearLevel.Trim());
-                cmd.Parameters.AddWithValue("@course", course.Trim());
-                cmd.Parameters.AddWithValue("@section", section.Trim());
-
-                conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
-            }
+            if (e.RowIndex < 0) return;
+            dgvProfessors.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
         }
 
-        // Add subject
+        // check fields
+        private bool Valid()
+        {
+            return
+                !string.IsNullOrWhiteSpace(txtSubjectName.Text) &&
+                !string.IsNullOrWhiteSpace(txtSchedule.Text) &&
+                !string.IsNullOrWhiteSpace(cmbyearlevel.Text) &&
+                !string.IsNullOrWhiteSpace(cmbcourse.Text) &&
+                !string.IsNullOrWhiteSpace(cmbsection.Text) &&
+                cmbProfessor.SelectedIndex != -1;
+        }
+
+        // add click
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs()) return;
-
-            if (SubjectExists(txtSubjectName.Text, cmbyearlevel.Text, cmbcourse.Text, cmbsection.Text))
+            if (!Valid())
             {
-                MessageBox.Show("This subject already exists for this year, course, and section.");
+                MessageBox.Show("Complete all fields.");
                 return;
             }
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string sql = @"
-                    INSERT INTO Subjects (SubjectName, Schedule, YearLevel, Course, Section, TeacherID)
-                    VALUES (@name, @sched, @year, @course, @section, @teacher)";
+            using var c = new SqlConnection(cs);
+            var cmd = new SqlCommand(
+                "INSERT INTO Subjects VALUES(@n,@sc,@y,@c,@s,@t)", c);
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@name", txtSubjectName.Text.Trim());
-                cmd.Parameters.AddWithValue("@sched", txtSchedule.Text.Trim());
-                cmd.Parameters.AddWithValue("@year", cmbyearlevel.Text.Trim());
-                cmd.Parameters.AddWithValue("@course", cmbcourse.Text.Trim());
-                cmd.Parameters.AddWithValue("@section", cmbsection.Text.Trim());
-                cmd.Parameters.AddWithValue("@teacher", cmbProfessor.SelectedValue);
+            cmd.Parameters.AddWithValue("@n", txtSubjectName.Text);
+            cmd.Parameters.AddWithValue("@sc", txtSchedule.Text);
+            cmd.Parameters.AddWithValue("@y", cmbyearlevel.Text);
+            cmd.Parameters.AddWithValue("@c", cmbcourse.Text);
+            cmd.Parameters.AddWithValue("@s", cmbsection.Text);
+            cmd.Parameters.AddWithValue("@t", cmbProfessor.SelectedValue);
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
-            }
+            c.Open();
+            cmd.ExecuteNonQuery();
 
             MessageBox.Show("Subject added successfully.");
             LoadSubjects();
-            ClearInputs();
+            ClearForm();
         }
 
-        // Delete subject
+        // update click
+        private void btnupdate_Click(object sender, EventArgs e)
+        {
+            if (subjectID == 0)
+            {
+                MessageBox.Show("Select a subject first.");
+                return;
+            }
+            if (!Valid())
+            {
+                MessageBox.Show("Complete all fields.");
+                return;
+            }
+
+            using var c = new SqlConnection(cs);
+            var cmd = new SqlCommand(@"
+                UPDATE Subjects SET
+                    SubjectName = @n,
+                    Schedule = @sc,
+                    YearLevel = @y,
+                    Course = @c,
+                    Section = @s,
+                    TeacherID = @t
+                WHERE SubjectID = @id", c);
+
+            cmd.Parameters.AddWithValue("@n", txtSubjectName.Text);
+            cmd.Parameters.AddWithValue("@sc", txtSchedule.Text);
+            cmd.Parameters.AddWithValue("@y", cmbyearlevel.Text);
+            cmd.Parameters.AddWithValue("@c", cmbcourse.Text);
+            cmd.Parameters.AddWithValue("@s", cmbsection.Text);
+            cmd.Parameters.AddWithValue("@t", cmbProfessor.SelectedValue);
+            cmd.Parameters.AddWithValue("@id", subjectID);
+
+            c.Open();
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("Subject updated successfully.");
+            LoadSubjects();
+            ClearForm();
+        }
+
+        // delete click
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (selectedSubjectID == 0)
+            if (subjectID == 0)
             {
-                MessageBox.Show("Please select a subject to delete.");
+                MessageBox.Show("Select a subject first.");
                 return;
             }
 
-            if (MessageBox.Show("Delete this subject?", "Confirm",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                return;
+            var confirm = MessageBox.Show(
+                "Are you sure you want to delete this subject?",
+                "Confirm",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("DELETE FROM Subjects WHERE SubjectID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", selectedSubjectID);
+            if (confirm != DialogResult.Yes) return;
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
-            }
+            using var c = new SqlConnection(cs);
+            var cmd = new SqlCommand(
+                "DELETE FROM Subjects WHERE SubjectID = @id", c);
+            cmd.Parameters.AddWithValue("@id", subjectID);
+
+            c.Open();
+            cmd.ExecuteNonQuery();
 
             MessageBox.Show("Subject deleted.");
             LoadSubjects();
-            selectedSubjectID = 0;
+            ClearForm();
         }
 
-        // Clear fields
-        private void ClearInputs()
+        // clear form
+        private void ClearForm()
         {
             txtSubjectName.Clear();
             txtSchedule.Clear();
@@ -287,22 +306,34 @@ namespace WinFormsApp1
             cmbsection.SelectedIndex = -1;
             cmbcourse.SelectedIndex = -1;
             cmbProfessor.SelectedIndex = -1;
-            selectedSubjectID = 0;
+            subjectID = 0;
         }
 
-        // Logout
+        // home nav
+        private void btnHome_Click(object sender, EventArgs e) => Open<AdminForm>();
+
+        // prof nav
+        private void btnProfessors_Click(object sender, EventArgs e) => Open<ProfessorsForm>();
+
+        // manage nav
+        private void btnManage_Click(object sender, EventArgs e) => LoadSubjects();
+
+        // stud nav
+        private void btnStudentRegistration_Click(object sender, EventArgs e) => Open<StudentRegistration>();
+
+        // logout click
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Are you sure you want to logout?",
-                "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (MessageBox.Show("Logout?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                Open<LoginForm>();
+        }
 
-            if (result == DialogResult.Yes)
-            {
-                var login = GetOrCreateForm<LoginForm>();
-                login.Show();
-                Hide();
-                login.FormClosed += (s, args) => Close();
-            }
+        // open form
+        private void Open<T>() where T : Form, new()
+        {
+            var f = Application.OpenForms.OfType<T>().FirstOrDefault() ?? new T();
+            f.Show();
+            Hide();
         }
     }
 }
