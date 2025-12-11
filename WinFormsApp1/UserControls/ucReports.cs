@@ -390,5 +390,10 @@ namespace WinFormsApp1.UserControls
         {
 
         }
+
+        private void ucReports_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

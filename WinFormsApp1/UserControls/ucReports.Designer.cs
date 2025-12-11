@@ -228,6 +228,7 @@
             Controls.Add(btnExportPDF);
             Name = "ucReports";
             Size = new Size(775, 570);
+            Load += ucReports_Load;
             pnlFilters.ResumeLayout(false);
             panel4.ResumeLayout(false);
             panel2.ResumeLayout(false);
