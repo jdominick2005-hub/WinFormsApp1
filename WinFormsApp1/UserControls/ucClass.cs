@@ -294,5 +294,10 @@ namespace WinFormsApp1.UserControls
             LoadStudentsToGrid();
             ShowTotalStudents();
         }
+
+        private void pnlFilters_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

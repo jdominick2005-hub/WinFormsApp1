@@ -23,21 +23,45 @@ namespace WinFormsApp1
         {
             InitializeComponent();
 
-            // events
-            this.Load += ManageFormLoad;      // on load
-            this.Activated += ManageFormLoad; // auto refresh when returning
+            // Ensure handlers are not attached multiple times:
+            // Unsubscribe then subscribe (safe even if designer already wired events).
+            this.Load -= ManageFormLoad;
+            this.Load += ManageFormLoad;
 
+            this.Activated -= ManageFormLoad;
+            this.Activated += ManageFormLoad;
+
+            dgvProfessors.CellClick -= dgvProfessors_CellClick;
             dgvProfessors.CellClick += dgvProfessors_CellClick;
+
+            dgvProfessors.CellMouseEnter -= dgvProfessors_CellMouseEnter;
             dgvProfessors.CellMouseEnter += dgvProfessors_CellMouseEnter;
+
+            dgvProfessors.CellMouseLeave -= dgvProfessors_CellMouseLeave;
             dgvProfessors.CellMouseLeave += dgvProfessors_CellMouseLeave;
 
+            btnAdd.Click -= btnAdd_Click;
             btnAdd.Click += btnAdd_Click;
+
+            btnupdate.Click -= btnupdate_Click;
             btnupdate.Click += btnupdate_Click;
+
+            btnDelete.Click -= btnDelete_Click;
             btnDelete.Click += btnDelete_Click;
+
+            btnHome.Click -= btnHome_Click;
             btnHome.Click += btnHome_Click;
+
+            btnProfessors.Click -= btnProfessors_Click;
             btnProfessors.Click += btnProfessors_Click;
+
+            btnManage.Click -= btnManage_Click;
             btnManage.Click += btnManage_Click;
+
+            btnStudentRegistration.Click -= btnStudentRegistration_Click;
             btnStudentRegistration.Click += btnStudentRegistration_Click;
+
+            btnLogout.Click -= btnLogout_Click;
             btnLogout.Click += btnLogout_Click;
         }
 
@@ -198,7 +222,7 @@ namespace WinFormsApp1
                 cmbProfessor.SelectedIndex != -1;
         }
 
-        // add click
+        // add click - FIXED: explicit column list to avoid column-order/type mismatch
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (!Valid())
@@ -208,15 +232,24 @@ namespace WinFormsApp1
             }
 
             using var c = new SqlConnection(cs);
-            var cmd = new SqlCommand(
-                "INSERT INTO Subjects VALUES(@n,@sc,@y,@c,@s,@t)", c);
 
+            // IMPORTANT: specify columns explicitly so values map correctly to columns.
+            var cmd = new SqlCommand(@"
+                INSERT INTO Subjects
+                    (SubjectName, Schedule, YearLevel, Course, Section, TeacherID)
+                VALUES
+                    (@n, @sc, @y, @c, @s, @t);", c);
+
+            // Use AddWithValue for simplicity but ensure SelectedValue for teacher is numeric
             cmd.Parameters.AddWithValue("@n", txtSubjectName.Text);
             cmd.Parameters.AddWithValue("@sc", txtSchedule.Text);
             cmd.Parameters.AddWithValue("@y", cmbyearlevel.Text);
             cmd.Parameters.AddWithValue("@c", cmbcourse.Text);
             cmd.Parameters.AddWithValue("@s", cmbsection.Text);
-            cmd.Parameters.AddWithValue("@t", cmbProfessor.SelectedValue);
+
+            // teacher id should be numeric; SelectedValue comes from LoadTeachers (TeacherID)
+            object teacherVal = cmbProfessor.SelectedValue ?? DBNull.Value;
+            cmd.Parameters.AddWithValue("@t", teacherVal);
 
             c.Open();
             cmd.ExecuteNonQuery();
@@ -256,7 +289,7 @@ namespace WinFormsApp1
             cmd.Parameters.AddWithValue("@y", cmbyearlevel.Text);
             cmd.Parameters.AddWithValue("@c", cmbcourse.Text);
             cmd.Parameters.AddWithValue("@s", cmbsection.Text);
-            cmd.Parameters.AddWithValue("@t", cmbProfessor.SelectedValue);
+            cmd.Parameters.AddWithValue("@t", cmbProfessor.SelectedValue ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@id", subjectID);
 
             c.Open();

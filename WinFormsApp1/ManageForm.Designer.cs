@@ -378,7 +378,6 @@ namespace WinFormsApp1
             gbProfessorSectionAssignment.TabIndex = 96;
             gbProfessorSectionAssignment.TabStop = false;
             gbProfessorSectionAssignment.Text = "Professor Section Assignment";
-            gbProfessorSectionAssignment.Enter += gbProfessorSectionAssignment_Enter;
             // 
             // btnupdate
             // 

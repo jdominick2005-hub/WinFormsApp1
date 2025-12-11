@@ -53,14 +53,13 @@
             chart2.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             chart2.Legends.Add(legend1);
-            chart2.Location = new Point(478, 84);
-            chart2.Margin = new Padding(3, 4, 3, 4);
+            chart2.Location = new Point(418, 63);
             chart2.Name = "chart2";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             chart2.Series.Add(series1);
-            chart2.Size = new Size(343, 400);
+            chart2.Size = new Size(300, 300);
             chart2.TabIndex = 1;
             chart2.Text = "chart2";
             chart2.Click += chart2_Click;
@@ -71,14 +70,13 @@
             chart1.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             chart1.Legends.Add(legend2);
-            chart1.Location = new Point(77, 84);
-            chart1.Margin = new Padding(3, 4, 3, 4);
+            chart1.Location = new Point(67, 63);
             chart1.Name = "chart1";
             series2.ChartArea = "ChartArea1";
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             chart1.Series.Add(series2);
-            chart1.Size = new Size(343, 400);
+            chart1.Size = new Size(300, 300);
             chart1.TabIndex = 2;
             chart1.Text = "chart1";
             chart1.Click += chart1_Click;
@@ -88,17 +86,18 @@
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 26.25F, FontStyle.Bold);
             lblTitle.ForeColor = Color.Black;
-            lblTitle.Location = new Point(16, 20);
+            lblTitle.Location = new Point(64, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(298, 60);
+            lblTitle.Size = new Size(239, 47);
             lblTitle.TabIndex = 3;
             lblTitle.Text = "DASHBOARD";
             // 
             // dtpDate
             // 
-            dtpDate.Location = new Point(577, 39);
+            dtpDate.Location = new Point(602, 13);
+            dtpDate.Margin = new Padding(3, 2, 3, 2);
             dtpDate.Name = "dtpDate";
-            dtpDate.Size = new Size(271, 27);
+            dtpDate.Size = new Size(238, 23);
             dtpDate.TabIndex = 9;
             // 
             // chart3
@@ -107,21 +106,20 @@
             chart3.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             chart3.Legends.Add(legend3);
-            chart3.Location = new Point(77, 487);
-            chart3.Margin = new Padding(3, 4, 3, 4);
+            chart3.Location = new Point(67, 369);
             chart3.Name = "chart3";
             series3.ChartArea = "ChartArea1";
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             chart3.Series.Add(series3);
-            chart3.Size = new Size(744, 268);
+            chart3.Size = new Size(651, 191);
             chart3.TabIndex = 10;
             chart3.Text = "chart3";
             chart3.Click += chart3_Click;
             // 
             // ucHome
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             Controls.Add(chart3);
@@ -129,9 +127,8 @@
             Controls.Add(lblTitle);
             Controls.Add(chart1);
             Controls.Add(chart2);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "ucHome";
-            Size = new Size(886, 759);
+            Size = new Size(775, 569);
             ((System.ComponentModel.ISupportInitialize)chart2).EndInit();
             ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ((System.ComponentModel.ISupportInitialize)chart3).EndInit();
