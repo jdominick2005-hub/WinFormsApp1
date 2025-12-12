@@ -15,6 +15,9 @@ namespace WinFormsApp1
         private int teacherID;
         private string teacherProgram = "";
 
+        private System.Windows.Forms.Timer autoRefreshTimer;
+        private const int autoRefreshIntervalMs = 3000; // 
+
         public ucAttendance(int teacherId)
         {
             InitializeComponent();
@@ -40,7 +43,39 @@ namespace WinFormsApp1
             cmbYearLevel.SelectedIndex = -1;
             cmbSubjects.DataSource = null;
             dvgStudents.DataSource = null;
+
+            // ----- ADDED: setup auto-refresh timer -----
+            autoRefreshTimer = new System.Windows.Forms.Timer();
+            autoRefreshTimer.Interval = autoRefreshIntervalMs;
+            autoRefreshTimer.Tick += (s, e) =>
+            {
+                try
+                {
+                    ReloadData();
+                }
+                catch { /* swallow to avoid interrupting UI */ }
+            };
+
+            // start timer only if control is visible
+            this.VisibleChanged += UcAttendance_VisibleChanged;
+            if (this.Visible)
+                autoRefreshTimer.Start();
+            // ------------------------------------------------
         }
+
+        // ----- ADDED: VisibleChanged handler to start/stop timer -----
+        private void UcAttendance_VisibleChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.Visible)
+                    autoRefreshTimer?.Start();
+                else
+                    autoRefreshTimer?.Stop();
+            }
+            catch { }
+        }
+        // --------------------------------------------------------------
 
         // teacher program
         private void LoadTeacherProgram()
